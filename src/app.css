@@ -1,12 +1,3 @@
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
-
-body {
-	background-color: #111111;
-	color: #eeeeee;
-	min-width: 100vw;
-	min-height: 100vh;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

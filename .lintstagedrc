@@ -1,0 +1,6 @@
+{
+	"*.{ts,svelte}": [
+		"prettier --write .",
+		"eslint --fix ."
+	]
+}
