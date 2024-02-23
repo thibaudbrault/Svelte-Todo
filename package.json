@@ -6,14 +6,18 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+		"docker:up": "docker compose up -d",
+    	"docker:down": "docker compose down",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"sync": "svelte-kit sync",
 		"format": "prettier --check . && eslint --fix .",
 		"prettier": "prettier",
 		"prettier:check": "prettier --check .",
 		"prettier:write": "prettier --write .",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
+		"generate": "drizzle-kit generate:pg",
 		"prepare": "husky"
 	},
 	"devDependencies": {
@@ -24,6 +28,7 @@
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
 		"@typescript-eslint/parser": "^7.0.0",
 		"autoprefixer": "^10.4.17",
+		"drizzle-kit": "^0.20.14",
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.35.1",
@@ -40,5 +45,9 @@
 		"typescript": "^5.0.0",
 		"vite": "^5.0.3"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"drizzle-orm": "^0.29.4",
+		"postgres": "^3.4.3"
+	}
 }
