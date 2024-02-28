@@ -1,5 +1,15 @@
 <script>
-	import '../app.css';
+	import { Sidebar } from '$modules';
+	import '../app.pcss';
 </script>
 
-<slot />
+<main class="flex h-screen w-screen">
+	<Sidebar />
+	<slot />
+</main>
+
+<style lang="postcss">
+	:global(body) {
+		@apply bg-neutral-900 text-neutral-100;
+	}
+</style>
