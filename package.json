@@ -1,5 +1,5 @@
 {
-	"name": "todo-app",
+	"name": "pokemusic",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -18,6 +18,8 @@
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
 		"generate": "drizzle-kit generate:pg",
+		"migrate": "drizzle-kit push:pg",
+		"studio": "drizzle-kit studio",
 		"prepare": "husky"
 	},
 	"devDependencies": {
@@ -25,6 +27,7 @@
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.0",
+		"@types/pg": "^8.11.2",
 		"@typescript-eslint/eslint-plugin": "^7.0.0",
 		"@typescript-eslint/parser": "^7.0.0",
 		"autoprefixer": "^10.4.17",
@@ -34,6 +37,7 @@
 		"eslint-plugin-svelte": "^2.35.1",
 		"husky": "^9.0.11",
 		"lint-staged": "^15.2.2",
+		"pg": "^8.11.3",
 		"postcss": "^8.4.35",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
@@ -50,6 +54,7 @@
 		"bits-ui": "^0.18.4",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",
+		"dotenv": "^16.4.5",
 		"drizzle-orm": "^0.29.4",
 		"postgres": "^3.4.3",
 		"tailwind-merge": "^2.2.1"
