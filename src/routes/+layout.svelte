@@ -1,6 +1,6 @@
 <script>
 	import { Sidebar } from '$modules';
-	import '../app.pcss';
+	import '../app.css';
 </script>
 
 <main class="flex h-screen w-screen">
