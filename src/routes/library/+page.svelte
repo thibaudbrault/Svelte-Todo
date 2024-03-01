@@ -8,12 +8,8 @@
 			title: 'HeartGold - SoulSilver',
 			desc: 'Hi',
 			alt: 'HeartGold - SoulSilver cover',
-			cover: '/cover.png',
+			cover: '',
 		},
-		// {
-		// 	title: 'Goodbye',
-		// 	desc: 'Bye',
-		// },
 	];
 
 	const playPause = () => {
@@ -28,7 +24,7 @@
 
 <section class="space-y-4 p-4">
 	<h2 class="text-4xl font-bold">Library</h2>
-	<div class=" grid grid-cols-4 gap-6">
+	<div class=" grid grid-cols-6 gap-6">
 		{#each albums as album}
 			<Card
 				title={album.title}

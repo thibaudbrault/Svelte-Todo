@@ -3,7 +3,7 @@
 	import '../app.css';
 </script>
 
-<main class="flex h-screen w-screen">
+<main class="grid h-screen w-screen grid-cols-6">
 	<Sidebar />
 	<slot />
 </main>
