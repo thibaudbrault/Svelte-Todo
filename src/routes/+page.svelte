@@ -1,34 +1,7 @@
 <script lang="ts">
-	import { Card } from '$components';
+	import { Button, Card } from '$components';
 	export let data;
-	console.log(data.result);
-
-	const albums = [
-		{
-			title: 'HeartGold - SoulSilver',
-			desc: 'Hi',
-			alt: 'HeartGold - SoulSilver cover',
-			cover: '',
-		},
-		{
-			title: 'Red - Blue',
-			desc: 'Hi',
-			alt: 'Red - Blue cover',
-			cover: '',
-		},
-		{
-			title: 'Diamond - Pearl',
-			desc: 'Hi',
-			alt: 'Diamond - Pearl cover',
-			cover: '',
-		},
-		{
-			title: 'HeartGold - SoulSilver',
-			desc: 'Hi',
-			alt: 'HeartGold - SoulSilver cover',
-			cover: '',
-		},
-	];
+	let albums = data.result;
 </script>
 
 <section class="col-span-5 space-y-8 p-4">
@@ -37,10 +10,10 @@
 		<div class=" grid grid-cols-6 gap-6">
 			{#each albums as album}
 				<Card
-					title={album.title}
-					desc={album.desc}
-					alt={album.alt}
+					title={album.name}
+					alt={album.name}
 					cover={album.cover}
+					slug={album.slug}
 				/>
 			{/each}
 		</div>
@@ -50,12 +23,18 @@
 		<div class=" grid grid-cols-6 gap-6">
 			{#each albums as album}
 				<Card
-					title={album.title}
-					desc={album.desc}
-					alt={album.alt}
+					title={album.name}
+					alt={album.name}
 					cover={album.cover}
+					slug={album.slug}
 				/>
 			{/each}
 		</div>
 	</div>
+	<form action="?/createAlbum" method="POST">
+		<label for="name">Name</label>
+		<input type="text" id="name" name="name" class="text-gray-900" />
+		<input type="file" name="cover" />
+		<Button>Add album</Button>
+	</form>
 </section>

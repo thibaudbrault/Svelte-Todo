@@ -3,13 +3,7 @@
 	import '../app.css';
 </script>
 
-<main class="grid h-screen w-screen grid-cols-6">
+<main class="grid h-screen w-screen grid-cols-6 bg-gray-1 text-gray-12">
 	<Sidebar />
 	<slot />
 </main>
-
-<style lang="postcss">
-	:global(body) {
-		@apply bg-neutral-900 text-neutral-100;
-	}
-</style>
