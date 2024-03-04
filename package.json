@@ -51,6 +51,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@auth/sveltekit": "^0.14.0",
 		"@radix-ui/colors": "^3.0.0",
 		"bits-ui": "^0.18.4",
 		"class-variance-authority": "^0.7.0",
