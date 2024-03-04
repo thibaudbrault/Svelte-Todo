@@ -1,10 +1,10 @@
 import { fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { slugWithOptions } from '$lib/utils';
-import { db, album } from '$lib/db';
+import { db, albums } from '$lib/db';
 
 export const load: PageServerLoad = async () => {
-	const result = await db.select().from(album);
+	const result = await db.select().from(albums);
 	return {
 		result,
 	};
@@ -18,7 +18,7 @@ export const actions: Actions = {
 		};
 		try {
 			const slug = slugWithOptions(name);
-			await db.insert(album).values({
+			await db.insert(albums).values({
 				name,
 				cover,
 				slug,

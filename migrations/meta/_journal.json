@@ -1,55 +1,13 @@
 {
-	"version": "5",
-	"dialect": "pg",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "5",
-			"when": 1709291950513,
-			"tag": "0000_curvy_silver_sable",
-			"breakpoints": true
-		},
-		{
-			"idx": 1,
-			"version": "5",
-			"when": 1709304532528,
-			"tag": "0001_glamorous_exiles",
-			"breakpoints": true
-		},
-		{
-			"idx": 2,
-			"version": "5",
-			"when": 1709374854508,
-			"tag": "0002_superb_whizzer",
-			"breakpoints": true
-		},
-		{
-			"idx": 3,
-			"version": "5",
-			"when": 1709377180147,
-			"tag": "0003_zippy_gorgon",
-			"breakpoints": true
-		},
-		{
-			"idx": 4,
-			"version": "5",
-			"when": 1709398591862,
-			"tag": "0004_concerned_agent_zero",
-			"breakpoints": true
-		},
-		{
-			"idx": 5,
-			"version": "5",
-			"when": 1709399710598,
-			"tag": "0005_aspiring_diamondback",
-			"breakpoints": true
-		},
-		{
-			"idx": 6,
-			"version": "5",
-			"when": 1709492563324,
-			"tag": "0006_keen_gamma_corps",
-			"breakpoints": true
-		}
-	]
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1709561305408,
+      "tag": "0000_gifted_true_believers",
+      "breakpoints": true
+    }
+  ]
 }

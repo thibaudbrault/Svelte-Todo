@@ -1,16 +1,16 @@
-import { album, db, music } from '$lib/db';
+import { albums, db, musics } from '$lib/db';
 import { eq } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const slug = params.slug;
-	const response = await db.select().from(album).where(eq(album.slug, slug));
+	const response = await db.select().from(albums).where(eq(albums.slug, slug));
 	const { id, name, cover } = response[0];
 	const result = await db
 		.select()
-		.from(music)
-		.where(eq(music.albumId, id))
-		.orderBy(music.id);
+		.from(musics)
+		.where(eq(musics.albumId, id))
+		.orderBy(musics.id);
 	return {
 		result,
 		name,
