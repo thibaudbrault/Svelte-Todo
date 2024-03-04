@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { signIn, signOut } from '@auth/sveltekit/client';
+	import { page } from '$app/stores';
 	import {
 		Heart,
 		Home,
@@ -9,8 +10,6 @@
 		Search,
 		User,
 	} from 'lucide-svelte';
-
-	let isLoggedIn = false;
 
 	const topLinks = [
 		{
@@ -73,7 +72,7 @@
 			{/each}
 		</ul>
 		<ul class="flex flex-col gap-8">
-			{#if isLoggedIn}
+			{#if $page.data.session}
 				<li>
 					<a href="/profile" class="flex items-center gap-4 hover:text-gray-12">
 						<User />
