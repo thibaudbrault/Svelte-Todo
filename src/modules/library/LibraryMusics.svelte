@@ -31,7 +31,7 @@
 					$trackId = index;
 					loadTrack();
 				}}
-				class={`grid cursor-pointer grid-cols-[30px_3fr_2fr_60px] items-center rounded-md p-2  ${selectedTrack === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-gray-4'}`}
+				class={`grid cursor-pointer grid-cols-[30px_3fr_2fr_60px] items-center rounded-md p-2  ${selectedTrack === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
 			>
 				<p
 					class={`text-sm ${selectedTrack === index ? 'text-gray-2' : 'text-gray-11'}`}
