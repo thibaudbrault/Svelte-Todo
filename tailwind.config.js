@@ -4,6 +4,9 @@ export default {
 	darkMode: 'selector',
 	theme: {
 		extend: {
+			boxShadow: {
+				sm: '0 0 0 1px',
+			},
 			colors: {
 				gray: {
 					1: 'var(--gray-1)',
@@ -32,6 +35,35 @@ export default {
 					10: 'var(--gray-a10)',
 					11: 'var(--gray-a11)',
 					12: 'var(--gray-a12)',
+				},
+				yellow: {
+					1: 'var(--yellow-1)',
+					2: 'var(--yellow-2)',
+					3: 'var(--yellow-3)',
+					4: 'var(--yellow-4)',
+					5: 'var(--yellow-5)',
+					6: 'var(--yellow-6)',
+					7: 'var(--yellow-7)',
+					8: 'var(--yellow-8)',
+					9: 'var(--yellow-9)',
+					10: 'var(--yellow-10)',
+					11: 'var(--yellow-11)',
+					12: 'var(--yellow-12)',
+					surface: '#231f1380'
+				},
+				yellowA: {
+					1: 'var(--yellow-a1)',
+					2: 'var(--yellow-a2)',
+					3: 'var(--yellow-a3)',
+					4: 'var(--yellow-a4)',
+					5: 'var(--yellow-a5)',
+					6: 'var(--yellow-a6)',
+					7: 'var(--yellow-a7)',
+					8: 'var(--yellow-a8)',
+					9: 'var(--yellow-a9)',
+					10: 'var(--yellow-a10)',
+					11: 'var(--yellow-a11)',
+					12: 'var(--yellow-a12)',
 				},
 			},
 		},
