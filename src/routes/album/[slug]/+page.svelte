@@ -105,7 +105,7 @@
 </script>
 
 <section class="relative col-span-5 p-2">
-	<div class="h-full rounded-md bg-gray-2">
+	<div class="h-full rounded-md bg-grayA-4">
 		<LibraryHeader {cover} {albumTitle} albumLength={musics.length} />
 		<LibraryMusics {musics} {selectedTrack} {loadTrack} />
 	</div>

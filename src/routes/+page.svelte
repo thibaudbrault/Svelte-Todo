@@ -13,7 +13,7 @@
 					title={album.name}
 					alt={album.name}
 					cover={album.cover}
-					slug={album.slug}
+					link={`/album/${album.slug}`}
 				/>
 			{/each}
 		</div>
@@ -26,7 +26,7 @@
 					title={album.name}
 					alt={album.name}
 					cover={album.cover}
-					slug={album.slug}
+					link={`/album/${album.slug}`}
 				/>
 			{/each}
 		</div>
