@@ -49,7 +49,7 @@ export default {
 					10: 'var(--yellow-10)',
 					11: 'var(--yellow-11)',
 					12: 'var(--yellow-12)',
-					surface: '#231f1380'
+					surface: '#231f1380',
 				},
 				yellowA: {
 					1: 'var(--yellow-a1)',
