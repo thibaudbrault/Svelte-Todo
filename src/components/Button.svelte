@@ -5,12 +5,13 @@
 	import { cn } from '$lib/utils';
 
 	const button = cva(
-		'rounded-md duration-300 transition-all ease-in-out border',
+		'rounded-md duration-300 transition-all ease-in-out shadow-sm',
 		{
 			variants: {
 				intent: {
-					primary: 'text-gray-1 bg-gray-12 hover:bg-gray-11 border-transparent',
-					secondary: 'text-gray-12 border-gray-6 bg-transparent',
+					primary: 'text-gray-1 bg-gray-12 hover:bg-gray-11 shadow-transparent',
+					secondary: 'text-gray-12 shadow-grayA-7 bg-transparent',
+					ghost: 'text-gray-12 shadow-transparent bg-transparent',
 				},
 				weight: {
 					normal: 'font-normal',
