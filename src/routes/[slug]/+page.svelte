@@ -1,94 +1,123 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import {
-		currentTime,
-		index,
-		isPlaying,
 		audio,
-		albumLength,
+		currentTime,
+		duration,
+		isLooped,
+		isPlaying,
+		sliderValue,
 		title,
+		trackId,
 	} from '$lib/store.js';
-	import { format } from '$lib/utils';
-	import { Player } from '$modules';
-	import { Clock } from 'lucide-svelte';
+	import { LibraryHeader, LibraryMusics, Player } from '$modules';
 	import { onMount } from 'svelte';
 
 	export let data;
-	let musics = data.result;
-	$albumLength = musics.length;
+	let musics = data.musics;
+	let albumLength = musics.length;
 	let albumTitle = data.name;
 	let cover = data.cover;
 
-	let duration: number = 0;
 	let showPlayer: boolean = false;
+	let selectedTrack: number | null = null;
+	let raf: number = 0;
 
-	let src = musics[$index].url;
+	let src = musics[$trackId].url;
 
-	const loadTrack = (index: number) => {
-		$isPlaying = false;
-		$title = musics[index].title;
-		$audio.src = musics[index].url;
+	const loadTrack = () => {
+		$sliderValue = 0;
+		selectedTrack = $trackId;
+		$title = musics[$trackId].title;
+		$audio.src = musics[$trackId].url;
 		showPlayer = true;
 		$audio.load();
 	};
 
-	const handleEnded = () => {
-		$isPlaying = false;
+	const handlePlaying = () => {
+		$sliderValue = $audio.currentTime;
+		$currentTime = $sliderValue;
+		raf = requestAnimationFrame(handlePlaying);
+	};
+
+	const updatePosition = () => {
+		$audio.currentTime = $sliderValue;
+		if (!$audio.paused) {
+			requestAnimationFrame(handlePlaying);
+		}
+	};
+
+	const playPauseTrack = () => {
+		if ($isPlaying) {
+			$audio.pause();
+			$isPlaying = false;
+			cancelAnimationFrame(raf);
+		} else {
+			$audio.play();
+			$isPlaying = true;
+			requestAnimationFrame(handlePlaying);
+		}
+	};
+
+	const prevTrack = () => {
 		$currentTime = 0;
+		if ($isLooped) {
+			$trackId = $trackId;
+		} else {
+			if ($trackId > 0) {
+				$trackId -= 1;
+			} else {
+				$trackId = albumLength - 1;
+			}
+		}
+		loadTrack();
+		switchTrack();
+	};
+
+	const nextTrack = () => {
+		$currentTime = 0;
+		if ($isLooped) {
+			$trackId = $trackId;
+		} else {
+			if ($trackId < albumLength - 1) {
+				$trackId += 1;
+			} else {
+				$trackId = 0;
+			}
+		}
+		loadTrack();
+		switchTrack();
+	};
+
+	const switchTrack = () => {
+		if ($isPlaying) {
+			$audio.play();
+		}
 	};
 
 	onMount(() => {
-		$title = musics[$index].title;
-		$audio.load();
+		loadTrack();
 	});
+
+	if (!musics) {
+		goto('/');
+	}
 </script>
 
-<section class="col-span-5 space-y-8 rounded-md p-2">
-	<div class="h-full bg-gray-2">
-		<div class="flex gap-4 p-4">
-			<img src={cover} alt={albumTitle} class="h-56 w-56 rounded-md" />
-			<div class="relative flex flex-1 flex-col justify-around">
-				<small class="text-xs font-semibold text-grayA-11">Album</small>
-				<h1 class="text-6xl font-bold">{albumTitle}</h1>
-				<div>
-					<p>Pokémon remake of the 2G</p>
-					<p>{musics.length} titles</p>
-				</div>
-			</div>
-		</div>
-		<div class="w-full space-y-2 p-4">
-			<div
-				class="grid grid-cols-[30px_3fr_2fr_60px] border-b border-b-grayA-6 pb-2 font-normal text-gray-11"
-			>
-				<p>#</p>
-				<p>Title</p>
-				<p>Author</p>
-				<p><Clock /></p>
-			</div>
-			<ol class="space-y-2">
-				{#each musics as music, index}
-					<!-- svelte-ignore a11y-click-events-have-key-events -->
-					<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-					<li
-						on:click={() => loadTrack(index)}
-						class="grid cursor-pointer grid-cols-[30px_3fr_2fr_60px] items-center rounded-md p-2 hover:bg-gray-4"
-					>
-						<p class="text-sm text-gray-11">{music.id}</p>
-						<p class="text-2xl">{music.title}</p>
-						<p class="capitalize">the author</p>
-						<p>{format(music.duration)}</p>
-					</li>
-				{/each}
-			</ol>
-		</div>
+<section class="relative col-span-5 p-2">
+	<div class="h-full rounded-md bg-gray-2">
+		<LibraryHeader {cover} {albumTitle} albumLength={musics.length} />
+		<LibraryMusics {musics} {selectedTrack} {loadTrack} />
 	</div>
 	<audio
 		{src}
 		bind:this={$audio}
-		bind:duration
+		bind:duration={$duration}
 		bind:currentTime={$currentTime}
-		on:ended={handleEnded}
+		on:ended={nextTrack}
+		hidden
 	/>
 	{#if showPlayer}
-		<Player {duration} {musics} />
+		<Player {playPauseTrack} {prevTrack} {nextTrack} {updatePosition} />
 	{/if}
 </section>

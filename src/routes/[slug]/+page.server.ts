@@ -1,23 +1,33 @@
-import { albums, db, musics } from '$lib/db';
+import { albums, db, musics, type SelectMusic } from '$lib/db';
 import { eq } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
-import { fail } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ params }) => {
-	const slug = params.slug;
-	const response = await db.select().from(albums).where(eq(albums.slug, slug));
-	if (!response) {
-		return fail(500, { message: 'Could not find albums' });
+	try {
+		const slug = params.slug;
+		const response = await db
+			.select()
+			.from(albums)
+			.where(eq(albums.slug, slug));
+		if (!response) {
+			fail(500, { message: 'Could not find albums' });
+		}
+		const { id, name, cover } = response[0];
+		const result: SelectMusic[] = await db
+			.select()
+			.from(musics)
+			.where(eq(musics.albumId, id))
+			.orderBy(musics.id);
+		if (!result) {
+			error(404, 'Musics not found');
+		}
+		return {
+			musics: result,
+			name,
+			cover,
+		};
+	} catch (err) {
+		return error(500, 'Unexpected error');
 	}
-	const { id, name, cover } = response[0];
-	const result = await db
-		.select()
-		.from(musics)
-		.where(eq(musics.albumId, id))
-		.orderBy(musics.id);
-	return {
-		result,
-		name,
-		cover,
-	};
 };
