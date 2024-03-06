@@ -31,7 +31,7 @@
 			{/each}
 		</div>
 	</div>
-	<form action="?/createAlbum" method="POST">
+	<form action="?/createAlbum" method="POST" enctype="multipart/form-data">
 		<label for="name">Name</label>
 		<input type="text" id="name" name="name" class="text-gray-900" />
 		<input type="file" name="cover" />
