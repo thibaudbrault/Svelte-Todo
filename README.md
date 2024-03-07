@@ -3,6 +3,7 @@
 Pokemon music streaming app
 
 ## Stack
+
 - SvelteKit
 - Drizzle ORM
 - Typescript
