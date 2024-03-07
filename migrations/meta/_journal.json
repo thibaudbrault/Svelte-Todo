@@ -15,6 +15,13 @@
       "when": 1709568961457,
       "tag": "0001_workable_smiling_tiger",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1709832339705,
+      "tag": "0002_clean_wolfsbane",
+      "breakpoints": true
     }
   ]
 }

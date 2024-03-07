@@ -24,6 +24,7 @@ export const albumsRelations = relations(albums, ({ many }) => ({
 export const musics = pgTable('musics', {
 	id: serial('id').primaryKey(),
 	url: text('url').notNull().unique(),
+	number: integer('number').notNull(),
 	title: text('title').notNull(),
 	duration: integer('duration').notNull(),
 	albumId: serial('album_id')
