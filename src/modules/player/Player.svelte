@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button } from '$components';
-	import { isPlaying, title, isLooped } from '$lib/store';
+	import { isPlaying, title, isLooped, isShuffled } from '$lib/store';
 	import {
 		FastForward,
 		Heart,
@@ -8,6 +8,7 @@
 		Play,
 		Repeat,
 		Rewind,
+		Shuffle,
 	} from 'lucide-svelte';
 	import Slider from './Slider.svelte';
 
@@ -18,6 +19,11 @@
 
 	const handleLoop = () => {
 		$isLooped = !$isLooped;
+		$isShuffled = false;
+	};
+	const handleShuffle = () => {
+		$isShuffled = !$isShuffled;
+		$isLooped = false;
 	};
 </script>
 
@@ -42,6 +48,9 @@
 			</Button>
 			<Button intent="secondary" size="icon" on:click={nextTrack}>
 				<FastForward />
+			</Button>
+			<Button intent="ghost" size="icon" on:click={handleShuffle}>
+				<Shuffle class={`${$isShuffled ? 'text-yellow-11' : ''}`} />
 			</Button>
 		</div>
 		<Slider on:change={updatePosition} />

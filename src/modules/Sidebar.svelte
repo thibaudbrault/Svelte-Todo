@@ -7,9 +7,12 @@
 		Library,
 		LogIn,
 		LogOut,
+		Plus,
 		Search,
 		User,
 	} from 'lucide-svelte';
+	import { Button, Dialog, Input, Label } from '$components';
+	import { Dialog as BitsDialog } from 'bits-ui';
 
 	const topLinks = [
 		{
@@ -72,6 +75,42 @@
 					</a>
 				</li>
 			{/each}
+			<li>
+				<Dialog title="New album" trigger="Add album">
+					<BitsDialog.Trigger
+						slot="trigger"
+						class="flex items-center gap-4 hover:text-gray-12"
+					>
+						<Plus class="text-yellow-12" />
+						<span class="font-semibold">Add album</span>
+					</BitsDialog.Trigger>
+					<form
+						slot="content"
+						action="?/createAlbum"
+						method="POST"
+						enctype="multipart/form-data"
+						class="w-full space-y-4"
+					>
+						<fieldset class="flex w-full flex-col gap-2">
+							<div class="flex flex-col gap-1">
+								<Label field="name">Name</Label>
+								<Input type="text" placeholder="Name" name="name" />
+							</div>
+							<div class="flex flex-col gap-1">
+								<Label field="cover">Cover</Label>
+								<input type="file" placeholder="Cover" name="cover" />
+							</div>
+						</fieldset>
+						<Button
+							intent="primary"
+							size="small"
+							width="full"
+							class="font-semibold lowercase"
+							style="font-variant: small-caps;">Add</Button
+						>
+					</form>
+				</Dialog>
+			</li>
 		</ul>
 		<ul class="flex flex-col gap-4">
 			{#if $page.data.session}

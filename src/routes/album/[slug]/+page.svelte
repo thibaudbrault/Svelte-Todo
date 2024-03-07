@@ -5,6 +5,7 @@
 		currentTime,
 		duration,
 		isLooped,
+		isShuffled,
 		isPlaying,
 		sliderValue,
 		title,
@@ -15,21 +16,21 @@
 
 	export let data;
 	let musics = data.musics;
-	let albumLength = musics.length;
 	let albumTitle = data.name;
 	let cover = data.cover;
 
+	let albumLength: number = musics.length;
 	let showPlayer: boolean = false;
 	let selectedTrack: number | null = null;
 	let raf: number = 0;
 
-	let src = musics[$trackId].url;
+	let src = musics[$trackId]?.url;
 
 	const loadTrack = () => {
 		$sliderValue = 0;
 		selectedTrack = $trackId;
-		$title = musics[$trackId].title;
-		$audio.src = musics[$trackId].url;
+		$title = musics[$trackId]?.title;
+		$audio.src = musics[$trackId]?.url;
 		showPlayer = true;
 		$audio.load();
 	};
@@ -61,7 +62,9 @@
 
 	const prevTrack = () => {
 		$currentTime = 0;
-		if ($isLooped) {
+		if ($isShuffled) {
+			$trackId = Math.floor(Math.random() * albumLength);
+		} else if ($isLooped) {
 			$trackId = $trackId;
 		} else {
 			if ($trackId > 0) {
@@ -76,7 +79,9 @@
 
 	const nextTrack = () => {
 		$currentTime = 0;
-		if ($isLooped) {
+		if ($isShuffled) {
+			$trackId = Math.floor(Math.random() * albumLength);
+		} else if ($isLooped) {
 			$trackId = $trackId;
 		} else {
 			if ($trackId < albumLength - 1) {
@@ -104,11 +109,9 @@
 	}
 </script>
 
-<section class="relative col-span-5 p-2">
-	<div class="h-full rounded-md bg-grayA-4">
-		<LibraryHeader {cover} {albumTitle} albumLength={musics.length} />
-		<LibraryMusics {musics} {selectedTrack} {loadTrack} />
-	</div>
+<div class="relative h-full">
+	<LibraryHeader {cover} {albumTitle} albumLength={musics.length} />
+	<LibraryMusics {musics} {selectedTrack} {loadTrack} />
 	<audio
 		{src}
 		bind:this={$audio}
@@ -120,4 +123,4 @@
 	{#if showPlayer}
 		<Player {playPauseTrack} {prevTrack} {nextTrack} {updatePosition} />
 	{/if}
-</section>
+</div>
