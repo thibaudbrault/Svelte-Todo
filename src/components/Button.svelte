@@ -22,6 +22,10 @@
 					medium: 'py-2 px-4',
 					icon: 'p-2 rounded-full',
 				},
+				width: {
+					fit: 'w-fit',
+					full: 'w-full',
+				},
 				layout: {
 					center: 'flex items-center justify-center',
 				},
@@ -34,13 +38,16 @@
 	export let intent: $$Props['intent'] = 'primary';
 	export let weight: $$Props['weight'] = 'normal';
 	export let size: $$Props['size'] = 'medium';
+	export let width: $$Props['width'] = 'fit';
 	export let layout: $$Props['layout'] = 'center';
 </script>
 
 <Button.Root
 	{...$$props}
 	on:click
-	class={cn(button({ intent, weight, size, layout, class: $$props.class }))}
+	class={cn(
+		button({ intent, weight, size, width, layout, class: $$props.class }),
+	)}
 >
 	<slot />
 </Button.Root>
