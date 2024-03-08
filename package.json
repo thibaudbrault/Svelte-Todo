@@ -3,10 +3,10 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"start": "vite",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
+		"start": "node build",
 		"docker:up": "docker compose up -d",
 		"docker:down": "docker compose down",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
