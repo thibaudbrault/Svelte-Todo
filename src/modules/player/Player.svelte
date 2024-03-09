@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { Button } from '$components';
-	import { isPlaying, title, isLooped, isShuffled } from '$lib/store';
+	import {
+		isPlaying,
+		title,
+		isLooped,
+		isShuffled,
+		showPlayer,
+	} from '$lib/store';
 	import {
 		FastForward,
 		Heart,
@@ -56,4 +62,7 @@
 		<Slider on:change={updatePosition} />
 	</div>
 	<Heart />
+	<button class="absolute right-2 top-1" on:click={() => ($showPlayer = false)}
+		>X</button
+	>
 </section>

@@ -5,8 +5,9 @@
 		currentTime,
 		duration,
 		isLooped,
-		isShuffled,
 		isPlaying,
+		isShuffled,
+		showPlayer,
 		sliderValue,
 		title,
 		trackId,
@@ -20,7 +21,6 @@
 	let cover = data.cover;
 
 	let albumLength: number = musics.length;
-	let showPlayer: boolean = false;
 	let selectedTrack: number | null = null;
 	let raf: number = 0;
 
@@ -29,10 +29,12 @@
 	const loadTrack = () => {
 		$sliderValue = 0;
 		selectedTrack = $trackId;
-		$title = musics[$trackId]?.title;
-		$audio.src = musics[$trackId]?.url;
-		showPlayer = true;
-		$audio.load();
+		if (musics.length > 0) {
+			$title = musics[$trackId]?.title;
+			$audio.src = musics[$trackId]?.url;
+			$showPlayer = true;
+			$audio.load();
+		}
 	};
 
 	const handlePlaying = () => {
@@ -111,7 +113,7 @@
 
 <div class="relative h-full">
 	<LibraryHeader {cover} {albumTitle} albumLength={musics.length} />
-	<LibraryMusics {musics} {selectedTrack} {loadTrack} />
+	<LibraryMusics {musics} {selectedTrack} {loadTrack} formSingle={data.form} />
 	<audio
 		{src}
 		bind:this={$audio}
@@ -120,7 +122,7 @@
 		on:ended={nextTrack}
 		hidden
 	/>
-	{#if showPlayer}
+	{#if $showPlayer}
 		<Player {playPauseTrack} {prevTrack} {nextTrack} {updatePosition} />
 	{/if}
 </div>

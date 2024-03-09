@@ -40,6 +40,8 @@
 	export let size: $$Props['size'] = 'medium';
 	export let width: $$Props['width'] = 'fit';
 	export let layout: $$Props['layout'] = 'center';
+
+	export let disabled: $$Props['disabled'] = false;
 </script>
 
 <Button.Root
@@ -48,6 +50,7 @@
 	class={cn(
 		button({ intent, weight, size, width, layout, class: $$props.class }),
 	)}
+	{disabled}
 >
 	<slot />
 </Button.Root>

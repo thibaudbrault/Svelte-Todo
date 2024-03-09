@@ -2,9 +2,11 @@
 	export let type: string;
 	export let placeholder: string;
 	export let name: string;
+	export let value;
 </script>
 
 <input
+	{value}
 	{type}
 	{placeholder}
 	{name}

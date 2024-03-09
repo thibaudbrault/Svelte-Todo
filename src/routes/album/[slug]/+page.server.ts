@@ -1,12 +1,16 @@
-import { CLOUDFRONT_URL } from '$env/static/private';
 import { albums, db, musics, type SelectMusic } from '$lib/db';
-import { uploadFile } from '$lib/server';
+import { createSingleMusicSchema } from '$lib/validation';
 import { error, fail, type Actions } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 import type { PageServerLoad } from './$types';
+import { uploadFile } from '$lib/server';
+import { CLOUDFRONT_URL } from '$env/static/private';
 
 export const load: PageServerLoad = async ({ params }) => {
 	try {
+		const form = await superValidate(zod(createSingleMusicSchema));
 		const slug = params.slug;
 		const response = await db
 			.select()
@@ -25,6 +29,7 @@ export const load: PageServerLoad = async ({ params }) => {
 			musics: result,
 			name,
 			cover,
+			form,
 		};
 	} catch (err) {
 		error(500, 'Unexpected error');
@@ -40,28 +45,36 @@ export const actions: Actions = {
 				.from(albums)
 				.where(eq(albums.slug, slug));
 			const albumId = album[0].id;
-			const { title, track, duration, number } = Object.fromEntries(
-				await request.formData(),
-			) as {
-				title: string;
-				track: File;
-				duration: string;
-				number: string;
-			};
-			const filename = `${slug}/${crypto.randomUUID()}${track?.name}`;
-			await uploadFile(
-				Buffer.from(await track.arrayBuffer()),
-				filename,
-				track.type,
-			);
-			const trackUrl = CLOUDFRONT_URL + filename;
-			await db.insert(musics).values({
-				title,
-				url: trackUrl,
-				duration: Number(duration),
-				number: Number(number),
-				albumId,
-			});
+			const formData = await request.formData();
+			const isMultiple = formData.get('isMultiple');
+			formData.delete('isMultiple');
+			if (isMultiple === 'true') {
+				console.log(formData);
+			} else {
+				const form = await superValidate(
+					formData,
+					zod(createSingleMusicSchema),
+				);
+				if (!form.valid) {
+					return fail(400, { form });
+				}
+				const { title, track, duration, number } = form.data;
+				const filename = `${slug}/${crypto.randomUUID()}${track?.name}`;
+				await uploadFile(
+					Buffer.from(await track.arrayBuffer()),
+					filename,
+					track.type,
+				);
+				const trackUrl = CLOUDFRONT_URL + filename;
+				await db.insert(musics).values({
+					title,
+					url: trackUrl,
+					duration: Number(duration),
+					number: Number(number),
+					albumId,
+				});
+				return { form };
+			}
 		} catch (error) {
 			console.error(error);
 			return fail(500, { message: 'Could not create an album' });
