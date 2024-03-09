@@ -1,6 +1,8 @@
 <script lang="ts">
-	import { signIn, signOut } from '@auth/sveltekit/client';
 	import { page } from '$app/stores';
+	import { Button, Dialog, Label } from '$components';
+	import { signIn, signOut } from '@auth/sveltekit/client';
+	import { Dialog as BitsDialog } from 'bits-ui';
 	import {
 		Heart,
 		Home,
@@ -11,8 +13,6 @@
 		Search,
 		User,
 	} from 'lucide-svelte';
-	import { Button, Dialog, Input, Label } from '$components';
-	import { Dialog as BitsDialog } from 'bits-ui';
 
 	const topLinks = [
 		{
@@ -94,7 +94,7 @@
 						<fieldset class="flex w-full flex-col gap-2">
 							<div class="flex flex-col gap-1">
 								<Label field="name">Name</Label>
-								<Input type="text" placeholder="Name" name="name" />
+								<input type="text" placeholder="Name" name="name" />
 							</div>
 							<div class="flex flex-col gap-1">
 								<Label field="cover">Cover</Label>
