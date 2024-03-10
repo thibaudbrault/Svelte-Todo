@@ -9,7 +9,8 @@
 		{
 			variants: {
 				intent: {
-					primary: 'text-gray-1 bg-gray-12 hover:bg-gray-11 shadow-transparent',
+					primary:
+						'text-gray-1 bg-gray-12 hover:bg-gray-11 shadow-transparent disabled:bg-gray-11',
 					secondary: 'text-gray-12 shadow-grayA-7 bg-transparent',
 					ghost: 'text-gray-12 shadow-transparent bg-transparent',
 				},
