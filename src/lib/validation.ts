@@ -5,7 +5,13 @@ export const createSingleMusicSchema = z.object({
 		.number()
 		.min(0, { message: 'Duration must be a positive number' }),
 	number: z.number().min(1, { message: 'Number must be 1 or more' }),
-	track: z.instanceof(File, { message: 'Upload a file.' }),
+	track: z.any(),
+});
+
+export const createMultipleMusicSchema = z.object({
+	number: z.number().min(1, { message: 'Number must be 1 or more' }),
+	tracks: z.any(),
 });
 
 export type CreateSingleMusic = typeof createSingleMusicSchema;
+export type CreateMultipleMusic = typeof createMultipleMusicSchema;
