@@ -113,7 +113,13 @@
 
 <div class="relative h-full">
 	<LibraryHeader {cover} {albumTitle} albumLength={musics.length} />
-	<LibraryMusics {musics} {selectedTrack} {loadTrack} formSingle={data.form} />
+	<LibraryMusics
+		{musics}
+		{selectedTrack}
+		{loadTrack}
+		formSingleProps={data.formSingle}
+		formMultipleProps={data.formMultiple}
+	/>
 	<audio
 		{src}
 		bind:this={$audio}
