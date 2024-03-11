@@ -128,42 +128,34 @@
 				use:enhanceSingle
 			>
 				<fieldset class="flex w-full flex-col gap-2">
-					<div class="flex flex-col gap-1">
-						<TextInput
-							name="title"
-							label="Title"
-							bind:value={$formSingle.title}
-							errors={$errorsSingle.title}
-						/>
-					</div>
-					<div class="flex flex-col gap-1">
-						<NumberInput
-							name="number"
-							label="Number"
-							min="1"
-							bind:value={$formSingle.number}
-							errors={$errorsSingle.number}
-						/>
-					</div>
-					<div class="flex flex-col gap-1">
-						<NumberInput
-							name="duration"
-							label="Duration (in seconds)"
-							min="1"
-							bind:value={$formSingle.duration}
-							errors={$errorsSingle.duration}
-						/>
-					</div>
+					<TextInput
+						name="title"
+						label="Title"
+						bind:value={$formSingle.title}
+						errors={$errorsSingle.title}
+					/>
+					<NumberInput
+						name="number"
+						label="Number"
+						min="1"
+						bind:value={$formSingle.number}
+						errors={$errorsSingle.number}
+					/>
+					<NumberInput
+						name="duration"
+						label="Duration (in seconds)"
+						min="1"
+						bind:value={$formSingle.duration}
+						errors={$errorsSingle.duration}
+					/>
 					<div class="flex items-center justify-between gap-2">
-						<div class="flex flex-col gap-1">
-							<FileInput
-								name="track"
-								label="Track"
-								accept={acceptedExtensions}
-								bind:value={$formSingle.track}
-								errors={$errorsSingle.track}
-							/>
-						</div>
+						<FileInput
+							name="track"
+							label="Track"
+							accept={acceptedExtensions}
+							bind:value={$formSingle.track}
+							errors={$errorsSingle.track}
+						/>
 					</div>
 				</fieldset>
 				<Button

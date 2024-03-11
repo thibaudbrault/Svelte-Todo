@@ -10,15 +10,17 @@
 	export let constraints: InputConstraint | undefined = undefined;
 </script>
 
-<Label.Root class="text-sm font-semibold" for={name}>{label}</Label.Root>
-<input
-	type="number"
-	{min}
-	{name}
-	bind:value
-	aria-invalid={errors ? 'true' : undefined}
-	{...constraints}
-	{...$$restProps}
-	class="rounded-md border border-gray-6 bg-grayA-3 p-1 outline-none focus:border-yellow-6"
-/>
-{#if errors}<small class="text-xs text-red-700">{errors}</small>{/if}
+<div class="flex flex-col gap-1">
+	<Label.Root class="text-sm font-semibold" for={name}>{label}</Label.Root>
+	<input
+		type="number"
+		{min}
+		{name}
+		bind:value
+		aria-invalid={errors ? 'true' : undefined}
+		{...constraints}
+		{...$$restProps}
+		class="rounded-md border border-gray-6 bg-grayA-3 p-1 outline-none focus:border-yellow-6"
+	/>
+	{#if errors}<small class="text-xs text-red-700">{errors}</small>{/if}
+</div>
