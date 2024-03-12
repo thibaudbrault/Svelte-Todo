@@ -4,7 +4,7 @@
 	import { fade } from 'svelte/transition';
 
 	export let title: string;
-	export let trigger: string;
+	export let trigger: string = '';
 </script>
 
 <Dialog.Root>
