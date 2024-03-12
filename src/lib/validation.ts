@@ -11,12 +11,12 @@ export const createSingleMusicSchema = z.object({
 		.number()
 		.min(0, { message: 'Duration must be a positive number' }),
 	number: z.number().min(1, { message: 'Number must be 1 or more' }),
-	track: z.any(),
+	track: z.custom<File>((val) => val instanceof File, 'Upload a file'),
 });
 
 export const createMultipleMusicSchema = z.object({
 	number: z.number().min(1, { message: 'Number must be 1 or more' }),
-	tracks: z.any(),
+	tracks: z.custom<File>((val) => val instanceof File, 'Upload a file').array(),
 });
 
 export type CreateAlbum = typeof createAlbumSchema;
