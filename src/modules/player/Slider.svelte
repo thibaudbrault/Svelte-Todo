@@ -1,25 +1,23 @@
 <script lang="ts">
 	import { currentTime, duration, sliderValue } from '$lib/store';
 	import { format } from '$lib/utils';
-	import { createEventDispatcher } from 'svelte';
-
-	const dispatch = createEventDispatcher();
-
-	const updatePosition = () => {
-		dispatch('change');
-	};
+	import { Progress } from 'bits-ui';
 </script>
 
-<div class="flex w-full items-center gap-4">
-	<p>{format($currentTime)}</p>
-	<input
-		type="range"
-		min={0}
+<div class="flex w-full max-w-[600px] items-center gap-4">
+	<Progress.Root
 		max={$duration}
-		step={0.01}
 		bind:value={$sliderValue}
-		on:input={updatePosition}
-		class="h-2 w-full flex-1 cursor-pointer appearance-none rounded-lg bg-gray-12"
-	/>
-	<p>{format($duration)}</p>
+		class="relative h-1 w-full overflow-hidden rounded-full bg-gray-11"
+	>
+		<div
+			class="h-full w-full flex-1 rounded-full bg-gray-12"
+			style={`transform: translateX(-${
+				100 - 100 * ($currentTime / $duration)
+			}%)`}
+		/>
+	</Progress.Root>
+	<p class="whitespace-nowrap text-xs font-semibold text-gray-11">
+		{format($currentTime)} / {format($duration)}
+	</p>
 </div>
