@@ -5,11 +5,11 @@
 </script>
 
 <div class="flex gap-4 p-4">
-	<img
-		src={cover}
-		alt={albumTitle}
-		class="h-56 w-56 rounded-md border border-gray-5"
-	/>
+	<div class="relative h-56 w-56 rounded-md border border-gray-5">
+		<img src={cover} alt={albumTitle} class="h-full w-full rounded-md" />
+		<div class="absolute inset-0 rounded-md bg-gray-1 opacity-15" />
+	</div>
+
 	<div class="flex flex-1 flex-col justify-end gap-4">
 		<small class="text-xs font-semibold text-yellowA-11">Album</small>
 		<h1 class="text-6xl font-bold">{albumTitle}</h1>
