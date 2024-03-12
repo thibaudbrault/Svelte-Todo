@@ -18,10 +18,15 @@
 					normal: 'font-normal',
 					semibold: 'font-semibold',
 				},
+				rounded: {
+					md: 'rounded-md',
+					full: 'rounded-full',
+				},
 				size: {
 					small: 'py-1 px-2',
 					medium: 'py-2 px-4',
-					icon: 'p-2 rounded-full',
+					large: 'py-2 px-8',
+					icon: 'p-2',
 				},
 				width: {
 					fit: 'w-fit',
@@ -38,6 +43,7 @@
 
 	export let intent: $$Props['intent'] = 'primary';
 	export let weight: $$Props['weight'] = 'normal';
+	export let rounded: $$Props['rounded'] = 'md';
 	export let size: $$Props['size'] = 'medium';
 	export let width: $$Props['width'] = 'fit';
 	export let layout: $$Props['layout'] = 'center';
@@ -49,7 +55,15 @@
 	{...$$props}
 	on:click
 	class={cn(
-		button({ intent, weight, size, width, layout, class: $$props.class }),
+		button({
+			intent,
+			weight,
+			rounded,
+			size,
+			width,
+			layout,
+			class: $$props.class,
+		}),
 	)}
 	{disabled}
 >
