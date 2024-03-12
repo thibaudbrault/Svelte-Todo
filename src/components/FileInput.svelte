@@ -1,28 +1,56 @@
 <script lang="ts">
 	import { Label } from 'bits-ui';
+	import { Upload } from 'lucide-svelte';
+	import { createEventDispatcher } from 'svelte';
 	import type { InputConstraint } from 'sveltekit-superforms';
 
-	export let value: File | File[];
+	export let value: File | File[] | null;
 	export let name: string;
-	export let accept: string;
-	export let multiple: boolean | undefined = false;
 	export let label: string | undefined = undefined;
 	export let errors: string[] | undefined = undefined;
 	export let constraints: InputConstraint | undefined = undefined;
+
+	const dispatch = createEventDispatcher();
+
+	const input = (e: Event) => {
+		const file = (e.currentTarget as HTMLInputElement).files?.item(0) ?? null;
+		value = file;
+		dispatch('input', file);
+	};
 </script>
 
-<div class="flex flex-col gap-1">
-	<Label.Root class="text-sm font-semibold" for={name}>{label}</Label.Root>
-	<input
-		type="file"
-		{name}
-		{accept}
-		{multiple}
-		bind:value
-		aria-invalid={errors ? 'true' : undefined}
-		{...constraints}
-		{...$$restProps}
-	/>
+<div class="flex w-full flex-col gap-1">
+	<Label.Root
+		class="flex w-full flex-col gap-1 text-sm font-semibold"
+		for={name}
+	>
+		<p>{label}</p>
+		<div class="flex w-full items-center justify-center">
+			<div
+				class="flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-12 bg-grayA-3 hover:bg-gray-4"
+			>
+				<div class="flex flex-col items-center justify-center pb-6 pt-5">
+					<Upload />
+					{#if value instanceof File}
+						<p>{value.name}</p>
+					{:else}
+						<p class="text-sm text-gray-11">
+							<span class="font-semibold">Click to upload</span> or drag and drop
+						</p>
+					{/if}
+				</div>
+				<input
+					id={name}
+					type="file"
+					class="hidden"
+					bind:value
+					on:change={input}
+					aria-invalid={errors ? 'true' : undefined}
+					{...constraints}
+					{...$$restProps}
+				/>
+			</div>
+		</div>
+	</Label.Root>
 	{#if errors}<small class="text-xs text-red-700">{errors}</small>{/if}
 </div>
-<!-- on:input={(e) => (value = e.currentTarget.files?.item(0) as File)} -->

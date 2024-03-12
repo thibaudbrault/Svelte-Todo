@@ -15,7 +15,7 @@
 		type CreateMultipleMusic,
 		type CreateSingleMusic,
 	} from '$lib/validation';
-	import { Separator } from 'bits-ui';
+	import { Dialog as BitsDialog, Separator } from 'bits-ui';
 	import { Clock } from 'lucide-svelte';
 	import {
 		superForm,
@@ -119,6 +119,12 @@
 		</p>
 	{/if}
 	<Dialog title="New music" trigger="Add music">
+		<BitsDialog.Trigger
+			slot="trigger"
+			class="w-full rounded-md bg-transparent px-4 py-2 text-gray-12 shadow-sm shadow-grayA-7"
+		>
+			<span class="font-semibold">Add Music</span>
+		</BitsDialog.Trigger>
 		<div slot="content" class="flex w-full flex-col gap-4">
 			<form
 				action="?/createSingleMusic"
@@ -148,15 +154,13 @@
 						bind:value={$formSingle.duration}
 						errors={$errorsSingle.duration}
 					/>
-					<div class="flex items-center justify-between gap-2">
-						<FileInput
-							name="track"
-							label="Track"
-							accept={acceptedExtensions}
-							bind:value={$formSingle.track}
-							errors={$errorsSingle.track}
-						/>
-					</div>
+					<FileInput
+						name="track"
+						label="Track"
+						accept={acceptedExtensions}
+						bind:value={$formSingle.track}
+						errors={$errorsSingle.track}
+					/>
 				</fieldset>
 				<Button
 					intent="primary"
