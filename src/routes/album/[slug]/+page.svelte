@@ -43,13 +43,6 @@
 		raf = requestAnimationFrame(handlePlaying);
 	};
 
-	const updatePosition = () => {
-		$audio.currentTime = $sliderValue;
-		if (!$audio.paused) {
-			requestAnimationFrame(handlePlaying);
-		}
-	};
-
 	const playPauseTrack = () => {
 		if ($isPlaying) {
 			$audio.pause();
@@ -111,7 +104,7 @@
 	}
 </script>
 
-<div class="relative h-full">
+<div class="h-full">
 	<LibraryHeader {cover} {albumTitle} albumLength={musics.length} />
 	<LibraryMusics
 		{musics}
@@ -129,6 +122,6 @@
 		hidden
 	/>
 	{#if $showPlayer}
-		<Player {playPauseTrack} {prevTrack} {nextTrack} {updatePosition} />
+		<Player {cover} {playPauseTrack} {prevTrack} {nextTrack} />
 	{/if}
 </div>
