@@ -60,11 +60,11 @@
 	];
 </script>
 
-<aside class="flex flex-col gap-8 px-4 py-8 text-gray-11">
+<aside class="text-gray-11 flex flex-col gap-8 px-4 py-8">
 	<ul class="flex flex-col gap-4">
 		{#each links as link}
 			<li>
-				<a href={link.href} class="flex items-center gap-4 hover:text-gray-12">
+				<a href={link.href} class="hover:text-gray-12 flex items-center gap-4">
 					<svelte:component this={link.icon} class="text-yellow-12" />
 					<span class="font-semibold">{link.name}</span>
 				</a>
@@ -78,7 +78,7 @@
 				<Dialog title="New album">
 					<BitsDialog.Trigger
 						slot="trigger"
-						class="flex items-center gap-4 hover:text-gray-12"
+						class="hover:text-gray-12 flex items-center gap-4"
 					>
 						<Plus class="text-yellow-12" />
 						<span class="font-semibold">Album</span>

@@ -29,11 +29,11 @@
 </script>
 
 <section
-	class="absolute bottom-0 left-0 right-0 flex items-center justify-between gap-4 bg-grayA-3 p-4"
+	class="bg-grayA-3 absolute bottom-0 left-0 right-0 flex items-center justify-between gap-4 p-4"
 >
 	<div class="flex items-center gap-2">
 		<img src={cover} alt="" class="h-10 w-10 rounded-sm" />
-		<p class="font-semibold text-gray-12">{$title}</p>
+		<p class="text-gray-12 font-semibold">{$title}</p>
 	</div>
 	<div class="flex items-center gap-2">
 		<Button intent="ghost" size="icon" on:click={prevTrack}>

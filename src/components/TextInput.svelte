@@ -18,7 +18,7 @@
 		aria-invalid={errors ? 'true' : undefined}
 		{...constraints}
 		{...$$restProps}
-		class="rounded-md border border-gray-6 bg-grayA-3 p-1 outline-none focus:border-yellow-6"
+		class="border-gray-6 bg-grayA-3 focus:border-yellow-6 rounded-md border p-1 outline-none"
 	/>
 	{#if errors}<small class="text-xs text-red-700">{errors}</small>{/if}
 </div>

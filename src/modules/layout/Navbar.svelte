@@ -5,7 +5,7 @@
 	import { LogOut, User } from 'lucide-svelte';
 </script>
 
-<nav class="col-span-6 row-start-1 grid grid-cols-6 items-center bg-gray-1 p-4">
+<nav class="bg-gray-1 col-span-6 row-start-1 grid grid-cols-6 items-center p-4">
 	<h1 class="text-2xl font-bold">PokeMusic</h1>
 	<div class="col-span-3 col-start-2 w-full justify-self-start">
 		<Search placeholder="Search by albums or songs" />
