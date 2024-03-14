@@ -11,7 +11,7 @@
 @import '@radix-ui/colors/yellow-dark-alpha';
 
 @theme {
-	--box-shadow: '0 0 0 1px';
+	--shadow-xs: '0 0 0 1px';
 
 	--color-gray-1: var(--gray-1);
 	--color-gray-2: var(--gray-2);

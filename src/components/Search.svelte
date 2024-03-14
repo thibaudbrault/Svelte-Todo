@@ -5,10 +5,10 @@
 	export let placeholder: string;
 </script>
 
-<form class="mx-auto w-full [&_svg]:focus-within:text-yellow-12">
+<form class="[&_svg]:focus-within:text-yellow-12 mx-auto w-full">
 	<label
 		for="default-search"
-		class="sr-only mb-2 text-sm font-medium text-gray-12">Search</label
+		class="text-gray-12 sr-only mb-2 text-sm font-medium">Search</label
 	>
 	<div class="relative">
 		<div
@@ -19,7 +19,7 @@
 		<input
 			type="search"
 			id="default-search"
-			class="block w-full rounded-full border border-gray-6 bg-gray-3 px-4 py-2 ps-10 text-sm text-gray-12 outline-none focus:border-yellow-6"
+			class="border-gray-6 bg-gray-3 text-gray-12 focus:border-yellow-6 block w-full rounded-full border px-4 py-2 pl-12 text-sm outline-none"
 			{placeholder}
 			required
 		/>
@@ -28,8 +28,7 @@
 			rounded="full"
 			size="small"
 			weight="semibold"
-			class="absolute end-4 top-1/2 -translate-y-1/2 transform text-sm "
-			>Search</Button
+			class="absolute bottom-0 right-0 top-0">Search</Button
 		>
 	</div>
 </form>

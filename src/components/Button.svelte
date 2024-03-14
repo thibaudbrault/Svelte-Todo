@@ -5,7 +5,7 @@
 	import { cn } from '$lib/utils';
 
 	const button = cva(
-		'rounded-md duration-300 transition-all ease-in-out shadow-sm',
+		'rounded-md duration-300 transition-all ease-in-out shadow-xs',
 		{
 			variants: {
 				intent: {

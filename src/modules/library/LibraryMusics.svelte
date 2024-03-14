@@ -83,7 +83,7 @@
 
 <div class="w-full space-y-2 p-4">
 	<div
-		class="grid grid-cols-[30px_3fr_2fr_60px] border-b border-b-yellowA-6 pb-2 font-normal text-gray-11"
+		class="border-b-yellowA-6 text-gray-11 grid grid-cols-[30px_3fr_2fr_60px] border-b pb-2 font-normal"
 	>
 		<p>#</p>
 		<p>Title</p>
@@ -121,7 +121,7 @@
 	<Dialog title="New music" trigger="Add music">
 		<BitsDialog.Trigger
 			slot="trigger"
-			class="w-full rounded-md bg-transparent px-4 py-2 text-gray-12 shadow-sm shadow-grayA-7"
+			class="text-gray-12 shadow-xs shadow-grayA-7 w-full rounded-md bg-transparent px-4 py-2"
 		>
 			<span class="font-semibold">Add Music</span>
 		</BitsDialog.Trigger>
@@ -171,7 +171,7 @@
 					disabled={!isValidSingle}>Add</Button
 				>
 			</form>
-			<Separator.Root class="mx-auto block h-px w-11/12 bg-gray-6" />
+			<Separator.Root class="bg-gray-6 mx-auto block h-px w-11/12" />
 			<form
 				action="?/createMultipleMusic"
 				method="POST"
