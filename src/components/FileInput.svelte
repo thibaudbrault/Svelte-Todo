@@ -2,19 +2,20 @@
 	import { Label } from 'bits-ui';
 	import { Upload } from 'lucide-svelte';
 	import { createEventDispatcher } from 'svelte';
-	import type { InputConstraint } from 'sveltekit-superforms';
+	import { formFieldProxy } from 'sveltekit-superforms';
 
-	export let value: File | File[] | null;
-	export let name: string;
+	export let field: string;
 	export let label: string | undefined = undefined;
-	export let errors: string[] | undefined = undefined;
-	export let constraints: InputConstraint | undefined = undefined;
+	export let form;
+	export let isMultiple: boolean = false;
+
+	const { value, errors, constraints } = formFieldProxy(form, field);
 
 	const dispatch = createEventDispatcher();
 
 	const input = (e: Event) => {
 		const file = (e.currentTarget as HTMLInputElement).files?.item(0) ?? null;
-		value = file;
+		$value = file;
 		dispatch('input', file);
 	};
 </script>
@@ -22,7 +23,7 @@
 <div class="flex w-full flex-col gap-1">
 	<Label.Root
 		class="flex w-full flex-col gap-1 text-sm font-semibold"
-		for={name}
+		for={field}
 	>
 		<p>{label}</p>
 		<div class="flex w-full items-center justify-center">
@@ -31,8 +32,8 @@
 			>
 				<div class="flex flex-col items-center justify-center pb-6 pt-5">
 					<Upload />
-					{#if value instanceof File}
-						<p>{value.name}</p>
+					{#if $value instanceof File}
+						<p>{$value.name}</p>
 					{:else}
 						<p class="text-sm text-gray-11">
 							<span class="font-semibold">Click to upload</span> or drag and drop
@@ -40,17 +41,19 @@
 					{/if}
 				</div>
 				<input
-					id={name}
+					id={field}
 					type="file"
-					class="hidden"
-					bind:value
+					name={field}
+					multiple={isMultiple}
+					bind:value={$value}
 					on:change={input}
-					aria-invalid={errors ? 'true' : undefined}
-					{...constraints}
+					aria-invalid={$errors ? 'true' : undefined}
+					{...$constraints}
 					{...$$restProps}
+					class="hidden"
 				/>
 			</div>
 		</div>
 	</Label.Root>
-	{#if errors}<small class="text-xs text-red-700">{errors}</small>{/if}
+	{#if $errors}<small class="text-xs text-red-700">{$errors}</small>{/if}
 </div>

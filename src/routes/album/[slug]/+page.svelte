@@ -12,10 +12,13 @@
 		title,
 		trackId,
 	} from '$lib/store.js';
-	import { LibraryHeader, LibraryMusics, Player } from '$modules';
+	import { Player } from '$modules';
 	import { onMount } from 'svelte';
+	import type { PageData } from './$types';
+	import LibraryMusics from './LibraryMusics.svelte';
+	import LibraryHeader from './LibraryHeader.svelte';
 
-	export let data;
+	export let data: PageData;
 	let musics = data.musics;
 	let albumTitle = data.name;
 	let cover = data.cover;
@@ -106,13 +109,7 @@
 
 <div class="h-full">
 	<LibraryHeader {cover} {albumTitle} albumLength={musics.length} />
-	<LibraryMusics
-		{musics}
-		{selectedTrack}
-		{loadTrack}
-		formSingleProps={data.formSingle}
-		formMultipleProps={data.formMultiple}
-	/>
+	<LibraryMusics {musics} {selectedTrack} {loadTrack} {data} />
 	<audio
 		{src}
 		bind:this={$audio}

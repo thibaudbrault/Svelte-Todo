@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Card } from '$components';
-	export let data;
+	import type { PageData } from './$types';
+	export let data: PageData;
 	let albums = data.result;
 </script>
 
