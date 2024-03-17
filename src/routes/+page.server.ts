@@ -1,6 +1,6 @@
 import { fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
-import { slugWithOptions } from '$lib/utils';
+import { albumSlug } from '$lib/utils';
 import { db, albums } from '$lib/db';
 import { CLOUDFRONT_URL } from '$env/static/private';
 import { uploadFile } from '$lib/server';
@@ -18,7 +18,7 @@ export const actions: Actions = {
 			name: string;
 			cover: File;
 		};
-		const slug = slugWithOptions(name);
+		const slug = albumSlug(name);
 		const filename = `${slug}/${crypto.randomUUID()}${cover?.name}`;
 		try {
 			await uploadFile(
