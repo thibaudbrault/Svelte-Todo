@@ -1,5 +1,4 @@
 <script lang="ts">
-	import SuperDebug from 'sveltekit-superforms';
 	import { zod } from 'sveltekit-superforms/adapters';
 	import { superForm } from 'sveltekit-superforms/client';
 	export let data;
@@ -20,15 +19,13 @@
 		},
 		onUpdated({ form }) {
 			if (form.valid) {
-				// Successful post! Do some more client-side stuff.
+				console.log('Success');
 			}
 		},
 	});
 
-	const { form, message, delayed, errors, allErrors, enhance } = _form;
+	const { message, delayed, errors, allErrors, enhance } = _form;
 </script>
-
-<SuperDebug data={$form}></SuperDebug>
 
 <form method="POST" use:enhance {...$$restProps} enctype="multipart/form-data">
 	<slot
