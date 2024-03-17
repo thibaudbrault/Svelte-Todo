@@ -1,5 +1,6 @@
 import {
 	integer,
+	pgEnum,
 	pgTable,
 	primaryKey,
 	serial,
@@ -9,11 +10,14 @@ import {
 import { relations } from 'drizzle-orm';
 import type { AdapterAccount } from '@auth/core/adapters';
 
+export const categoryEnum = pgEnum('category', ['pokemon']);
+
 export const albums = pgTable('albums', {
 	id: serial('id').primaryKey(),
 	name: text('name').notNull().unique(),
 	slug: text('slug').notNull().unique(),
 	cover: text('cover').notNull().unique(),
+	category: categoryEnum('category').notNull().unique(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
