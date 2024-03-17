@@ -14,9 +14,17 @@
 	const dispatch = createEventDispatcher();
 
 	const input = (e: Event) => {
-		const file = (e.currentTarget as HTMLInputElement).files?.item(0) ?? null;
-		$value = file;
-		dispatch('input', file);
+		if (isMultiple) {
+			const files = Array.from(
+				(e.currentTarget as HTMLInputElement).files ?? [],
+			);
+			$value = files;
+			dispatch('input', files);
+		} else {
+			const file = (e.currentTarget as HTMLInputElement).files?.item(0) ?? null;
+			$value = file;
+			dispatch('input', file);
+		}
 	};
 </script>
 
@@ -32,8 +40,10 @@
 			>
 				<div class="flex flex-col items-center justify-center pb-6 pt-5">
 					<Upload />
-					{#if $value instanceof File}
+					{#if !isMultiple && $value instanceof File}
 						<p>{$value.name}</p>
+					{:else if isMultiple && $value.length > 0}
+						<p>{$value.length} files</p>
 					{:else}
 						<p class="text-sm text-gray-11">
 							<span class="font-semibold">Click to upload</span> or drag and drop
