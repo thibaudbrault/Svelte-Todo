@@ -29,7 +29,7 @@
 </script>
 
 <section
-	class="absolute bottom-0 left-0 right-0 flex items-center justify-between gap-4 bg-grayA-3 p-4"
+	class="absolute bottom-0 left-0 right-0 flex h-24 items-center justify-between gap-4 bg-black/90 p-4"
 >
 	<div class="flex items-center gap-2">
 		<img src={cover} alt="" class="h-10 w-10 rounded-sm" />
