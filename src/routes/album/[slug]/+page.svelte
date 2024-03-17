@@ -15,13 +15,12 @@
 	import { Player } from '$modules';
 	import { onMount } from 'svelte';
 	import type { PageData } from './$types';
-	import LibraryMusics from './LibraryMusics.svelte';
-	import LibraryHeader from './LibraryHeader.svelte';
+	import Musics from './Musics.svelte';
+	import Header from './Header.svelte';
 
 	export let data: PageData;
 	let musics = data.musics;
-	let albumTitle = data.name;
-	let cover = data.cover;
+	let album = data.album;
 
 	let albumLength: number = musics.length;
 	let selectedTrack: number | null = null;
@@ -37,6 +36,9 @@
 			$audio.src = musics[$trackId]?.url;
 			$showPlayer = true;
 			$audio.load();
+			if ($isPlaying) {
+				$audio.play();
+			}
 		}
 	};
 
@@ -107,18 +109,21 @@
 	}
 </script>
 
-<div class="h-full">
-	<LibraryHeader {cover} {albumTitle} albumLength={musics.length} />
-	<LibraryMusics {musics} {selectedTrack} {loadTrack} {data} />
-	<audio
-		{src}
-		bind:this={$audio}
-		bind:duration={$duration}
-		bind:currentTime={$currentTime}
-		on:ended={nextTrack}
-		hidden
-	/>
-	{#if $showPlayer}
-		<Player {cover} {playPauseTrack} {prevTrack} {nextTrack} />
-	{/if}
-</div>
+<Header
+	cover={album.cover}
+	name={album.name}
+	length={musics.length}
+	category={album.category}
+/>
+<Musics {musics} {selectedTrack} {loadTrack} {data} />
+<audio
+	{src}
+	bind:this={$audio}
+	bind:duration={$duration}
+	bind:currentTime={$currentTime}
+	on:ended={nextTrack}
+	hidden
+/>
+{#if $showPlayer}
+	<Player cover={album.cover} {playPauseTrack} {prevTrack} {nextTrack} />
+{/if}
