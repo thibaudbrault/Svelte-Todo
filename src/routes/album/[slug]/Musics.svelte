@@ -5,6 +5,7 @@
 		FileInput,
 		Form,
 		NumberInput,
+		ScrollArea,
 		TextInput,
 	} from '$components';
 	import type { SelectMusic } from '$lib/db';
@@ -32,7 +33,7 @@
 
 <div class="w-full space-y-2 p-4">
 	<div
-		class="grid grid-cols-[30px_3fr_2fr_60px] border-b border-b-yellowA-6 pb-2 font-normal text-gray-11"
+		class="grid grid-cols-[30px_3fr_2fr_60px] border-b border-b-yellowA-6 pb-2 pr-4 font-normal text-gray-11"
 	>
 		<p>#</p>
 		<p>Title</p>
@@ -40,28 +41,32 @@
 		<p><Clock /></p>
 	</div>
 	{#if musics.length > 0}
-		<ol class="space-y-2">
-			{#each musics as music, index}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-				<li
-					on:click={() => {
-						$trackId = index;
-						loadTrack();
-					}}
-					class={`grid cursor-pointer grid-cols-[30px_3fr_2fr_60px] items-center rounded-md p-2  ${selectedTrack === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
-				>
-					<p
-						class={`text-sm ${selectedTrack === index ? 'text-gray-2' : 'text-gray-11'}`}
-					>
-						{music.number}
-					</p>
-					<p class="text-xl font-bold">{music.title}</p>
-					<p class="capitalize">the author</p>
-					<p>{format(music.duration)}</p>
-				</li>
-			{/each}
-		</ol>
+		<div class="h-96">
+			<ScrollArea>
+				<ol class="space-y-2 pr-4">
+					{#each musics as music, index}
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+						<li
+							on:click={() => {
+								$trackId = index;
+								loadTrack();
+							}}
+							class={`grid cursor-pointer grid-cols-[30px_3fr_2fr_60px] items-center rounded-md p-2  ${selectedTrack === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
+						>
+							<p
+								class={`text-sm ${selectedTrack === index ? 'text-gray-2' : 'text-gray-11'}`}
+							>
+								{music.number}
+							</p>
+							<p class="text-xl font-bold">{music.title}</p>
+							<p class="capitalize">the author</p>
+							<p>{format(music.duration)}</p>
+						</li>
+					{/each}
+				</ol>
+			</ScrollArea>
+		</div>
 	{:else}
 		<p class="col-span-5 py-4 text-center text-xl font-bold capitalize">
 			No music
@@ -70,7 +75,7 @@
 	<Dialog title="New music" trigger="Add music">
 		<BitsDialog.Trigger
 			slot="trigger"
-			class="w-full rounded-md bg-transparent px-4 py-2 text-gray-12 shadow-sm shadow-grayA-7"
+			class="!mb-16 w-full rounded-md bg-transparent px-4 py-2 text-gray-12 shadow-sm shadow-grayA-7"
 		>
 			<span class="font-semibold">Add Music</span>
 		</BitsDialog.Trigger>
@@ -80,16 +85,16 @@
 			>
 				<Tabs.Trigger
 					value="single"
-					class="flex items-center justify-center rounded-md px-2 py-1 text-xl font-semibold lowercase data-[state=active]:bg-gray-3 data-[state=active]:text-gray-12"
+					class="rounded-md px-2 py-1 text-xl font-semibold lowercase data-[state=active]:bg-gray-3 data-[state=active]:text-gray-12"
 					style="font-variant: small-caps;">Single</Tabs.Trigger
 				>
 				<Tabs.Trigger
 					value="multiple"
-					class="flex items-center justify-center rounded-md px-2 py-1 text-xl font-semibold lowercase data-[state=active]:bg-gray-3 data-[state=active]:text-gray-12"
+					class="rounded-md px-2 py-1 text-xl font-semibold lowercase data-[state=active]:bg-gray-3 data-[state=active]:text-gray-12"
 					style="font-variant: small-caps;">Multiple</Tabs.Trigger
 				>
 			</Tabs.List>
-			<Tabs.Content value="single" class="flex w-full flex-col gap-4">
+			<Tabs.Content value="single">
 				<Form
 					action="?/createSingleMusic"
 					data={data.formSingle}
@@ -101,12 +106,6 @@
 					<fieldset class="flex w-full flex-col gap-2">
 						<TextInput {form} field="title" label="Title" />
 						<NumberInput {form} field="number" label="Number" min="1" />
-						<NumberInput
-							{form}
-							field="duration"
-							label="Duration (in seconds)"
-							min="1"
-						/>
 						<FileInput
 							{form}
 							field="track"
@@ -123,7 +122,7 @@
 					>
 				</Form>
 			</Tabs.Content>
-			<Tabs.Content value="multiple" class="flex w-full flex-col gap-4">
+			<Tabs.Content value="multiple">
 				<Form
 					action="?/createMultipleMusic"
 					data={data.formMultiple}
@@ -133,20 +132,13 @@
 					let:form
 				>
 					<fieldset class="flex w-full flex-col gap-2">
-						<div class="flex flex-col gap-1">
-							<NumberInput {form} field="number" label="Number" min="1" />
-						</div>
-						<div class="flex items-center justify-between gap-2">
-							<div class="flex flex-col gap-1">
-								<FileInput
-									{form}
-									field="tracks"
-									label="Tracks"
-									multiple={true}
-									accept={acceptedExtensions}
-								/>
-							</div>
-						</div>
+						<FileInput
+							{form}
+							isMultiple={true}
+							field="tracks"
+							label="Tracks"
+							accept={acceptedExtensions}
+						/>
 					</fieldset>
 					<Button
 						intent="primary"
