@@ -1,10 +1,7 @@
 import { albums, authors, db, musics, musicsToAuthors } from '$lib/db';
-import {
-	createMultipleMusicSchema,
-	createSingleMusicSchema,
-} from '$lib/validation';
+import { createManyMusicSchema, creatOneMusicSchema } from '$lib/validation';
 import { error, fail, type Actions } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { eq, count } from 'drizzle-orm';
 import { superValidate, withFiles } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { PageServerLoad } from './$types';
@@ -15,8 +12,6 @@ import { musicSlug } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ params }) => {
 	try {
-		const formSingle = await superValidate(zod(createSingleMusicSchema));
-		const formMultiple = await superValidate(zod(createMultipleMusicSchema));
 		const slug = params.slug;
 		const album = await db.query.albums.findFirst({
 			where: eq(albums.slug, slug),
@@ -24,20 +19,20 @@ export const load: PageServerLoad = async ({ params }) => {
 		if (!album) {
 			error(500, 'Could not find album');
 		}
-		const allMusics = await db.query.musics.findMany({
-			where: eq(musics.albumId, album.id),
-			orderBy: musics.number,
-		});
-		// const allMusics: SelectMusic[] = await db
-		// 	.select()
-		// 	.where(eq(musics.albumId, id))
-		// 	.orderBy(musics.number);
-		// 	.from(musics)
+		const albumLength = await db
+			.select({ count: count() })
+			.from(musics)
+			.where(eq(musics.albumId, album.id));
 		return {
-			musics: allMusics,
 			album,
-			formSingle,
-			formMultiple,
+			albumLength: albumLength[0].count,
+			musics: await db
+				.select()
+				.from(musics)
+				.where(eq(musics.albumId, album.id))
+				.orderBy(musics.number),
+			formSingle: await superValidate(zod(creatOneMusicSchema)),
+			formMultiple: await superValidate(zod(createManyMusicSchema)),
 		};
 	} catch (err) {
 		error(500, 'Unexpected error');
@@ -45,7 +40,7 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
-	createSingleMusic: async ({ request, params }) => {
+	creatOneMusic: async ({ request, params }) => {
 		try {
 			const slug = params.slug as string;
 			const album = await db.query.albums.findFirst({
@@ -56,7 +51,7 @@ export const actions: Actions = {
 			}
 			const { id: albumId } = album;
 			const formData = await request.formData();
-			const form = await superValidate(formData, zod(createSingleMusicSchema));
+			const form = await superValidate(formData, zod(creatOneMusicSchema));
 			if (!form.valid) {
 				return fail(400, { form });
 			}
@@ -83,7 +78,7 @@ export const actions: Actions = {
 			return fail(500, { message: 'Could not create an album' });
 		}
 	},
-	createMultipleMusic: async ({ request, params }) => {
+	createManyMusic: async ({ request, params }) => {
 		try {
 			const slug = params.slug as string;
 			const album = await db.query.albums.findFirst({
@@ -94,12 +89,9 @@ export const actions: Actions = {
 			}
 			const { id: albumId } = album;
 			const formData = await request.formData();
-			const form = await superValidate(
-				formData,
-				zod(createMultipleMusicSchema),
-			);
+			const form = await superValidate(formData, zod(createManyMusicSchema));
 			if (!form.valid) {
-				return fail(400, { form });
+				return fail(400, withFiles({ form }));
 			}
 			const { tracks } = form.data;
 			tracks.forEach(async (track) => {

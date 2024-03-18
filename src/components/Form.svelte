@@ -1,14 +1,14 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import { Button } from '$components';
 	import { zod } from 'sveltekit-superforms/adapters';
 	import { superForm } from 'sveltekit-superforms/client';
 	export let data;
-	export let dataType: 'form' | 'json' | undefined = 'form';
 	export let schema;
-	export let invalidateAll: boolean = true;
 
-	export const _form = superForm(data, {
-		dataType: dataType,
-		invalidateAll: invalidateAll,
+	export const theForm = superForm(data, {
+		dataType: 'form',
+		invalidateAll: true,
 		validators: zod(schema),
 		validationMethod: 'onblur',
 		onError({ result }) {
@@ -24,15 +24,33 @@
 		},
 	});
 
-	const { message, delayed, errors, allErrors, enhance } = _form;
+	const { message, delayed, errors, allErrors } = theForm;
+
+	// allErrors.subscribe(async (val) => {
+	// 	if (val.length > 0) {
+	// 		isValid = false;
+	// 	} else {
+	// 		const res = await validateForm();
+	// 		isValid = res.valid;
+	// 	}
+	// });
 </script>
 
 <form method="POST" use:enhance {...$$restProps} enctype="multipart/form-data">
 	<slot
-		form={_form}
+		form={theForm}
 		message={$message}
 		errors={$errors}
 		allErrors={$allErrors}
 		delayed={$delayed}
 	/>
+	<Button
+		intent="primary"
+		size="small"
+		width="full"
+		class="font-semibold lowercase"
+		style="font-variant: small-caps;"
+	>
+		Add
+	</Button>
 </form>

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import {
 		audio,
 		currentTime,
@@ -14,24 +13,21 @@
 	} from '$lib/store.js';
 	import { Player } from '$modules';
 	import { onMount } from 'svelte';
-	import type { PageData } from './$types';
 	import Musics from './Musics.svelte';
 	import Header from './Header.svelte';
+	import type { PageServerData } from './$types';
 
-	export let data: PageData;
-	let musics = data.musics;
-	let album = data.album;
+	export let data: PageServerData;
+	$: ({ musics, album, albumLength } = data);
+	$: src = musics[$trackId]?.url;
 
-	let albumLength: number = musics.length;
 	let selectedTrack: number | null = null;
 	let raf: number = 0;
-
-	let src = musics[$trackId]?.url;
 
 	const loadTrack = () => {
 		$sliderValue = 0;
 		selectedTrack = $trackId;
-		if (musics.length > 0) {
+		if (albumLength > 0) {
 			$title = musics[$trackId]?.title;
 			$audio.src = musics[$trackId]?.url;
 			$showPlayer = true;
@@ -104,18 +100,18 @@
 		loadTrack();
 	});
 
-	if (!musics) {
-		goto('/');
-	}
+	// if (!musics) {
+	// 	goto('/');
+	// }
 </script>
 
 <Header
 	cover={album.cover}
 	name={album.name}
-	length={musics.length}
+	length={albumLength}
 	category={album.category}
 />
-<Musics {musics} {selectedTrack} {loadTrack} {data} />
+<Musics {selectedTrack} {loadTrack} />
 <audio
 	{src}
 	bind:this={$audio}

@@ -1,6 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import {
-		Button,
 		Dialog,
 		FileInput,
 		Form,
@@ -8,21 +8,14 @@
 		ScrollArea,
 		TextInput,
 	} from '$components';
-	import type { SelectMusic } from '$lib/db';
 	import { trackId } from '$lib/store';
 	import { format } from '$lib/utils';
-	import {
-		createMultipleMusicSchema,
-		createSingleMusicSchema,
-	} from '$lib/validation';
+	import { createManyMusicSchema, creatOneMusicSchema } from '$lib/validation';
 	import { Dialog as BitsDialog, Tabs } from 'bits-ui';
 	import { Clock } from 'lucide-svelte';
-	import type { PageData } from './$types';
 
-	export let musics: SelectMusic[];
 	export let selectedTrack: number | null;
 	export let loadTrack: () => void;
-	export let data: PageData;
 
 	$: {
 		selectedTrack = $trackId;
@@ -40,11 +33,11 @@
 		<p>Author</p>
 		<p><Clock /></p>
 	</div>
-	{#if musics.length > 0}
-		<div class="h-96">
+	{#if $page.data.musics.length > 0}
+		<div class="h-[700px]">
 			<ScrollArea>
 				<ol class="space-y-2 pr-4">
-					{#each musics as music, index}
+					{#each $page.data.musics as music, index}
 						<!-- svelte-ignore a11y-click-events-have-key-events -->
 						<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 						<li
@@ -96,11 +89,11 @@
 			</Tabs.List>
 			<Tabs.Content value="single">
 				<Form
-					action="?/createSingleMusic"
-					data={data.formSingle}
+					action="?/creatOneMusic"
+					data={$page.data.formSingle}
 					method="POST"
-					schema={createSingleMusicSchema}
-					class="w-full space-y-4 aria-hidden:hidden"
+					schema={creatOneMusicSchema}
+					class="w-full space-y-4"
 					let:form
 				>
 					<fieldset class="flex w-full flex-col gap-2">
@@ -113,21 +106,14 @@
 							accept={acceptedExtensions}
 						/>
 					</fieldset>
-					<Button
-						intent="primary"
-						size="small"
-						width="full"
-						class="font-semibold lowercase"
-						style="font-variant: small-caps;">Add</Button
-					>
 				</Form>
 			</Tabs.Content>
 			<Tabs.Content value="multiple">
 				<Form
-					action="?/createMultipleMusic"
-					data={data.formMultiple}
+					action="?/createManyMusic"
+					data={$page.data.formMultiple}
 					method="POST"
-					schema={createMultipleMusicSchema}
+					schema={createManyMusicSchema}
 					class="w-full space-y-4"
 					let:form
 				>
@@ -140,13 +126,6 @@
 							accept={acceptedExtensions}
 						/>
 					</fieldset>
-					<Button
-						intent="primary"
-						size="small"
-						width="full"
-						class="font-semibold lowercase"
-						style="font-variant: small-caps;">Add</Button
-					>
 				</Form>
 			</Tabs.Content>
 		</Tabs.Root>
