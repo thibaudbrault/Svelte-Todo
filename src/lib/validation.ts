@@ -5,16 +5,16 @@ export const createAlbumSchema = z.object({
 	cover: z.any(),
 });
 
-export const createSingleMusicSchema = z.object({
+export const creatOneMusicSchema = z.object({
 	title: z.string().min(1, { message: 'Title is required' }),
 	number: z.number().min(1, { message: 'Number must be 1 or more' }),
 	track: z.custom<File>((val) => val instanceof File, 'Upload a file'),
 });
 
-export const createMultipleMusicSchema = z.object({
+export const createManyMusicSchema = z.object({
 	tracks: z.custom<File>((val) => val instanceof File, 'Upload a file').array(),
 });
 
 export type CreateAlbum = typeof createAlbumSchema;
-export type CreateSingleMusic = typeof createSingleMusicSchema;
-export type CreateMultipleMusic = typeof createMultipleMusicSchema;
+export type CreateOneMusic = typeof creatOneMusicSchema;
+export type CreateManyMusic = typeof createManyMusicSchema;
