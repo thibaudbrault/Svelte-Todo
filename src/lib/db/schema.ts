@@ -10,14 +10,16 @@ import {
 import { relations } from 'drizzle-orm';
 import type { AdapterAccount } from '@auth/core/adapters';
 
-export const categoryEnum = pgEnum('category', ['pokemon']);
+export const gameEnum = pgEnum('game', ['pokemon']);
+export const companyEnum = pgEnum('company', ['nintendo']);
 
 export const albums = pgTable('albums', {
 	id: serial('id').primaryKey(),
 	name: text('name').notNull().unique(),
 	slug: text('slug').notNull().unique(),
 	cover: text('cover').notNull().unique(),
-	category: categoryEnum('category').notNull().unique(),
+	game: gameEnum('game').notNull().unique(),
+	company: companyEnum('company').notNull().unique(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
