@@ -1,30 +1,49 @@
+import type { AdapterAccount } from '@auth/core/adapters';
+import { relations } from 'drizzle-orm';
 import {
 	integer,
-	pgEnum,
 	pgTable,
 	primaryKey,
 	serial,
 	text,
 	timestamp,
 } from 'drizzle-orm/pg-core';
-import { relations } from 'drizzle-orm';
-import type { AdapterAccount } from '@auth/core/adapters';
-
-export const gameEnum = pgEnum('game', ['pokemon']);
-export const companyEnum = pgEnum('company', ['nintendo']);
 
 export const albums = pgTable('albums', {
 	id: serial('id').primaryKey(),
 	name: text('name').notNull().unique(),
 	slug: text('slug').notNull().unique(),
 	cover: text('cover').notNull().unique(),
-	game: gameEnum('game').notNull().unique(),
-	company: companyEnum('company').notNull().unique(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
+	gameId: serial('game_id').notNull(),
 });
 
-export const albumsRelations = relations(albums, ({ many }) => ({
+export const albumsRelations = relations(albums, ({ one, many }) => ({
+	games: one(games, { fields: [albums.gameId], references: [games.id] }),
 	music: many(musics),
+}));
+
+export const games = pgTable('games', {
+	id: serial('id').primaryKey(),
+	name: text('name').notNull().unique(),
+	companyId: serial('company_id').notNull(),
+});
+
+export const gamesRelations = relations(games, ({ one, many }) => ({
+	companies: one(companies, {
+		fields: [games.companyId],
+		references: [companies.id],
+	}),
+	albums: many(albums),
+}));
+
+export const companies = pgTable('companies', {
+	id: serial('id').primaryKey(),
+	name: text('name').notNull().unique(),
+});
+
+export const companiesRelations = relations(companies, ({ many }) => ({
+	games: many(games),
 }));
 
 export const musics = pgTable('musics', {
