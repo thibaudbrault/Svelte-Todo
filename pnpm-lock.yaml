@@ -8,6 +8,9 @@ dependencies:
   '@auth/core':
     specifier: ^0.28.0
     version: 0.28.0
+  '@auth/drizzle-adapter':
+    specifier: ^0.8.0
+    version: 0.8.0
   '@auth/sveltekit':
     specifier: ^0.14.0
     version: 0.14.0(@sveltejs/kit@2.5.1)(svelte@4.2.12)
@@ -177,6 +180,16 @@ packages:
       oauth4webapi: 2.10.3
       preact: 10.11.3
       preact-render-to-string: 5.2.3(preact@10.11.3)
+    dev: false
+
+  /@auth/drizzle-adapter@0.8.0:
+    resolution: {integrity: sha512-cwLMOJHf+R8VeHYFzdA5DReKelidWSx8bz9kJ6hydPjUugHate2F7u9XHoCOu7zXIA5azSPb3b2WR9C0Fjq7eA==}
+    dependencies:
+      '@auth/core': 0.28.0
+    transitivePeerDependencies:
+      - '@simplewebauthn/browser'
+      - '@simplewebauthn/server'
+      - nodemailer
     dev: false
 
   /@auth/sveltekit@0.14.0(@sveltejs/kit@2.5.1)(svelte@4.2.12):
@@ -4981,6 +4994,23 @@ packages:
     peerDependencies:
       '@sveltejs/kit': 1.x || 2.x
       svelte: 3.x || 4.x || >=5.0.0-next.51
+    peerDependenciesMeta:
+      '@sinclair/typebox':
+        optional: true
+      '@vinejs/vine':
+        optional: true
+      arktype:
+        optional: true
+      joi:
+        optional: true
+      superstruct:
+        optional: true
+      valibot:
+        optional: true
+      yup:
+        optional: true
+      zod:
+        optional: true
     dependencies:
       '@sveltejs/kit': 2.5.1(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.1.4)
       devalue: 4.3.2
