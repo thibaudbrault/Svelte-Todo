@@ -99,7 +99,7 @@ export const actions: Actions = {
 				const metadata = await mm.parseBuffer(buffer);
 				const artists = metadata.common.artists;
 				const titleSlug = musicSlug(track.name);
-				const filename = `${titleSlug}/${crypto.randomUUID()}${track.name}`;
+				const filename = `${slug}/${crypto.randomUUID()}${titleSlug}`;
 				await uploadFile(buffer, filename, track.type);
 				const trackUrl = CLOUDFRONT_URL + filename;
 				const newMusic = await db
