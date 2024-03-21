@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { Button, Dialog, FileInput, Form, TextInput } from '$components';
+	import { createAlbumSchema } from '$lib/validation';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import {
 		AudioLines,
@@ -8,10 +10,6 @@
 		ListMusic,
 		Plus,
 	} from 'lucide-svelte';
-	import type { PageParentData } from './$types';
-	import { createAlbumSchema } from '$lib/validation';
-
-	export let data: PageParentData;
 
 	const acceptedExtensions = '.jpg, .jpeg, .png, .webp';
 
@@ -65,7 +63,7 @@
 					<div slot="content" class="w-full">
 						<Form
 							action="?/createAlbum"
-							data={data.form}
+							data={$page.data.form}
 							method="POST"
 							schema={createAlbumSchema}
 							class="w-full space-y-4"
