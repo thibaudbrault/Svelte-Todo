@@ -27,8 +27,8 @@
 			icon: ListMusic,
 		},
 		{
-			name: 'Favourites',
-			href: '/favourites',
+			name: 'Favorites',
+			href: '/favorites',
 			icon: Heart,
 		},
 		{
