@@ -105,7 +105,7 @@ export const actions: Actions = {
 				const newMusic = await db
 					.insert(musics)
 					.values({
-						title: metadata.common.title,
+						name: metadata.common.title,
 						url: trackUrl,
 						duration: Math.round(metadata.format?.duration ?? 0),
 						number: metadata.common.track.no,
