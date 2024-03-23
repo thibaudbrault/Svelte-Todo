@@ -1,17 +1,6 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import { Button, Dialog, FileInput, Form, TextInput } from '$components';
-	import { createAlbumSchema } from '$lib/validation';
-	import { Dialog as BitsDialog } from 'bits-ui';
-	import {
-		AudioLines,
-		CalendarDays,
-		Heart,
-		ListMusic,
-		Plus,
-	} from 'lucide-svelte';
-
-	const acceptedExtensions = '.jpg, .jpeg, .png, .webp';
+	import { AddAlbum } from '$modules/forms';
+	import { AudioLines, CalendarDays, Heart, ListMusic } from 'lucide-svelte';
 
 	const links = [
 		{
@@ -52,42 +41,7 @@
 		<p class="text-sm font-bold">Admin</p>
 		<ul class="flex flex-col gap-4">
 			<li>
-				<Dialog title="New album">
-					<BitsDialog.Trigger
-						slot="trigger"
-						class="flex items-center gap-4 hover:text-gray-12"
-					>
-						<Plus class="text-yellow-12" />
-						<span class="font-semibold">Album</span>
-					</BitsDialog.Trigger>
-					<div slot="content" class="w-full">
-						<Form
-							action="?/createAlbum"
-							data={$page.data.form}
-							method="POST"
-							schema={createAlbumSchema}
-							class="w-full space-y-4"
-							let:form
-						>
-							<fieldset class="flex w-full flex-col gap-2">
-								<TextInput {form} field="name" label="Name" />
-								<FileInput
-									{form}
-									field="cover"
-									label="Cover"
-									accept={acceptedExtensions}
-								/>
-							</fieldset>
-							<Button
-								intent="primary"
-								size="small"
-								width="full"
-								class="font-semibold lowercase"
-								style="font-variant: small-caps;">Add</Button
-							>
-						</Form>
-					</div>
-				</Dialog>
+				<AddAlbum />
 			</li>
 		</ul>
 	</div>
