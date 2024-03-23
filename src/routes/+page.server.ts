@@ -14,8 +14,11 @@ export const load: PageServerLoad = async () => {
 
 export const actions: Actions = {
 	createAlbum: async ({ request }) => {
-		const { name, cover } = Object.fromEntries(await request.formData()) as {
+		const { name, gameId, cover } = Object.fromEntries(
+			await request.formData(),
+		) as {
 			name: string;
+			gameId: number;
 			cover: File;
 		};
 		const slug = albumSlug(name);
@@ -31,6 +34,7 @@ export const actions: Actions = {
 				name,
 				cover: coverUrl,
 				slug,
+				gameId,
 			});
 		} catch (error) {
 			console.error(error);
