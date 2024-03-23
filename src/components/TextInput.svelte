@@ -3,7 +3,7 @@
 	import { formFieldProxy } from 'sveltekit-superforms/client';
 
 	export let field: string;
-	export let label: string | undefined = undefined;
+	export let label: string;
 	export let form;
 
 	const { value, errors, constraints } = formFieldProxy(form, field);
