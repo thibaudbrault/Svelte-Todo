@@ -3,6 +3,12 @@ import { z } from 'zod';
 export const createAlbumSchema = z.object({
 	name: z.string().min(1, { message: 'Album name is required' }),
 	cover: z.any(),
+	game: z.string().min(1, { message: 'Game name is required' }),
+});
+
+export const createGameSchema = z.object({
+	name: z.string().min(1, { message: 'Game name is required' }),
+	company: z.string().min(1, { message: 'Company name is required' }),
 });
 
 export const creatOneMusicSchema = z.object({
@@ -16,5 +22,6 @@ export const createManyMusicSchema = z.object({
 });
 
 export type CreateAlbum = typeof createAlbumSchema;
+export type CreateGame = typeof createGameSchema;
 export type CreateOneMusic = typeof creatOneMusicSchema;
 export type CreateManyMusic = typeof createManyMusicSchema;
