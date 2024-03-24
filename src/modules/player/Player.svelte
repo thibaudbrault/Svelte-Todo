@@ -22,14 +22,19 @@
 		$isLooped = !$isLooped;
 		$isShuffled = false;
 	};
+
 	const handleShuffle = () => {
 		$isShuffled = !$isShuffled;
 		$isLooped = false;
 	};
+
+	const handlePlaylist = () => {
+		console.log('added');
+	};
 </script>
 
 <section
-	class="absolute bottom-0 left-0 right-0 flex h-24 items-center justify-between gap-4 bg-black/90 p-4"
+	class="absolute bottom-0 left-0 right-0 grid h-24 grid-cols-[2fr_2fr_5fr_1fr] items-center justify-between gap-4 bg-black/90 p-4"
 >
 	<div class="flex items-center gap-2">
 		<img src={cover} alt="" class="h-10 w-10 rounded-sm" />
@@ -66,7 +71,7 @@
 		<Button intent="ghost" size="icon" on:click={handleLoop}>
 			<Repeat class={`h-4 w-4 ${$isLooped ? 'text-yellow-11' : ''}`} />
 		</Button>
-		<Button intent="ghost" size="icon" on:click={handleLoop}>
+		<Button intent="ghost" size="icon" on:click={handlePlaylist}>
 			<ListPlus class="h-4 w-4" />
 		</Button>
 	</div>
