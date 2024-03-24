@@ -2,12 +2,15 @@ import type { AdapterAccount } from '@auth/core/adapters';
 import { relations } from 'drizzle-orm';
 import {
 	integer,
+	pgEnum,
 	pgTable,
 	primaryKey,
 	serial,
 	text,
 	timestamp,
 } from 'drizzle-orm/pg-core';
+
+export const roleEnum = pgEnum('role', ['admin', 'user']);
 
 export const albums = pgTable('albums', {
 	id: serial('id').primaryKey(),
@@ -26,6 +29,7 @@ export const albumsRelations = relations(albums, ({ one, many }) => ({
 export const games = pgTable('games', {
 	id: serial('id').primaryKey(),
 	name: text('name').notNull().unique(),
+	value: text('value').notNull().unique(),
 	companyId: serial('company_id').notNull(),
 });
 
@@ -40,6 +44,7 @@ export const gamesRelations = relations(games, ({ one, many }) => ({
 export const companies = pgTable('companies', {
 	id: serial('id').primaryKey(),
 	name: text('name').notNull().unique(),
+	value: text('value').notNull().unique(),
 });
 
 export const companiesRelations = relations(companies, ({ many }) => ({
@@ -103,6 +108,25 @@ export const users = pgTable('user', {
 	email: text('email').notNull(),
 	emailVerified: timestamp('emailVerified', { mode: 'date' }),
 	image: text('image'),
+	role: roleEnum('role').default('user'),
+});
+
+export const playlists = pgTable('playlists', {
+	id: serial('id').primaryKey(),
+	name: text('name').notNull(),
+	userId: text('user_id')
+		.notNull()
+		.references(() => users.id),
+});
+
+export const playlistMusics = pgTable('playlist_musics', {
+	id: serial('id').primaryKey(),
+	playlistId: integer('playlist_id')
+		.notNull()
+		.references(() => playlists.id),
+	musicId: integer('music_id')
+		.notNull()
+		.references(() => musics.id),
 });
 
 export const accounts = pgTable(
