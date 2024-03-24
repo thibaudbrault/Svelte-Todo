@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+
 	export let cover: string;
 	export let name: string;
-	export let category: string;
-	export let length: number;
 </script>
 
 <div class="flex gap-4 p-4">
@@ -13,7 +13,7 @@
 
 	<div class="flex flex-1 flex-col justify-end gap-4">
 		<small class="text-xs font-semibold capitalize text-yellowA-11"
-			>{category}</small
+			>{$page.data.game}</small
 		>
 		<h1 class="text-6xl font-bold">{name}</h1>
 		<div>
@@ -21,7 +21,7 @@
 			<ul class="flex">
 				<li>150 likes</li>
 				<li class="before:mx-2 before:content-['·']">
-					{length} titles
+					{$page.data.length} titles
 				</li>
 			</ul>
 		</div>

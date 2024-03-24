@@ -1,33 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import {
-		Button,
-		Combobox,
-		Dialog,
-		FileInput,
-		Form,
-		TextInput,
-	} from '$components';
+	import { Combobox, Dialog, FileInput, Form, TextInput } from '$components';
 	import { createAlbumSchema } from '$lib/validation';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { Plus } from 'lucide-svelte';
 
 	const acceptedExtensions = '.jpg, .jpeg, .png, .webp';
-
-	const games = [
-		{
-			label: 'Pokémon',
-			value: 'pokemon',
-		},
-		{
-			label: 'Mario',
-			value: 'mario',
-		},
-		{
-			label: 'Zelda',
-			value: 'zelda',
-		},
-	];
 </script>
 
 <Dialog title="New album">
@@ -51,7 +29,7 @@
 				<TextInput {form} field="name" label="Name" />
 				<Combobox
 					{form}
-					items={games}
+					items={$page.data.games}
 					field="game"
 					label="Game"
 					placeholder="Select a game"
@@ -63,13 +41,6 @@
 					accept={acceptedExtensions}
 				/>
 			</fieldset>
-			<Button
-				intent="primary"
-				size="small"
-				width="full"
-				class="font-semibold lowercase"
-				style="font-variant: small-caps;">Add</Button
-			>
 		</Form>
 	</div>
 </Dialog>

@@ -18,7 +18,7 @@
 	import type { PageServerData } from './$types';
 
 	export let data: PageServerData;
-	$: ({ musics, album, albumLength } = data);
+	$: ({ musics, album, length } = data);
 	$: src = musics[$trackId]?.url;
 
 	let selectedTrack: number | null = null;
@@ -27,8 +27,8 @@
 	const loadTrack = () => {
 		$sliderValue = 0;
 		selectedTrack = $trackId;
-		if (albumLength > 0) {
-			$title = musics[$trackId]?.title;
+		if (length > 0) {
+			$title = musics[$trackId]?.name;
 			$audio.src = musics[$trackId]?.url;
 			$showPlayer = true;
 			$audio.load();
@@ -59,14 +59,14 @@
 	const prevTrack = () => {
 		$currentTime = 0;
 		if ($isShuffled) {
-			$trackId = Math.floor(Math.random() * albumLength);
+			$trackId = Math.floor(Math.random() * length);
 		} else if ($isLooped) {
 			$trackId = $trackId;
 		} else {
 			if ($trackId > 0) {
 				$trackId -= 1;
 			} else {
-				$trackId = albumLength - 1;
+				$trackId = length - 1;
 			}
 		}
 		loadTrack();
@@ -76,11 +76,11 @@
 	const nextTrack = () => {
 		$currentTime = 0;
 		if ($isShuffled) {
-			$trackId = Math.floor(Math.random() * albumLength);
+			$trackId = Math.floor(Math.random() * length);
 		} else if ($isLooped) {
 			$trackId = $trackId;
 		} else {
-			if ($trackId < albumLength - 1) {
+			if ($trackId < length - 1) {
 				$trackId += 1;
 			} else {
 				$trackId = 0;
@@ -99,18 +99,9 @@
 	onMount(() => {
 		loadTrack();
 	});
-
-	// if (!musics) {
-	// 	goto('/');
-	// }
 </script>
 
-<Header
-	cover={album.cover}
-	name={album.name}
-	length={albumLength}
-	category={album.category}
-/>
+<Header cover={album.cover} name={album.name} />
 <Musics {selectedTrack} {loadTrack} />
 <audio
 	{src}
