@@ -16,6 +16,7 @@
 				text: result?.error?.message,
 				status: 500,
 			};
+			console.error(result.error.message);
 		},
 		onUpdated({ form }) {
 			if (form.valid) {
