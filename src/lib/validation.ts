@@ -11,8 +11,12 @@ export const createGameSchema = z.object({
 	company: z.string().min(1, { message: 'Company name is required' }),
 });
 
+export const createCompanySchema = z.object({
+	name: z.string().min(1, { message: 'Company name is required' }),
+});
+
 export const creatOneMusicSchema = z.object({
-	title: z.string().min(1, { message: 'Title is required' }),
+	name: z.string().min(1, { message: 'Name is required' }),
 	number: z.number().min(1, { message: 'Number must be 1 or more' }),
 	track: z.custom<File>((val) => val instanceof File, 'Upload a file'),
 });
@@ -23,5 +27,6 @@ export const createManyMusicSchema = z.object({
 
 export type CreateAlbum = typeof createAlbumSchema;
 export type CreateGame = typeof createGameSchema;
+export type CreateCompany = typeof createCompanySchema;
 export type CreateOneMusic = typeof creatOneMusicSchema;
 export type CreateManyMusic = typeof createManyMusicSchema;
