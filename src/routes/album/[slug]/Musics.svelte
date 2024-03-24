@@ -30,7 +30,7 @@
 	>
 		<p>#</p>
 		<p>Title</p>
-		<p>Author</p>
+		<p>Authors</p>
 		<p><Clock /></p>
 	</div>
 	{#if $page.data.musics.length > 0}
@@ -52,8 +52,10 @@
 							>
 								{music.number}
 							</p>
-							<p class="text-xl font-bold">{music.title}</p>
-							<p class="capitalize">the author</p>
+							<p class="text-xl font-bold">{music.name}</p>
+							{#each music.musicsToAuthors as authors}
+								<p class="capitalize">{authors.author.name}</p>
+							{/each}
 							<p>{format(music.duration)}</p>
 						</li>
 					{/each}
@@ -68,7 +70,7 @@
 	<Dialog title="New music" trigger="Add music">
 		<BitsDialog.Trigger
 			slot="trigger"
-			class="!mb-16 w-full rounded-md bg-transparent px-4 py-2 text-gray-12 shadow-sm shadow-grayA-7"
+			class="!mb-16 w-full rounded-md bg-transparent px-4 py-2 text-gray-12 shadow-sm shadow-grayA-7 hover:shadow-grayA-8"
 		>
 			<span class="font-semibold">Add Music</span>
 		</BitsDialog.Trigger>
@@ -97,7 +99,7 @@
 					let:form
 				>
 					<fieldset class="flex w-full flex-col gap-2">
-						<TextInput {form} field="title" label="Title" />
+						<TextInput {form} field="name" label="Name" />
 						<NumberInput {form} field="number" label="Number" min="1" />
 						<FileInput
 							{form}
