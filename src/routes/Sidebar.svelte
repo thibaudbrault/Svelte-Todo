@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { AddAlbum } from '$modules/forms';
+	import { page } from '$app/stores';
+	import { AddAlbum, AddCompany, AddGame } from '$modules/forms';
 	import { AudioLines, CalendarDays, Heart, ListMusic } from 'lucide-svelte';
 
 	const links = [
@@ -37,12 +38,20 @@
 			</li>
 		{/each}
 	</ul>
-	<div class="flex flex-col gap-2">
-		<p class="text-sm font-bold">Admin</p>
-		<ul class="flex flex-col gap-4">
-			<li>
-				<AddAlbum />
-			</li>
-		</ul>
-	</div>
+	{#if $page.data.user && $page.data.user.role === 'admin'}
+		<div class="flex flex-col gap-2">
+			<p class="text-sm font-bold">Admin</p>
+			<ul class="flex flex-col gap-4">
+				<li>
+					<AddAlbum />
+				</li>
+				<li>
+					<AddGame />
+				</li>
+				<li>
+					<AddCompany />
+				</li>
+			</ul>
+		</div>
+	{/if}
 </aside>
