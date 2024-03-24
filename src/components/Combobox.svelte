@@ -3,7 +3,7 @@
 	import { Check, ChevronsUpDown, Gamepad2 } from 'lucide-svelte';
 	import { formFieldProxy } from 'sveltekit-superforms/client';
 
-	export let items: { value: string; label: string }[];
+	export let items: { value: string; name: string }[];
 	export let field: string;
 	export let label: string;
 	export let placeholder: string;
@@ -41,9 +41,9 @@
 				<Combobox.Item
 					class="rounded-button flex w-full select-none items-center rounded-md py-3 pl-5 pr-1.5 text-sm font-semibold capitalize outline-none transition-all duration-75 data-[highlighted]:bg-gray-2"
 					value={item.value}
-					label={item.label}
+					label={item.name}
 				>
-					{item.label}
+					{item.name}
 					<Combobox.ItemIndicator class="ml-auto" asChild={false}>
 						<Check />
 					</Combobox.ItemIndicator>
