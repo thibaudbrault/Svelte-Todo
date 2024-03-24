@@ -1,29 +1,90 @@
-import { fail } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { albumSlug } from '$lib/utils';
-import { db, albums } from '$lib/db';
+import { db, albums, companies, games } from '$lib/db';
 import { CLOUDFRONT_URL } from '$env/static/private';
 import { uploadFile } from '$lib/server';
+import { eq } from 'drizzle-orm';
 
 export const load: PageServerLoad = async () => {
-	const result = await db.select().from(albums);
+	const allAlbums = await db.select().from(albums);
 	return {
-		result,
+		albums: allAlbums,
 	};
 };
 
 export const actions: Actions = {
-	createAlbum: async ({ request }) => {
-		const { name, gameId, cover } = Object.fromEntries(
-			await request.formData(),
-		) as {
-			name: string;
-			gameId: number;
-			cover: File;
-		};
-		const slug = albumSlug(name);
-		const filename = `${slug}/${crypto.randomUUID()}${cover?.name}`;
+	createCompany: async ({ request }) => {
 		try {
+			const { name } = Object.fromEntries(await request.formData()) as {
+				name: string;
+			};
+			const value = name.toLowerCase();
+			const companyExists = await db.query.companies.findFirst({
+				where: eq(companies.value, value),
+			});
+			if (companyExists) {
+				error(500, 'Game already exists');
+			}
+			await db.insert(companies).values({
+				name,
+				value,
+			});
+		} catch (error) {
+			console.error(error);
+			return fail(500, { message: 'Could not create a company' });
+		}
+	},
+	createGame: async ({ request }) => {
+		try {
+			const { name, company } = Object.fromEntries(
+				await request.formData(),
+			) as {
+				name: string;
+				company: string;
+			};
+			const value = name.toLowerCase();
+			const gameExists = await db.query.games.findFirst({
+				where: eq(games.value, value),
+			});
+			if (gameExists) {
+				error(500, 'Game already exists');
+			}
+			const findCompany = await db.query.companies.findFirst({
+				where: eq(companies.value, company),
+			});
+			if (!findCompany) {
+				error(500, 'Could not find company');
+			}
+			const companyId = findCompany.id;
+			await db.insert(games).values({
+				name,
+				value,
+				companyId,
+			});
+		} catch (error) {
+			console.error(error);
+			return fail(500, { message: 'Could not create a company' });
+		}
+	},
+	createAlbum: async ({ request }) => {
+		try {
+			const { name, game, cover } = Object.fromEntries(
+				await request.formData(),
+			) as {
+				name: string;
+				game: string;
+				cover: File;
+			};
+			const slug = albumSlug(name);
+			const filename = `${slug}/${crypto.randomUUID()}${albumSlug(cover?.name)}`;
+			const findGame = await db.query.games.findFirst({
+				where: eq(companies.value, game),
+			});
+			if (!findGame) {
+				error(500, 'Could not find game');
+			}
+			const gameId = findGame.id;
 			await uploadFile(
 				Buffer.from(await cover.arrayBuffer()),
 				filename,
