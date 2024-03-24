@@ -1,4 +1,4 @@
-import { albums, authors, db, musics, musicsToAuthors } from '$lib/db';
+import { albums, authors, db, games, musics, musicsToAuthors } from '$lib/db';
 import { createManyMusicSchema, creatOneMusicSchema } from '$lib/validation';
 import { error, fail, type Actions } from '@sveltejs/kit';
 import { eq, count } from 'drizzle-orm';
@@ -17,20 +17,31 @@ export const load: PageServerLoad = async ({ params }) => {
 			where: eq(albums.slug, slug),
 		});
 		if (!album) {
-			error(500, 'Could not find album');
+			error(500, { message: 'Could not find album' });
 		}
+		const game = await db.query.games.findFirst({
+			where: eq(games.id, album.gameId),
+		});
 		const albumLength = await db
 			.select({ count: count() })
 			.from(musics)
 			.where(eq(musics.albumId, album.id));
+		const albumMusics = await db.query.musics.findMany({
+			where: eq(musics.albumId, album.id),
+			orderBy: musics.number,
+			with: {
+				musicsToAuthors: {
+					with: {
+						author: true,
+					},
+				},
+			},
+		});
 		return {
 			album,
-			albumLength: albumLength[0].count,
-			musics: await db
-				.select()
-				.from(musics)
-				.where(eq(musics.albumId, album.id))
-				.orderBy(musics.number),
+			game: game?.name ?? '',
+			length: albumLength[0].count,
+			musics: albumMusics,
 			formSingle: await superValidate(zod(creatOneMusicSchema)),
 			formMultiple: await superValidate(zod(createManyMusicSchema)),
 		};
@@ -53,9 +64,9 @@ export const actions: Actions = {
 			const formData = await request.formData();
 			const form = await superValidate(formData, zod(creatOneMusicSchema));
 			if (!form.valid) {
-				return fail(400, { form });
+				fail(400, { form });
 			}
-			const { title, track, number } = form.data;
+			const { name, track, number } = form.data;
 			const filename = `${slug}/${crypto.randomUUID()}${track?.name}`;
 			const buffer = Buffer.from(await track.arrayBuffer());
 			const metadata = await mm.parseBuffer(buffer);
@@ -66,7 +77,7 @@ export const actions: Actions = {
 			);
 			const trackUrl = CLOUDFRONT_URL + filename;
 			await db.insert(musics).values({
-				title,
+				name,
 				url: trackUrl,
 				duration: Math.round(metadata.format?.duration ?? 0),
 				number: Number(number),
@@ -75,7 +86,7 @@ export const actions: Actions = {
 			return withFiles({ form });
 		} catch (error) {
 			console.error(error);
-			return fail(500, { message: 'Could not create an album' });
+			fail(500, { message: 'Could not create an album' });
 		}
 	},
 	createManyMusic: async ({ request, params }) => {
@@ -85,18 +96,26 @@ export const actions: Actions = {
 				where: eq(albums.slug, slug),
 			});
 			if (!album) {
-				error(500, 'Could not find album');
+				error(404, { message: 'Could not find album' });
 			}
 			const { id: albumId } = album;
 			const formData = await request.formData();
 			const form = await superValidate(formData, zod(createManyMusicSchema));
 			if (!form.valid) {
-				return fail(400, withFiles({ form }));
+				fail(400, withFiles({ form }));
 			}
 			const { tracks } = form.data;
-			tracks.forEach(async (track) => {
+			for (const track of tracks) {
 				const buffer = Buffer.from(await track.arrayBuffer());
 				const metadata = await mm.parseBuffer(buffer);
+				const name = metadata.common.title;
+				const musicExists = await db.query.musics.findFirst({
+					where: (musics, { eq, and }) =>
+						and(eq(musics.name, name), eq(musics.albumId, albumId)),
+				});
+				if (musicExists) {
+					continue;
+				}
 				const artists = metadata.common.artists;
 				const titleSlug = musicSlug(track.name);
 				const filename = `${slug}/${crypto.randomUUID()}${titleSlug}`;
@@ -105,7 +124,7 @@ export const actions: Actions = {
 				const newMusic = await db
 					.insert(musics)
 					.values({
-						name: metadata.common.title,
+						name,
 						url: trackUrl,
 						duration: Math.round(metadata.format?.duration ?? 0),
 						number: metadata.common.track.no,
@@ -134,11 +153,11 @@ export const actions: Actions = {
 						authorId,
 					});
 				});
-			});
+			}
 			return withFiles({ form });
-		} catch (error) {
-			console.error(error);
-			return fail(500, { message: 'Could not create an album' });
+		} catch (err) {
+			console.error(err);
+			error(500, { message: err.body.message });
 		}
 	},
 };
