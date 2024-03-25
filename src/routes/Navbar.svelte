@@ -4,9 +4,10 @@
 	import { signIn, signOut } from '@auth/sveltekit/client';
 </script>
 
-<nav class="col-span-6 row-start-1 grid grid-cols-6 items-center bg-gray-1 p-4">
-	<h1 class="text-2xl font-bold">PokeMusic</h1>
-	<div class="col-span-3 col-start-2 w-full justify-self-start">
+<nav
+	class="col-span-5 col-start-2 row-start-1 grid grid-cols-5 items-center rounded-md bg-gray-2 p-4"
+>
+	<div class="col-span-3 w-full justify-self-start">
 		<Search placeholder="Search by albums or songs" />
 	</div>
 	<ul class="col-span-2 flex items-center gap-2 justify-self-end px-4">
