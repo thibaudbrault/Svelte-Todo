@@ -30,7 +30,7 @@
 	>
 		<p>#</p>
 		<p>Title</p>
-		<p>Authors</p>
+		<p>Artists</p>
 		<p><Clock /></p>
 	</div>
 	{#if $page.data.musics.length > 0}
