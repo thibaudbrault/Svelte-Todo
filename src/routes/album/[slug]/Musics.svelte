@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import {
+		Button,
 		Dialog,
 		FileInput,
 		Form,
@@ -10,9 +11,9 @@
 	} from '$components';
 	import { trackId } from '$lib/store';
 	import { format } from '$lib/utils';
-	import { createManyMusicSchema, creatOneMusicSchema } from '$lib/validation';
-	import { Dialog as BitsDialog, Tabs } from 'bits-ui';
-	import { Clock } from 'lucide-svelte';
+	import { creatOneMusicSchema, createManyMusicSchema } from '$lib/validation';
+	import { Dialog as BitsDialog, Separator, Tabs } from 'bits-ui';
+	import { Heart, MoreHorizontal } from 'lucide-svelte';
 
 	export let selectedTrack: number | null;
 	export let loadTrack: () => void;
@@ -22,44 +23,62 @@
 	}
 
 	const acceptedExtensions = '.flac, .mp3';
+
+	let favorites: number[] = [];
+
+	const handleFavorite = (musicId: number) => {
+		const index = favorites.indexOf(musicId);
+		if (index !== -1) {
+			favorites.splice(index, 1);
+			favorites = favorites;
+		} else {
+			favorites.push(musicId);
+			favorites = favorites;
+		}
+	};
 </script>
 
 <div class="w-full space-y-2 p-4">
-	<div
-		class="grid grid-cols-[30px_3fr_2fr_60px] border-b border-b-yellowA-6 pb-2 pr-4 font-normal text-gray-11"
-	>
-		<p>#</p>
-		<p>Title</p>
-		<p>Artists</p>
-		<p><Clock /></p>
-	</div>
+	<Separator.Root class="mx-auto h-px w-11/12 bg-gray-5" />
 	{#if $page.data.musics.length > 0}
 		<div class="h-[700px]">
 			<ScrollArea>
-				<ol class="space-y-2 pr-4">
+				<div class="space-y-2 pr-4">
 					{#each $page.data.musics as music, index}
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-						<li
+						<button
 							on:click={() => {
 								$trackId = index;
 								loadTrack();
 							}}
-							class={`grid cursor-pointer grid-cols-[30px_3fr_2fr_60px] items-center rounded-md p-2  ${selectedTrack === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
+							class={`flex w-full cursor-pointer items-center justify-between rounded-md p-2 ${selectedTrack === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
 						>
-							<p
-								class={`text-sm ${selectedTrack === index ? 'text-gray-2' : 'text-gray-11'}`}
-							>
-								{music.number}
-							</p>
-							<p class="text-xl font-bold">{music.name}</p>
-							{#each music.musicsToAuthors as authors}
-								<p class="capitalize">{authors.author.name}</p>
-							{/each}
-							<p>{format(music.duration)}</p>
-						</li>
+							<div class="flex flex-col items-start gap-1">
+								<p class="text-xl font-bold">{music.name}</p>
+								{#each music.musicsToAuthors as authors}
+									<p
+										class="flex flex-wrap items-center gap-2 text-xs font-medium capitalize"
+									>
+										{authors.author.name}
+									</p>
+								{/each}
+							</div>
+							<div class="flex items-center gap-8">
+								<p class="text-sm font-medium">{format(music.duration)}</p>
+								<Button
+									intent="ghost"
+									size="icon"
+									class={`${favorites.includes(music.id) ? 'text-red-500' : 'text-inherit'}`}
+									on:click={() => handleFavorite(music.id)}
+								>
+									<Heart
+										class={`${favorites.includes(music.id) ? 'fill-red-500' : 'bg-transparent'}`}
+									/>
+								</Button>
+								<p><MoreHorizontal /></p>
+							</div>
+						</button>
 					{/each}
-				</ol>
+				</div>
 			</ScrollArea>
 		</div>
 	{:else}

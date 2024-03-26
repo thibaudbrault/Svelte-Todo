@@ -20,12 +20,10 @@
 			icon: CalendarDays,
 		},
 	];
-
-	console.log($page.url.pathname);
 </script>
 
 <aside class="grid grid-rows-[80px_1fr] gap-8 px-4 py-8 text-gray-11">
-	<h1 class="text-4xl font-bold text-gray-12">PokeMusic</h1>
+	<h1 class="text-3xl font-bold text-gray-12">PokeMusic</h1>
 	<ul class="flex flex-col gap-4">
 		{#each links as link}
 			<li>

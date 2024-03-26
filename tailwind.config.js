@@ -66,6 +66,9 @@ export default {
 					12: 'var(--yellow-a12)',
 				},
 			},
+			animation: {
+				'spin-slow': 'spin 3s linear infinite',
+			}
 		},
 	},
 	plugins: [],
