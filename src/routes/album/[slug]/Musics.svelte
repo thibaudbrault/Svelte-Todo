@@ -67,7 +67,7 @@
 								<Button
 									intent="ghost"
 									size="icon"
-									class={`${favorites.includes(music.id) ? 'text-red-500' : 'text-inherit'}`}
+									class={`${favorites.includes(music.id) ? 'text-red-400' : 'text-inherit'}`}
 									on:click={() => handleFavorite(music.id)}
 								>
 									<Heart

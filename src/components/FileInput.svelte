@@ -65,5 +65,5 @@
 			</div>
 		</div>
 	</Label.Root>
-	{#if $errors}<small class="text-xs text-red-700">{$errors}</small>{/if}
+	{#if $errors}<small class="text-xs text-red-400">{$errors}</small>{/if}
 </div>

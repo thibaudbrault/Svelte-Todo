@@ -20,5 +20,5 @@
 		{...$$restProps}
 		class="rounded-md border border-gray-6 bg-grayA-3 p-1 outline-none focus:border-yellow-6"
 	/>
-	{#if $errors}<small class="text-xs text-red-700">{$errors}</small>{/if}
+	{#if $errors}<small class="text-xs text-red-400">{$errors}</small>{/if}
 </div>
