@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Tabs } from 'bits-ui';
+	import Playlists from './Playlists.svelte';
 
 	const tabs = [
 		{
@@ -15,13 +16,15 @@
 			label: 'Artists',
 		},
 	];
+
+	let value = 'playlists';
 </script>
 
-<Tabs.Root value="playlists" class="space-y-4">
-	<div class="flex items-center gap-4">
-		<h2 class="text-4xl font-bold">Library</h2>
+<Tabs.Root bind:value class="space-y-4">
+	<div class="flex items-center justify-between gap-4">
+		<h2 class="text-4xl font-bold capitalize">{value}</h2>
 		<Tabs.List
-			class="mx-auto flex w-fit items-center justify-center gap-4 rounded-md bg-gray-12 px-4 py-2 text-gray-1"
+			class="flex w-fit items-center justify-center gap-4 rounded-md bg-gray-12 px-4 py-2 text-gray-1"
 		>
 			{#each tabs as tab}
 				<Tabs.Trigger
@@ -35,7 +38,7 @@
 		</Tabs.List>
 	</div>
 	<Tabs.Content value="playlists">
-		<p>playlists</p>
+		<Playlists />
 	</Tabs.Content>
 	<Tabs.Content value="albums">
 		<p>albums</p>
