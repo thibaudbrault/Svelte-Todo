@@ -5,6 +5,13 @@ import { db, albums, companies, games } from '$lib/db';
 import { CLOUDFRONT_URL } from '$env/static/private';
 import { uploadFile } from '$lib/server';
 import { eq } from 'drizzle-orm';
+import {
+	createAlbumSchema,
+	createCompanySchema,
+	createGameSchema,
+} from '$lib/validation';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 
 export const load: PageServerLoad = async () => {
 	const allAlbums = await db.select().from(albums);
@@ -16,9 +23,12 @@ export const load: PageServerLoad = async () => {
 export const actions: Actions = {
 	createCompany: async ({ request }) => {
 		try {
-			const { name } = Object.fromEntries(await request.formData()) as {
-				name: string;
-			};
+			const formData = await request.formData();
+			const form = await superValidate(formData, zod(createCompanySchema));
+			if (!form.valid) {
+				fail(400, { form });
+			}
+			const { name } = form.data;
 			const value = name.toLowerCase();
 			const companyExists = await db.query.companies.findFirst({
 				where: eq(companies.value, value),
@@ -37,12 +47,12 @@ export const actions: Actions = {
 	},
 	createGame: async ({ request }) => {
 		try {
-			const { name, company } = Object.fromEntries(
-				await request.formData(),
-			) as {
-				name: string;
-				company: string;
-			};
+			const formData = await request.formData();
+			const form = await superValidate(formData, zod(createGameSchema));
+			if (!form.valid) {
+				fail(400, { form });
+			}
+			const { name, company } = form.data;
 			const value = name.toLowerCase();
 			const gameExists = await db.query.games.findFirst({
 				where: eq(games.value, value),
@@ -69,13 +79,12 @@ export const actions: Actions = {
 	},
 	createAlbum: async ({ request }) => {
 		try {
-			const { name, game, cover } = Object.fromEntries(
-				await request.formData(),
-			) as {
-				name: string;
-				game: string;
-				cover: File;
-			};
+			const formData = await request.formData();
+			const form = await superValidate(formData, zod(createAlbumSchema));
+			if (!form.valid) {
+				fail(400, { form });
+			}
+			const { name, game, cover } = form.data;
 			const slug = albumSlug(name);
 			const filename = `${slug}/${crypto.randomUUID()}${albumSlug(cover?.name)}`;
 			const findGame = await db.query.games.findFirst({
