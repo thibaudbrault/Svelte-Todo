@@ -1,9 +1,12 @@
-import { SvelteKitAuth } from '@auth/sveltekit';
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '$env/static/private';
-import google from '@auth/sveltekit/providers/google';
-import { db, playlists, users } from '$lib/db';
+import {
+	AUTH_SECRET,
+	GOOGLE_CLIENT_ID,
+	GOOGLE_CLIENT_SECRET,
+} from '$env/static/private';
+import { db } from '$lib/db';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
-import { eq } from 'drizzle-orm';
+import { SvelteKitAuth } from '@auth/sveltekit';
+import google from '@auth/sveltekit/providers/google';
 
 export const { handle, signIn, signOut } = SvelteKitAuth({
 	providers: [
@@ -11,25 +14,5 @@ export const { handle, signIn, signOut } = SvelteKitAuth({
 	],
 	trustHost: true,
 	adapter: DrizzleAdapter(db),
-	callbacks: {
-		async signIn({ user }) {
-			const userId = user.id;
-			if (!userId) {
-				return false;
-			}
-			const userExists = await db.query.users.findFirst({
-				where: eq(users.id, userId),
-			});
-			if (!userExists) {
-				await db
-					.insert(playlists)
-					.values({
-						name: 'liked songs',
-						userId,
-					})
-					.execute();
-			}
-			return true;
-		},
-	},
+	secret: AUTH_SECRET,
 });
