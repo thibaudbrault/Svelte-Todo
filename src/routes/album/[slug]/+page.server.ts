@@ -108,6 +108,9 @@ export const actions: Actions = {
 			for (const track of tracks) {
 				const buffer = Buffer.from(await track.arrayBuffer());
 				const metadata = await mm.parseBuffer(buffer);
+				if (!metadata) {
+					error(404, { message: 'Could not find metadata' });
+				}
 				const name = metadata.common.title;
 				const musicExists = await db.query.musics.findFirst({
 					where: (musics, { eq, and }) =>
