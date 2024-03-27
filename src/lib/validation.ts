@@ -15,6 +15,10 @@ export const createCompanySchema = z.object({
 	name: z.string().min(1, { message: 'Company name is required' }),
 });
 
+export const playlistSchema = z.object({
+	name: z.string().min(1, { message: 'Playlist name is required' }),
+});
+
 export const creatOneMusicSchema = z.object({
 	name: z.string().min(1, { message: 'Name is required' }),
 	number: z.number().min(1, { message: 'Number must be 1 or more' }),
