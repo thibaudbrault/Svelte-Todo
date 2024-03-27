@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { Button } from '$components';
 	import { zod } from 'sveltekit-superforms/adapters';
 	import { superForm } from 'sveltekit-superforms/client';
 	export let data;
 	export let schema;
 
-	export const theForm = superForm(data, {
+	export const form = superForm(data, {
 		dataType: 'form',
 		invalidateAll: true,
 		validators: zod(schema),
@@ -25,7 +24,7 @@
 		},
 	});
 
-	const { message, delayed, errors, allErrors } = theForm;
+	const { message, delayed, errors, allErrors, enhance } = form;
 
 	// allErrors.subscribe(async (val) => {
 	// 	if (val.length > 0) {
@@ -39,7 +38,7 @@
 
 <form method="POST" use:enhance {...$$restProps} enctype="multipart/form-data">
 	<slot
-		form={theForm}
+		{form}
 		message={$message}
 		errors={$errors}
 		allErrors={$allErrors}
