@@ -19,6 +19,18 @@ export const playlistSchema = z.object({
 	name: z.string().min(1, { message: 'Playlist name is required' }),
 });
 
+export const createPlaylistSchema = playlistSchema.extend({
+	userId: z.string().min(1, { message: 'User ID is required' }),
+});
+
+export const updatePlaylistSchema = createPlaylistSchema.extend({
+	id: z.string().min(1, { message: 'Playlist ID is required' }),
+});
+
+export const deletePlaylistSchema = updatePlaylistSchema.omit({
+	name: true,
+});
+
 export const creatOneMusicSchema = z.object({
 	name: z.string().min(1, { message: 'Name is required' }),
 	number: z.number().min(1, { message: 'Number must be 1 or more' }),
