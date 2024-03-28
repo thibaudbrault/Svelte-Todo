@@ -11,7 +11,7 @@
 		SkipBack,
 		SkipForward,
 	} from 'lucide-svelte';
-	import Slider from './Slider.svelte';
+	import Progress from './Progress.svelte';
 
 	export let playPauseTrack: () => void;
 	export let prevTrack: () => void;
@@ -63,7 +63,7 @@
 			<Heart />
 		</Button>
 	</div>
-	<Slider />
+	<Progress />
 	<div class="flex items-center gap-2">
 		<Button intent="ghost" size="icon" on:click={handleShuffle}>
 			<Shuffle class={`h-4 w-4 ${$isShuffled ? 'text-yellow-11' : ''}`} />
