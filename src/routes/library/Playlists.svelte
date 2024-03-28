@@ -11,7 +11,7 @@
 		<ul class="flex flex-col gap-2">
 			{#each $page.data.playlists as playlist (playlist.id)}
 				<li
-					class="flex items-center justify-between rounded-md border border-gray-5 p-2"
+					class="flex items-center justify-between rounded-md border border-gray-5 px-4 py-2"
 				>
 					<!-- <p class="font-semibold">{playlist.name}</p> -->
 					<InPlaceEdit
