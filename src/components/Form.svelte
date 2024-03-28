@@ -24,7 +24,7 @@
 		},
 	});
 
-	const { message, delayed, errors, allErrors, enhance } = form;
+	const { message, delayed, errors, allErrors, submitting, enhance } = form;
 
 	// allErrors.subscribe(async (val) => {
 	// 	if (val.length > 0) {
@@ -50,6 +50,7 @@
 		width="full"
 		class="font-semibold lowercase"
 		style="font-variant: small-caps;"
+		disabled={$submitting}
 	>
 		Add
 	</Button>
