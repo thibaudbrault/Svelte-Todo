@@ -11,7 +11,7 @@
 		<ul class="flex flex-col gap-2">
 			{#each $page.data.playlists as playlist (playlist.id)}
 				<li
-					class="flex items-center justify-between rounded-md border border-gray-5 px-4 py-2"
+					class="flex items-center justify-between rounded-md border border-gray-5 px-4 py-2 hover:border-gray-6"
 				>
 					<!-- <p class="font-semibold">{playlist.name}</p> -->
 					<InPlaceEdit
@@ -21,7 +21,7 @@
 						action="?/updatePlaylist"
 						schema={playlistSchema}
 						data={$page.data.playlistForm}
-						textClass="font-semibold"
+						textClass="font-semibold hover:underline"
 					/>
 					<form method="POST" use:enhance action="?/deletePlaylist">
 						<input value={playlist.id} name="id" hidden />
@@ -46,8 +46,8 @@
 		<div slot="content" class="w-full">
 			<Form
 				action="?/createPlaylist"
+				id="createPlaylist"
 				data={$page.data.playlistForm}
-				method="POST"
 				schema={playlistSchema}
 				class="w-full space-y-4"
 				let:form
