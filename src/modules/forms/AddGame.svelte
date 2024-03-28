@@ -3,7 +3,7 @@
 	import { Combobox, Dialog, Form, TextInput } from '$components';
 	import { createGameSchema } from '$lib/validation';
 	import { Dialog as BitsDialog } from 'bits-ui';
-	import { Plus } from 'lucide-svelte';
+	import { Plus, Building2 } from 'lucide-svelte';
 </script>
 
 <Dialog title="New game">
@@ -17,8 +17,8 @@
 	<div slot="content" class="w-full">
 		<Form
 			action="?/createGame"
+			id="createGame"
 			data={$page.data.createGameForm}
-			method="POST"
 			schema={createGameSchema}
 			class="w-full space-y-4"
 			let:form
@@ -27,6 +27,7 @@
 				<TextInput {form} field="name" label="Name" />
 				<Combobox
 					{form}
+					icon={Building2}
 					items={$page.data.companies}
 					field="company"
 					label="Company"

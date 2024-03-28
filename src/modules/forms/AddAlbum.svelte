@@ -3,7 +3,7 @@
 	import { Combobox, Dialog, FileInput, Form, TextInput } from '$components';
 	import { createAlbumSchema } from '$lib/validation';
 	import { Dialog as BitsDialog } from 'bits-ui';
-	import { Plus } from 'lucide-svelte';
+	import { Gamepad2, Plus } from 'lucide-svelte';
 
 	const acceptedExtensions = '.jpg, .jpeg, .png, .webp';
 </script>
@@ -19,8 +19,8 @@
 	<div slot="content" class="w-full">
 		<Form
 			action="?/createAlbum"
+			id="createAlbum"
 			data={$page.data.createAlbumForm}
-			method="POST"
 			schema={createAlbumSchema}
 			class="w-full space-y-4"
 			let:form
@@ -29,6 +29,7 @@
 				<TextInput {form} field="name" label="Name" />
 				<Combobox
 					{form}
+					icon={Gamepad2}
 					items={$page.data.games}
 					field="game"
 					label="Game"

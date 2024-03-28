@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Combobox, Label } from 'bits-ui';
-	import { Check, ChevronsUpDown, Gamepad2 } from 'lucide-svelte';
+	import { Check, ChevronsUpDown } from 'lucide-svelte';
 	import { formFieldProxy } from 'sveltekit-superforms/client';
 
 	export let items: { value: string; name: string }[];
@@ -8,6 +8,7 @@
 	export let label: string;
 	export let placeholder: string;
 	export let form;
+	export let icon;
 
 	$: filteredItems = $value
 		? items.filter((item) => item.value.includes($value.toLowerCase()))
@@ -20,7 +21,8 @@
 	<Label.Root class="text-sm font-semibold" for={field}>{label}</Label.Root>
 	<Combobox.Root items={filteredItems} bind:inputValue={$value}>
 		<div class="relative">
-			<Gamepad2
+			<svelte:component
+				this={icon}
 				class="absolute start-3 top-1/2 size-6 -translate-y-1/2 text-gray-12"
 			/>
 			<Combobox.Input

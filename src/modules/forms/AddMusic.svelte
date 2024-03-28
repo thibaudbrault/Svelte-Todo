@@ -32,8 +32,8 @@
 		<Tabs.Content value="single">
 			<Form
 				action="?/creatOneMusic"
+				id="createOneMusic"
 				data={$page.data.formSingle}
-				method="POST"
 				schema={creatOneMusicSchema}
 				class="w-full space-y-4"
 				let:form
@@ -53,8 +53,8 @@
 		<Tabs.Content value="multiple">
 			<Form
 				action="?/createManyMusic"
+				id="createManyMusic"
 				data={$page.data.formMultiple}
-				method="POST"
 				schema={createManyMusicSchema}
 				class="w-full space-y-4"
 				let:form

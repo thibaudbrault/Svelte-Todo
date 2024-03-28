@@ -17,8 +17,8 @@
 	<div slot="content" class="w-full">
 		<Form
 			action="?/createCompany"
+			id="createCompany"
 			data={$page.data.createCompanyForm}
-			method="POST"
 			schema={createCompanySchema}
 			class="w-full space-y-4"
 			let:form
