@@ -134,6 +134,41 @@
       "when": 1711615184488,
       "tag": "0018_ordinary_centennial",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "5",
+      "when": 1711743030812,
+      "tag": "0019_loving_wallow",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1711787735384,
+      "tag": "0020_goofy_mac_gargan",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "5",
+      "when": 1711787796045,
+      "tag": "0021_wise_harrier",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "5",
+      "when": 1711788188269,
+      "tag": "0022_funny_sersi",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "5",
+      "when": 1711818869104,
+      "tag": "0023_yellow_sage",
+      "breakpoints": true
     }
   ]
 }

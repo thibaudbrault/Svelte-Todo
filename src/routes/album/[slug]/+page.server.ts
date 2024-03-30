@@ -1,7 +1,19 @@
-import { albums, authors, db, games, musics, musicsToAuthors } from '$lib/db';
-import { createManyMusicSchema, creatOneMusicSchema } from '$lib/validation';
+import {
+	albums,
+	authors,
+	db,
+	games,
+	musics,
+	musicsToAuthors,
+	userFavorites,
+} from '$lib/db';
+import {
+	createManyMusicSchema,
+	creatOneMusicSchema,
+	favoriteMusicSchema,
+} from '$lib/validation';
 import { error, fail, type Actions, redirect } from '@sveltejs/kit';
-import { eq, count } from 'drizzle-orm';
+import { eq, count, and } from 'drizzle-orm';
 import {
 	message,
 	setError,
@@ -16,6 +28,9 @@ import * as mm from 'music-metadata';
 import { musicSlug } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ params }) => {
+	const favoriteForm = await superValidate(zod(favoriteMusicSchema));
+	const formSingle = await superValidate(zod(creatOneMusicSchema));
+	const formMultiple = await superValidate(zod(createManyMusicSchema));
 	const slug = params.slug;
 	const album = await db.query.albums.findFirst({
 		where: eq(albums.slug, slug),
@@ -46,12 +61,43 @@ export const load: PageServerLoad = async ({ params }) => {
 		game: game?.name ?? '',
 		length: albumLength[0].count,
 		musics: albumMusics,
-		formSingle: await superValidate(zod(creatOneMusicSchema)),
-		formMultiple: await superValidate(zod(createManyMusicSchema)),
+		favoriteForm,
+		formSingle,
+		formMultiple,
 	};
 };
 
 export const actions: Actions = {
+	addFavorite: async ({ request }) => {
+		const formData = await request.formData();
+		const form = await superValidate(formData, zod(favoriteMusicSchema));
+		if (!form.valid) {
+			fail(400, { form });
+		}
+		const { userId, musicId } = form.data;
+		await db.insert(userFavorites).values({
+			userId: userId,
+			musicId: Number(musicId),
+		});
+		return message(form, 'Favorite added successfully');
+	},
+	removeFavorite: async ({ request }) => {
+		const formData = await request.formData();
+		const form = await superValidate(formData, zod(favoriteMusicSchema));
+		if (!form.valid) {
+			fail(400, { form });
+		}
+		const { userId, musicId } = form.data;
+		await db
+			.delete(userFavorites)
+			.where(
+				and(
+					eq(userFavorites.userId, userId),
+					eq(userFavorites.musicId, Number(musicId)),
+				),
+			);
+		return message(form, 'Favorite removed successfully');
+	},
 	creatOneMusic: async ({ request, params }) => {
 		try {
 			const slug = params.slug as string;

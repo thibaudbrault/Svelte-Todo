@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { Button, ScrollArea } from '$components';
 	import { trackId } from '$lib/store';
@@ -10,22 +11,7 @@
 	export let selectedTrack: number | null;
 	export let loadTrack: () => void;
 
-	$: {
-		selectedTrack = $trackId;
-	}
-
-	let favorites: number[] = [];
-
-	const handleFavorite = (musicId: number) => {
-		const index = favorites.indexOf(musicId);
-		if (index !== -1) {
-			favorites.splice(index, 1);
-			favorites = favorites;
-		} else {
-			favorites.push(musicId);
-			favorites = favorites;
-		}
-	};
+	$: selectedTrack = $trackId;
 </script>
 
 <div class="w-full space-y-2 p-4">
@@ -54,16 +40,23 @@
 							</div>
 							<div class="flex items-center gap-8">
 								<p class="text-sm font-medium">{format(music.duration)}</p>
-								<Button
-									intent="ghost"
-									size="icon"
-									class={`${favorites.includes(music.id) ? 'text-red-400' : 'text-inherit'}`}
-									on:click={() => handleFavorite(music.id)}
-								>
-									<Heart
-										class={`${favorites.includes(music.id) ? 'fill-red-500' : 'bg-transparent'}`}
-									/>
-								</Button>
+								{#if $page.data.favoritesMusics.some((fav) => fav.musics.id === music.id)}
+									<form method="POST" use:enhance action="?/removeFavorite">
+										<input value={music.id} name="musicId" hidden />
+										<input value={$page.data.user.id} name="userId" hidden />
+										<Button intent="ghost" size="icon" class="text-red-400">
+											<Heart class="fill-red-400" />
+										</Button>
+									</form>
+								{:else}
+									<form method="POST" use:enhance action="?/addFavorite">
+										<input value={music.id} name="musicId" hidden />
+										<input value={$page.data.user.id} name="userId" hidden />
+										<Button intent="ghost" size="icon" class="text-inherit">
+											<Heart />
+										</Button>
+									</form>
+								{/if}
 								<p><MoreHorizontal /></p>
 							</div>
 						</button>
@@ -76,5 +69,7 @@
 			No music
 		</p>
 	{/if}
-	<AddMusic />
+	{#if $page.data.user && $page.data.user.role === 'admin'}
+		<AddMusic />
+	{/if}
 </div>

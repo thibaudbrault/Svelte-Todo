@@ -1,11 +1,16 @@
 <script lang="ts">
 	import { Tabs } from 'bits-ui';
 	import Playlists from './Playlists.svelte';
+	import Musics from './Musics.svelte';
 
 	const tabs = [
 		{
 			value: 'playlists',
 			label: 'Playlists',
+		},
+		{
+			value: 'musics',
+			label: 'Musics',
 		},
 		{
 			value: 'albums',
@@ -20,7 +25,7 @@
 	let value = 'playlists';
 </script>
 
-<Tabs.Root bind:value class="space-y-4">
+<Tabs.Root bind:value class="space-y-8">
 	<div class="flex items-center justify-between gap-4">
 		<h2 class="text-4xl font-bold capitalize">{value}</h2>
 		<Tabs.List
@@ -39,6 +44,9 @@
 	</div>
 	<Tabs.Content value="playlists">
 		<Playlists />
+	</Tabs.Content>
+	<Tabs.Content value="musics">
+		<Musics />
 	</Tabs.Content>
 	<Tabs.Content value="albums">
 		<p>albums</p>

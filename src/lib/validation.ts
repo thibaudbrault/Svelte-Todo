@@ -19,6 +19,11 @@ export const playlistSchema = z.object({
 	name: z.string().min(1, { message: 'Playlist name is required' }),
 });
 
+export const favoriteMusicSchema = z.object({
+	userId: z.string().min(1, { message: 'User ID is required' }),
+	musicId: z.string().min(1, { message: 'Music ID is required' }),
+});
+
 export const createPlaylistSchema = playlistSchema.extend({
 	userId: z.string().min(1, { message: 'User ID is required' }),
 });
