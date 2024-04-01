@@ -6,7 +6,16 @@ import {
 import { zod } from 'sveltekit-superforms/adapters';
 import type { LayoutServerLoad } from './$types';
 import { superValidate } from 'sveltekit-superforms';
-import { db, games, companies, users, playlists } from '$lib/db';
+import {
+	db,
+	games,
+	companies,
+	users,
+	playlists,
+	musics,
+	userFavoritesMusics,
+	type SelectMusic,
+} from '$lib/db';
 import { eq } from 'drizzle-orm';
 
 export const load: LayoutServerLoad = async (event) => {
@@ -18,14 +27,26 @@ export const load: LayoutServerLoad = async (event) => {
 	const session = await event.locals.auth();
 	let user;
 	let userPlaylists;
-	if (session?.user) {
+	let favoritesMusicsRequest;
+	const favoritesMusics: SelectMusic[] = [];
+	if (session?.user?.email) {
 		user = await db.query.users.findFirst({
 			where: eq(users.email, session?.user?.email),
 		});
 		if (user) {
 			userPlaylists = await db.query.playlists.findMany({
-				where: eq(playlists.userId, user?.id),
+				where: eq(playlists.userId, user.id),
 			});
+			favoritesMusicsRequest = await db
+				.select({ musics })
+				.from(userFavoritesMusics)
+				.leftJoin(musics, eq(userFavoritesMusics.musicId, musics.id))
+				.where(eq(userFavoritesMusics.userId, user.id));
+			if (favoritesMusicsRequest) {
+				favoritesMusicsRequest.forEach((item) => {
+					favoritesMusics.push(item.musics);
+				});
+			}
 		}
 	}
 	return {
@@ -36,6 +57,7 @@ export const load: LayoutServerLoad = async (event) => {
 		companies: allCompanies,
 		user,
 		playlists: userPlaylists,
+		favoritesMusics,
 		session,
 	};
 };

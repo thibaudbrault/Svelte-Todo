@@ -5,7 +5,7 @@ import {
 	games,
 	musics,
 	musicsToAuthors,
-	userFavorites,
+	userFavoritesMusics,
 } from '$lib/db';
 import {
 	createManyMusicSchema,
@@ -75,9 +75,9 @@ export const actions: Actions = {
 			fail(400, { form });
 		}
 		const { userId, musicId } = form.data;
-		await db.insert(userFavorites).values({
+		await db.insert(userFavoritesMusics).values({
 			userId: userId,
-			musicId: Number(musicId),
+			musicId,
 		});
 		return message(form, 'Favorite added successfully');
 	},
@@ -89,11 +89,11 @@ export const actions: Actions = {
 		}
 		const { userId, musicId } = form.data;
 		await db
-			.delete(userFavorites)
+			.delete(userFavoritesMusics)
 			.where(
 				and(
-					eq(userFavorites.userId, userId),
-					eq(userFavorites.musicId, Number(musicId)),
+					eq(userFavoritesMusics.userId, userId),
+					eq(userFavoritesMusics.musicId, musicId),
 				),
 			);
 		return message(form, 'Favorite removed successfully');
