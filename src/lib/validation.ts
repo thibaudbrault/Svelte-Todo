@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export const createAlbumSchema = z.object({
 	name: z.string().min(1, { message: 'Album name is required' }),
+	release: z.number().min(1950, { message: 'Release date must be above 1950' }),
 	cover: z.any(),
 	game: z.string().min(1, { message: 'Game name is required' }),
 });
