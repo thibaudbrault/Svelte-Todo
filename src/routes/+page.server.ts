@@ -19,9 +19,17 @@ import { zod } from 'sveltekit-superforms/adapters';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const allAlbums = await db.select().from(albums);
+	const allAlbums = await db.query.albums.findMany();
+	const latestAlbums = await db.query.albums.findMany({
+		orderBy: (albums, { desc }) => [desc(albums.createdAt)],
+	});
+	const popularAlbums = await db.query.albums.findMany({
+		orderBy: (albums, { desc }) => [desc(albums.popularity)],
+	});
 	return {
 		albums: allAlbums,
+		latestAlbums,
+		popularAlbums,
 	};
 };
 
@@ -86,7 +94,7 @@ export const actions: Actions = {
 		if (!form.valid) {
 			return fail(400, withFiles({ form }));
 		}
-		const { name, game, cover } = form.data;
+		const { name, game, cover, release } = form.data;
 		const slug = albumSlug(name);
 		const albumExists = await db.query.albums.findFirst({
 			where: eq(albums.slug, slug),
@@ -94,7 +102,7 @@ export const actions: Actions = {
 		if (albumExists) {
 			return setError(form, 'name', 'Album already exists');
 		}
-		const filename = `${slug}/${crypto.randomUUID()}${albumSlug(cover?.name)}`;
+		const filename = `${slug}/${crypto.randomUUID()}cover`;
 		const findGame = await db.query.games.findFirst({
 			where: eq(companies.value, game),
 		});
@@ -112,6 +120,7 @@ export const actions: Actions = {
 			name,
 			cover: coverUrl,
 			slug,
+			release: Number(release),
 			gameId,
 		});
 		return message(form, 'Album created successfully');

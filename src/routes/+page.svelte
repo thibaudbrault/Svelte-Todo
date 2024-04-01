@@ -6,7 +6,7 @@
 <div class="space-y-4">
 	<h2 class="text-2xl font-semibold">Latest</h2>
 	<div class="flex flex-wrap gap-6">
-		{#each $page.data.albums as album}
+		{#each $page.data.latestAlbums as album}
 			<Card
 				title={album.name}
 				alt={album.name}
@@ -19,7 +19,7 @@
 <div class="space-y-4">
 	<h2 class="text-2xl font-semibold">Popular</h2>
 	<div class="flex flex-wrap gap-6">
-		{#each $page.data.albums as album}
+		{#each $page.data.popularAlbums as album}
 			<Card
 				title={album.name}
 				alt={album.name}
