@@ -15,6 +15,9 @@ import {
 	musics,
 	userFavoritesMusics,
 	type SelectMusic,
+	type SelectAlbum,
+	userFavoritesAlbums,
+	albums,
 } from '$lib/db';
 import { eq } from 'drizzle-orm';
 
@@ -27,8 +30,8 @@ export const load: LayoutServerLoad = async (event) => {
 	const session = await event.locals.auth();
 	let user;
 	let userPlaylists;
-	let favoritesMusicsRequest;
 	const favoritesMusics: SelectMusic[] = [];
+	const favoritesAlbums: SelectAlbum[] = [];
 	if (session?.user?.email) {
 		user = await db.query.users.findFirst({
 			where: eq(users.email, session?.user?.email),
@@ -37,14 +40,24 @@ export const load: LayoutServerLoad = async (event) => {
 			userPlaylists = await db.query.playlists.findMany({
 				where: eq(playlists.userId, user.id),
 			});
-			favoritesMusicsRequest = await db
+			const favoritesMusicsRequest = await db
 				.select({ musics })
 				.from(userFavoritesMusics)
 				.leftJoin(musics, eq(userFavoritesMusics.musicId, musics.id))
 				.where(eq(userFavoritesMusics.userId, user.id));
+			const favoritesAlbumsRequest = await db
+				.select({ albums })
+				.from(userFavoritesAlbums)
+				.leftJoin(albums, eq(userFavoritesAlbums.albumId, albums.id))
+				.where(eq(userFavoritesAlbums.userId, user.id));
 			if (favoritesMusicsRequest) {
 				favoritesMusicsRequest.forEach((item) => {
 					favoritesMusics.push(item.musics);
+				});
+			}
+			if (favoritesAlbumsRequest) {
+				favoritesAlbumsRequest.forEach((item) => {
+					favoritesAlbums.push(item.albums);
 				});
 			}
 		}
@@ -58,6 +71,7 @@ export const load: LayoutServerLoad = async (event) => {
 		user,
 		playlists: userPlaylists,
 		favoritesMusics,
+		favoritesAlbums,
 		session,
 	};
 };

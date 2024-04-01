@@ -2,6 +2,7 @@
 	import { Tabs } from 'bits-ui';
 	import Playlists from './Playlists.svelte';
 	import Musics from './Musics.svelte';
+	import Albums from './Albums.svelte';
 
 	const tabs = [
 		{
@@ -49,7 +50,7 @@
 		<Musics />
 	</Tabs.Content>
 	<Tabs.Content value="albums">
-		<p>albums</p>
+		<Albums />
 	</Tabs.Content>
 	<Tabs.Content value="artists">
 		<p>artists</p>
