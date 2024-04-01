@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button } from '$components';
+	import { Loader2Icon } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import { zod } from 'sveltekit-superforms/adapters';
 	import { superForm } from 'sveltekit-superforms/client';
@@ -44,7 +45,11 @@
 			style="font-variant: small-caps;"
 			disabled={$submitting}
 		>
-			Add
+			{#if $submitting}
+				<Loader2Icon class="animate-spin" />
+			{:else}
+				Add
+			{/if}
 		</Button>
 	{/if}
 </form>
