@@ -4,6 +4,7 @@
 
 	export let field: string;
 	export let min: string;
+	export let max: number = Infinity;
 	export let label: string | undefined = undefined;
 	export let form;
 
@@ -15,6 +16,7 @@
 	<input
 		type="number"
 		{min}
+		{max}
 		name={field}
 		bind:value={$value}
 		aria-invalid={errors ? 'true' : undefined}
