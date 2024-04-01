@@ -17,6 +17,8 @@ export const albums = pgTable('albums', {
 	name: text('name').notNull().unique(),
 	slug: text('slug').notNull().unique(),
 	cover: text('cover').notNull().unique(),
+	release: integer('release').notNull(),
+	popularity: integer('popularity').default(0),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	gameId: uuid('game_id').notNull(),
 });
@@ -124,10 +126,24 @@ export const userFavoritesMusics = pgTable(
 		musicId: uuid('music_id')
 			.notNull()
 			.references(() => musics.id, { onDelete: 'cascade' }),
-		createdAt: timestamp('created_at').notNull().defaultNow(),
 	},
 	(t) => ({
 		pk: primaryKey(t.userId, t.musicId),
+	}),
+);
+
+export const userFavoritesAlbums = pgTable(
+	'user_favorites_albums',
+	{
+		userId: text('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		albumId: uuid('album_id')
+			.notNull()
+			.references(() => albums.id, { onDelete: 'cascade' }),
+	},
+	(t) => ({
+		pk: primaryKey(t.userId, t.albumId),
 	}),
 );
 

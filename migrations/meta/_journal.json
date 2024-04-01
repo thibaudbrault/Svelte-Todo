@@ -169,6 +169,34 @@
       "when": 1711818869104,
       "tag": "0023_yellow_sage",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "5",
+      "when": 1711901248931,
+      "tag": "0024_volatile_magma",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "5",
+      "when": 1711901284955,
+      "tag": "0025_exotic_wallflower",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "5",
+      "when": 1711901346978,
+      "tag": "0026_cynical_rattler",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "5",
+      "when": 1711907023583,
+      "tag": "0027_normal_prism",
+      "breakpoints": true
     }
   ]
 }

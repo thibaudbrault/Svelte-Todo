@@ -1,0 +1,1 @@
+ALTER TABLE "user_favorites_musics" DROP COLUMN IF EXISTS "created_at";
