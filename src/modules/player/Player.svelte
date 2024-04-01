@@ -1,9 +1,18 @@
 <script lang="ts">
 	import { Button } from '$components';
-	import { isLooped, isPlaying, isShuffled, title } from '$lib/store';
+	import type { SelectMusic } from '$lib/db';
+	import {
+		isLoading,
+		isLooped,
+		isPlaying,
+		isShuffled,
+		title,
+	} from '$lib/store';
+	import { nextTrack, playPauseTrack, prevTrack } from '$lib/utils';
 	import {
 		Heart,
 		ListPlus,
+		Loader2Icon,
 		Pause,
 		Play,
 		Repeat,
@@ -13,10 +22,10 @@
 	} from 'lucide-svelte';
 	import Progress from './Progress.svelte';
 
-	export let playPauseTrack: () => void;
-	export let prevTrack: () => void;
-	export let nextTrack: () => void;
+	export let musics: SelectMusic[];
+	export let length: number;
 	export let cover: string;
+	export let raf: number;
 
 	const handleLoop = () => {
 		$isLooped = !$isLooped;
@@ -41,22 +50,33 @@
 		<p class="font-semibold text-gray-12">{$title}</p>
 	</div>
 	<div class="flex items-center gap-2">
-		<Button intent="ghost" size="icon" on:click={prevTrack}>
+		<Button
+			intent="ghost"
+			size="icon"
+			on:click={() => prevTrack(musics, length)}
+		>
 			<SkipBack />
 		</Button>
 		<Button
 			intent="primary"
 			rounded="full"
 			size="icon"
-			on:click={playPauseTrack}
+			on:click={() => playPauseTrack(raf)}
+			disabled={$isLoading}
 		>
-			{#if $isPlaying}
+			{#if $isLoading}
+				<Loader2Icon class="animate-spin" />
+			{:else if $isPlaying}
 				<Pause />
 			{:else}
 				<Play />
 			{/if}
 		</Button>
-		<Button intent="ghost" size="icon" on:click={nextTrack}>
+		<Button
+			intent="ghost"
+			size="icon"
+			on:click={() => nextTrack(musics, length)}
+		>
 			<SkipForward />
 		</Button>
 		<Button intent="ghost" size="icon">
