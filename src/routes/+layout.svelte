@@ -11,7 +11,7 @@
 	toastOptions={{ style: 'font-weight: 600; font-size: 1.25rem;' }}
 />
 <main
-	class="relative grid h-screen max-h-screen grid-cols-6 grid-rows-[80px_1fr_8px] gap-y-4 overflow-y-hidden bg-gray-1 p-4 text-gray-12"
+	class="relative grid h-screen max-h-screen grid-cols-6 grid-rows-[80px_1fr] gap-y-4 overflow-y-hidden bg-gray-1 p-4 text-gray-12"
 >
 	<Sidebar />
 	<Navbar />
@@ -20,5 +20,4 @@
 	>
 		<slot />
 	</section>
-	<div class="bg-gray-1" />
 </main>
