@@ -4,6 +4,7 @@
 
 	export let cover: string;
 	export let name: string;
+	export let release: number;
 </script>
 
 <div class="flex gap-4 p-4">
@@ -17,13 +18,18 @@
 	</div>
 
 	<div class="flex flex-1 flex-col justify-end gap-4">
-		<small class="text-xs font-semibold capitalize text-yellowA-11"
-			>{$page.data.game}</small
-		>
+		<div class="flex text-sm font-semibold capitalize text-yellowA-11">
+			<small>
+				{$page.data.game}
+			</small>
+			<small class="before:mx-2 before:font-bold before:content-['·']">
+				{release}
+			</small>
+		</div>
 		<h1 class="text-6xl font-bold">{name}</h1>
 		<ul class="flex">
 			<li>150 likes</li>
-			<li class="before:mx-2 before:content-['·']">
+			<li class="before:mx-2 before:font-bold before:content-['·']">
 				{$page.data.length} titles
 			</li>
 		</ul>

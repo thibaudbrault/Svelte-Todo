@@ -1,11 +1,20 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Combobox, Dialog, FileInput, Form, TextInput } from '$components';
+	import {
+		Combobox,
+		Dialog,
+		FileInput,
+		Form,
+		NumberInput,
+		TextInput,
+	} from '$components';
 	import { createAlbumSchema } from '$lib/validation';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { Gamepad2, Plus } from 'lucide-svelte';
 
 	const acceptedExtensions = '.jpg, .jpeg, .png, .webp';
+
+	const currentYear = new Date().getFullYear();
 </script>
 
 <Dialog title="New album">
@@ -27,6 +36,13 @@
 		>
 			<fieldset class="flex w-full flex-col gap-2">
 				<TextInput {form} field="name" label="Name" />
+				<NumberInput
+					{form}
+					field="release"
+					label="Release"
+					min="1950"
+					max={currentYear}
+				/>
 				<Combobox
 					{form}
 					icon={Gamepad2}
