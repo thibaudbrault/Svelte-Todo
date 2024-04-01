@@ -41,7 +41,11 @@
 							<p class="text-sm font-medium">{format(music.duration)}</p>
 							{#if $page.data.session}
 								{#if $page.data.favoritesMusics.some((fav) => fav.id === music.id)}
-									<form method="POST" use:enhance action="?/removeFavorite">
+									<form
+										method="POST"
+										use:enhance
+										action="?/removeFavoriteMusic"
+									>
 										<input value={music.id} name="musicId" hidden />
 										<input value={$page.data.user.id} name="userId" hidden />
 										<Button intent="ghost" size="icon" class="text-red-400">
@@ -49,7 +53,7 @@
 										</Button>
 									</form>
 								{:else}
-									<form method="POST" use:enhance action="?/addFavorite">
+									<form method="POST" use:enhance action="?/addFavoriteMusic">
 										<input value={music.id} name="musicId" hidden />
 										<input value={$page.data.user.id} name="userId" hidden />
 										<Button intent="ghost" size="icon" class="text-inherit">
