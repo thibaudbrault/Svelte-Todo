@@ -5,11 +5,13 @@ import {
 	games,
 	musics,
 	musicsToAuthors,
+	userFavoritesAlbums,
 	userFavoritesMusics,
 } from '$lib/db';
 import {
 	createManyMusicSchema,
 	creatOneMusicSchema,
+	favoriteAlbumSchema,
 	favoriteMusicSchema,
 } from '$lib/validation';
 import { error, fail, type Actions, redirect } from '@sveltejs/kit';
@@ -56,11 +58,16 @@ export const load: PageServerLoad = async ({ params }) => {
 			},
 		},
 	});
+	const albumLikes = await db
+		.select({ count: count() })
+		.from(userFavoritesAlbums)
+		.where(eq(userFavoritesAlbums.albumId, album.id));
 	return {
 		album,
 		game: game?.name ?? '',
 		length: albumLength[0].count,
 		musics: albumMusics,
+		likes: albumLikes[0].count,
 		favoriteForm,
 		formSingle,
 		formMultiple,
@@ -68,7 +75,7 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
-	addFavorite: async ({ request }) => {
+	addFavoriteMusic: async ({ request }) => {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(favoriteMusicSchema));
 		if (!form.valid) {
@@ -81,7 +88,7 @@ export const actions: Actions = {
 		});
 		return message(form, 'Favorite added successfully');
 	},
-	removeFavorite: async ({ request }) => {
+	removeFavoriteMusic: async ({ request }) => {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(favoriteMusicSchema));
 		if (!form.valid) {
@@ -94,6 +101,36 @@ export const actions: Actions = {
 				and(
 					eq(userFavoritesMusics.userId, userId),
 					eq(userFavoritesMusics.musicId, musicId),
+				),
+			);
+		return message(form, 'Favorite removed successfully');
+	},
+	addFavoriteAlbum: async ({ request }) => {
+		const formData = await request.formData();
+		const form = await superValidate(formData, zod(favoriteAlbumSchema));
+		if (!form.valid) {
+			fail(400, { form });
+		}
+		const { userId, albumId } = form.data;
+		await db.insert(userFavoritesAlbums).values({
+			userId: userId,
+			albumId,
+		});
+		return message(form, 'Favorite added successfully');
+	},
+	removeFavoriteAlbum: async ({ request }) => {
+		const formData = await request.formData();
+		const form = await superValidate(formData, zod(favoriteAlbumSchema));
+		if (!form.valid) {
+			fail(400, { form });
+		}
+		const { userId, albumId } = form.data;
+		await db
+			.delete(userFavoritesAlbums)
+			.where(
+				and(
+					eq(userFavoritesAlbums.userId, userId),
+					eq(userFavoritesAlbums.albumId, albumId),
 				),
 			);
 		return message(form, 'Favorite removed successfully');

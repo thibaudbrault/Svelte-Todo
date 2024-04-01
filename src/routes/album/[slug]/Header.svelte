@@ -1,6 +1,9 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
+	import { Button } from '$components';
 	import { isPlaying } from '$lib/store.js';
+	import { Heart } from 'lucide-svelte';
 
 	export let cover: string;
 	export let name: string;
@@ -27,11 +30,22 @@
 			</small>
 		</div>
 		<h1 class="text-6xl font-bold">{name}</h1>
-		<ul class="flex">
-			<li>150 likes</li>
-			<li class="before:mx-2 before:font-bold before:content-['·']">
-				{$page.data.length} titles
-			</li>
-		</ul>
+		<div class="flex items-center justify-between">
+			<ul class="flex">
+				<li>{$page.data.likes} likes</li>
+				<li class="before:mx-2 before:font-bold before:content-['·']">
+					{$page.data.length} titles
+				</li>
+			</ul>
+			{#if $page.data.session}
+				<form method="POST" use:enhance action="?/addFavoriteAlbum">
+					<input value={$page.data.album.id} name="albumId" hidden />
+					<input value={$page.data.user.id} name="userId" hidden />
+					<Button intent="ghost" size="icon">
+						<Heart />
+					</Button>
+				</form>
+			{/if}
+		</div>
 	</div>
 </div>
