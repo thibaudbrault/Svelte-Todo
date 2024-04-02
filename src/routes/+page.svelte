@@ -1,37 +1,31 @@
 <script lang="ts">
-	import { Button, Input } from '$lib';
-
-	let text: string = 'Hello World!';
-	let todos: string[] = [];
-
-	const addTodo = (text: string) => {
-		todos.push(text);
-		todos = todos;
-	};
-
-	const deleteTodo = (i: number) => {
-		todos.splice(i, 1);
-		todos = todos;
-	};
+	import { page } from '$app/stores';
+	import { Card } from '$components';
 </script>
 
-<main>
-	<h1>Welcome to SvelteKit</h1>
-	<ul>
-		{#each todos as todo, i}
-			<li>
-				<p>{todo}</p>
-				<button on:click={() => deleteTodo(i)}>X</button>
-			</li>
+<div class="space-y-4">
+	<h2 class="text-2xl font-semibold">Latest</h2>
+	<div class="flex flex-wrap gap-6">
+		{#each $page.data.latestAlbums as album}
+			<Card
+				title={album.name}
+				alt={album.name}
+				cover={album.cover}
+				link={`/album/${album.slug}`}
+			/>
 		{/each}
-	</ul>
-	<p>{text}</p>
-	<Input placeholder={'New todo'} bind:value={text} />
-	<Button {addTodo} {text} />
-</main>
-
-<style lang="postcss">
-	:global(html) {
-		background-color: theme(colors.gray.100);
-	}
-</style>
+	</div>
+</div>
+<div class="space-y-4">
+	<h2 class="text-2xl font-semibold">Popular</h2>
+	<div class="flex flex-wrap gap-6">
+		{#each $page.data.popularAlbums as album}
+			<Card
+				title={album.name}
+				alt={album.name}
+				cover={album.cover}
+				link={`/album/${album.slug}`}
+			/>
+		{/each}
+	</div>
+</div>

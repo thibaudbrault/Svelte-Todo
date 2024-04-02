@@ -1,0 +1,1 @@
+ALTER TABLE "albums" ADD COLUMN "release" integer NOT NULL;

@@ -1,0 +1,1 @@
+ALTER TABLE "albums" ADD COLUMN "popularity" integer DEFAULT 0;
