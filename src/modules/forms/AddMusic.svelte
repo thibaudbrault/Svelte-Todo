@@ -3,16 +3,14 @@
 	import { Dialog, FileInput, Form, NumberInput, TextInput } from '$components';
 	import { creatOneMusicSchema, createManyMusicSchema } from '$lib/validation';
 	import { Dialog as BitsDialog, Tabs } from 'bits-ui';
+	import { Plus } from 'lucide-svelte';
 
 	const acceptedExtensions = '.flac, .mp3';
 </script>
 
 <Dialog title="New music" trigger="Add music">
-	<BitsDialog.Trigger
-		slot="trigger"
-		class="!mb-16 w-full rounded-md bg-transparent px-4 py-2 text-gray-12 shadow-sm shadow-grayA-7 hover:shadow-grayA-8"
-	>
-		<span class="font-semibold">Add Music</span>
+	<BitsDialog.Trigger slot="trigger" class="bg-transparent">
+		<Plus class="h-8 w-8 font-semibold" />
 	</BitsDialog.Trigger>
 	<Tabs.Root value="single" slot="content" class="w-full">
 		<Tabs.List

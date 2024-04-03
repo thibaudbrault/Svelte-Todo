@@ -13,18 +13,18 @@ import {
 } from '$lib/store';
 import { get } from 'svelte/store';
 
-export const loadTrack = (
-	musics: SelectMusic[],
-	selectedTrack: number,
-	length: number,
-) => {
+export const scrollIntoView = (currentTrackId: number) => {
+	const track = document.getElementById(`track-${currentTrackId}`);
+	track?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+};
+
+export const loadTrack = (musics: SelectMusic[], length: number) => {
 	isLoading.set(true);
 	sliderValue.set(0);
-	selectedTrack = get(trackId);
 	if (length > 0) {
-		title.set(musics[selectedTrack]?.name);
+		title.set(musics[get(trackId)]?.name);
 		audio.update(($audio) => {
-			$audio.src = musics[selectedTrack]?.url;
+			$audio.src = musics[get(trackId)]?.url;
 			$audio.load();
 			if (get(isPlaying)) {
 				$audio.play();
@@ -70,11 +70,13 @@ export const prevTrack = (musics: SelectMusic[], length: number) => {
 	} else {
 		if (get(trackId) > 0) {
 			trackId.set((currentTrackId -= 1));
+			scrollIntoView(currentTrackId);
 		} else {
 			trackId.set(length - 1);
+			scrollIntoView(currentTrackId);
 		}
 	}
-	loadTrack(musics, currentTrackId, length);
+	loadTrack(musics, length);
 	switchTrack();
 };
 
@@ -88,11 +90,13 @@ export const nextTrack = (musics: SelectMusic[], length: number) => {
 	} else {
 		if (get(trackId) < length - 1) {
 			trackId.set((currentTrackId += 1));
+			scrollIntoView(currentTrackId);
 		} else {
 			trackId.set(0);
+			scrollIntoView(currentTrackId);
 		}
 	}
-	loadTrack(musics, currentTrackId, length);
+	loadTrack(musics, length);
 	switchTrack();
 };
 
