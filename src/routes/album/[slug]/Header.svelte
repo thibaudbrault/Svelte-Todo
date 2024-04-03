@@ -23,8 +23,11 @@
 		const totalHours = Math.floor(totalSeconds / 3600);
 		const remainingSeconds = totalSeconds % 3600;
 		const totalMinutes = Math.floor(remainingSeconds / 60);
-
-		return `${totalHours}h ${totalMinutes}`;
+		if (totalHours === 0) {
+			return `${totalMinutes} minutes`;
+		} else {
+			return `${totalHours}h ${totalMinutes}`;
+		}
 	};
 </script>
 
