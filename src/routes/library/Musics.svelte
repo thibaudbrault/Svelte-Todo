@@ -17,11 +17,7 @@
 
 	const handleClick = (index: number) => {
 		$trackId = index;
-		loadTrack(
-			$page.data.favoritesMusics,
-			$trackId,
-			$page.data.favoritesMusics.length,
-		);
+		loadTrack($page.data.favoritesMusics, $page.data.favoritesMusics.length);
 	};
 </script>
 

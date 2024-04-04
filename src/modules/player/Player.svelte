@@ -2,10 +2,12 @@
 	import { Button } from '$components';
 	import type { SelectMusic } from '$lib/db';
 	import {
+		audio,
 		isLoading,
 		isLooped,
 		isPlaying,
 		isShuffled,
+		showPlayer,
 		title,
 	} from '$lib/store';
 	import { nextTrack, playPauseTrack, prevTrack } from '$lib/utils';
@@ -19,6 +21,7 @@
 		Shuffle,
 		SkipBack,
 		SkipForward,
+		XIcon,
 	} from 'lucide-svelte';
 	import Progress from './Progress.svelte';
 
@@ -39,6 +42,11 @@
 
 	const handlePlaylist = () => {
 		console.log('added');
+	};
+
+	const handleClose = () => {
+		$showPlayer = false;
+		$audio.pause();
 	};
 </script>
 
@@ -95,4 +103,7 @@
 			<ListPlus class="h-4 w-4" />
 		</Button>
 	</div>
+	<button class="absolute right-1 top-1" on:click={handleClose}>
+		<XIcon class="h-4 w-4" />
+	</button>
 </section>

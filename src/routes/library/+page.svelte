@@ -26,7 +26,7 @@
 	let value = 'playlists';
 </script>
 
-<Tabs.Root bind:value class="space-y-8">
+<Tabs.Root bind:value class="mt-4 space-y-8 md:mt-0">
 	<div class="flex items-center justify-between gap-4">
 		<h2 class="text-4xl font-bold capitalize">{value}</h2>
 		<Tabs.List

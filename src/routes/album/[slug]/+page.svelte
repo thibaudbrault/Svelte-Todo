@@ -19,17 +19,18 @@
 	$: ({ musics, album, length } = data);
 	$: src = musics[$trackId]?.url;
 
-	let selectedTrack: number = 0;
 	let raf: number = 0;
 
 	onMount(() => {
-		loadTrack(musics, selectedTrack, length);
+		loadTrack(musics, length);
 	});
 </script>
 
-<Header cover={album.cover} name={album.name} release={album.release} />
-<Separator.Root class="mx-auto h-px w-11/12 bg-gray-5" />
-<Musics {selectedTrack} />
+<div class="flex flex-col gap-4">
+	<Header cover={album.cover} name={album.name} release={album.release} />
+	<Separator.Root class="mx-auto h-px w-11/12 bg-gray-5" />
+	<Musics />
+</div>
 <audio
 	{src}
 	bind:this={$audio}
