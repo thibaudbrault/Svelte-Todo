@@ -5,12 +5,32 @@
 	import { trackId } from '$lib/store';
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
+	import { onMount } from 'svelte';
 
 	const handleClick = (index: number) => {
 		$trackId = index;
 		scrollIntoView($trackId);
 		loadTrack($page.data.musics, $page.data.length);
 	};
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (event.key === 'ArrowLeft' && $trackId > 0) {
+			$trackId = $trackId - 1;
+			scrollIntoView($trackId);
+			loadTrack($page.data.musics, $page.data.length);
+		} else if (event.key === 'ArrowRight' && $trackId < $page.data.length - 1) {
+			$trackId = $trackId + 1;
+			scrollIntoView($trackId);
+			loadTrack($page.data.musics, $page.data.length);
+		}
+	};
+
+	onMount(() => {
+		document.addEventListener('keydown', handleKeyDown);
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	});
 </script>
 
 {#if $page.data.musics.length > 0}
