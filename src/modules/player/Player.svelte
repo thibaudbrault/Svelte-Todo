@@ -24,6 +24,7 @@
 		XIcon,
 	} from 'lucide-svelte';
 	import Progress from './Progress.svelte';
+	import { onMount } from 'svelte';
 
 	export let musics: SelectMusic[];
 	export let length: number;
@@ -48,6 +49,19 @@
 		$showPlayer = false;
 		$audio.pause();
 	};
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (event.key === 'Enter') {
+			playPauseTrack(raf);
+		}
+	};
+
+	onMount(() => {
+		document.addEventListener('keydown', handleKeyDown);
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	});
 </script>
 
 <section
