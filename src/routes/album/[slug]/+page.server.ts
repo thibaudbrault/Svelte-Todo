@@ -15,7 +15,7 @@ import {
 	favoriteMusicSchema,
 } from '$lib/validation';
 import { error, fail, type Actions, redirect } from '@sveltejs/kit';
-import { eq, count, and } from 'drizzle-orm';
+import { eq, count, and, sql } from 'drizzle-orm';
 import {
 	message,
 	setError,
@@ -116,6 +116,10 @@ export const actions: Actions = {
 			userId: userId,
 			albumId,
 		});
+		await db
+			.update(albums)
+			.set({ popularity: sql<number>`popularity + 1` })
+			.where(eq(albums.id, albumId));
 		return message(form, 'Favorite added successfully');
 	},
 	removeFavoriteAlbum: async ({ request }) => {
@@ -133,6 +137,10 @@ export const actions: Actions = {
 					eq(userFavoritesAlbums.albumId, albumId),
 				),
 			);
+		await db
+			.update(albums)
+			.set({ popularity: sql<number>`popularity - 1` })
+			.where(eq(albums.id, albumId));
 		return message(form, 'Favorite removed successfully');
 	},
 	creatOneMusic: async ({ request, params }) => {
