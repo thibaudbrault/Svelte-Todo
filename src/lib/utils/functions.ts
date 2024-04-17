@@ -2,11 +2,11 @@ import type { SelectMusic } from '$lib/db';
 import {
 	audio,
 	currentTime,
+	isDrawerOpen,
 	isLoading,
 	isLooped,
 	isPlaying,
 	isShuffled,
-	showPlayer,
 	sliderValue,
 	title,
 	trackId,
@@ -31,7 +31,7 @@ export const loadTrack = (musics: SelectMusic[], length: number) => {
 			}
 			return $audio;
 		});
-		showPlayer.set(true);
+		isDrawerOpen.set(true);
 	}
 };
 

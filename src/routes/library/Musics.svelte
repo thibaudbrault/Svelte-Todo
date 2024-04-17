@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import {
+		audio,
 		currentTime,
 		duration,
+		isDrawerOpen,
 		isLoading,
-		showPlayer,
-		audio,
 		trackId,
 	} from '$lib/store';
 	import { loadTrack, nextTrack } from '$lib/utils';
@@ -45,7 +45,7 @@
 	on:ended={() => nextTrack($page.data.favoritesMusics, length)}
 	hidden
 />
-{#if $showPlayer}
+{#if $isDrawerOpen}
 	<Player
 		musics={$page.data.favoritesMusics}
 		length={$page.data.favoritesMusics.length}

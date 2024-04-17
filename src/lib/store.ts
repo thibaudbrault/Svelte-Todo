@@ -12,5 +12,5 @@ export const title = writable('');
 export const isPlaying = writable(false);
 export const isLooped = writable(false);
 export const isShuffled = writable(false);
-export const showPlayer = writable(false);
 export const isLoading = writable(true);
+export const isDrawerOpen = writable(false);
