@@ -214,7 +214,8 @@ export const actions: Actions = {
 			if (musicExists) {
 				continue;
 			}
-			const artists = metadata.common.artists;
+			let artists = metadata.common.artists;
+			artists = artists[0].split(',').map((item) => item.trim());
 			const titleSlug = musicSlug(track.name);
 			const filename = `${slug}/${crypto.randomUUID()}${titleSlug}`;
 			await uploadFile(buffer, filename, track.type);
