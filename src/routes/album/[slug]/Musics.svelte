@@ -6,6 +6,7 @@
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
+	import { Drawer } from 'vaul-svelte';
 
 	const handleClick = (index: number) => {
 		$trackId = index;
@@ -34,9 +35,9 @@
 </script>
 
 {#if $page.data.musics.length > 0}
-	<div class="space-y-2 pb-20">
+	<div class="hidden space-y-2 md:block">
 		{#each $page.data.musics as music, index}
-			<button
+			<Drawer.Trigger
 				id={`track-${index}`}
 				on:click={() => handleClick(index)}
 				class={`flex w-full cursor-pointer items-center justify-between rounded-md p-2 ${$trackId === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
@@ -71,12 +72,33 @@
 								</Button>
 							</form>
 						{/if}
-					{:else}
-						<div />
 					{/if}
 					<p><MoreHorizontal /></p>
 				</div>
-			</button>
+			</Drawer.Trigger>
+		{/each}
+	</div>
+	<div class="block md:hidden">
+		{#each $page.data.musics as music, index}
+			<Drawer.Trigger
+				id={`track-${index}`}
+				on:click={() => handleClick(index)}
+				class={`flex w-full cursor-pointer items-center justify-between gap-1 rounded-md p-2 ${$trackId === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
+			>
+				<div class="flex flex-col items-start gap-1">
+					<p class="text-left font-bold">{music.name}</p>
+					{#each music.musicsToAuthors as authors}
+						<p
+							class="flex flex-wrap items-center gap-2 text-xs font-medium capitalize"
+						>
+							{authors.author.name}
+						</p>
+					{/each}
+				</div>
+				<div class="flex items-center gap-8">
+					<p><MoreHorizontal /></p>
+				</div>
+			</Drawer.Trigger>
 		{/each}
 	</div>
 {:else}

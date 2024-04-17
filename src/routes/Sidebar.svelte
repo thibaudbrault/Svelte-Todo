@@ -7,10 +7,8 @@
 		LibraryBig,
 		LogInIcon,
 		LogOutIcon,
-		Menu,
 		SearchIcon,
 		User2,
-		XIcon,
 	} from 'lucide-svelte';
 
 	const links = [
@@ -30,8 +28,6 @@
 			icon: LibraryBig,
 		},
 	];
-
-	let menuIsOpen: boolean = false;
 </script>
 
 <aside class="hidden flex-col gap-8 p-4 text-gray-11 md:flex">
@@ -90,39 +86,36 @@
 	{/if}
 </aside>
 
-<button
-	class="absolute left-6 top-6 block md:hidden"
-	on:click={() => (menuIsOpen = true)}
->
-	<Menu />
-</button>
-{#if menuIsOpen}
-	<nav class="absolute inset-0 z-10 h-screen w-screen bg-gray-1 text-gray-12">
-		<div class="flex h-full flex-col items-center justify-center gap-4">
-			{#each links as link}
-				<a
-					href={link.href}
-					on:click={() => (menuIsOpen = false)}
-					class="text-6xl font-semibold"
-				>
-					{link.name}
-				</a>
-			{/each}
-			{#if $page.data.session}
-				<a
-					href="/profile"
-					on:click={() => (menuIsOpen = false)}
-					class="text-6xl font-semibold"
-				>
-					Profile
-				</a>
-			{/if}
-		</div>
-		<button
-			class="absolute left-6 top-6 block md:hidden"
-			on:click={() => (menuIsOpen = false)}
+<nav class="mx-auto block flex w-11/12 justify-between md:hidden">
+	{#each links as link}
+		<a
+			href={link.href}
+			class={`flex items-center gap-4 rounded-md p-2 ${$page.url.pathname === link.href ? 'bg-gray-12 text-gray-1 [&_svg]:text-gray-1' : 'hover:text-gray-12'}`}
+			class:active={$page.url.pathname.includes(link.href)}
 		>
-			<XIcon />
+			<svelte:component this={link.icon} class="text-yellow-12" />
+		</a>
+	{/each}
+	{#if $page.data.session}
+		<a
+			href="/profile"
+			class={`flex items-center gap-4 rounded-md p-2 ${$page.url.pathname === '/profile' ? 'bg-gray-12 text-gray-1 [&_svg]:text-gray-1' : 'hover:text-gray-12'}`}
+			class:active={$page.url.pathname.includes('/profile')}
+		>
+			<User2 class="text-yellow-12" />
+		</a>
+		<button
+			class="flex items-center gap-4 rounded-md p-2 hover:text-gray-12"
+			on:click={() => signOut()}
+		>
+			<LogOutIcon class="text-yellow-12" />
 		</button>
-	</nav>
-{/if}
+	{:else}
+		<button
+			class="flex items-center gap-4 rounded-md hover:text-gray-12"
+			on:click={() => signIn('github')}
+		>
+			<LogInIcon class="text-yellow-12" />
+		</button>
+	{/if}
+</nav>

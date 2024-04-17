@@ -3,11 +3,11 @@
 	import type { SelectMusic } from '$lib/db';
 	import {
 		audio,
+		isDrawerOpen,
 		isLoading,
 		isLooped,
 		isPlaying,
 		isShuffled,
-		showPlayer,
 		title,
 	} from '$lib/store';
 	import { nextTrack, playPauseTrack, prevTrack } from '$lib/utils';
@@ -25,6 +25,7 @@
 	} from 'lucide-svelte';
 	import Progress from './Progress.svelte';
 	import { onMount } from 'svelte';
+	import { Drawer } from 'vaul-svelte';
 
 	export let musics: SelectMusic[];
 	export let length: number;
@@ -46,7 +47,7 @@
 	};
 
 	const handleClose = () => {
-		$showPlayer = false;
+		$isDrawerOpen = false;
 		$audio.pause();
 	};
 
@@ -64,60 +65,130 @@
 	});
 </script>
 
-<section
-	class="absolute bottom-0 left-0 right-0 grid h-24 grid-cols-[2fr_2fr_5fr_1fr] items-center justify-between gap-4 bg-black/90 p-4"
->
-	<div class="flex items-center gap-2">
-		<img src={cover} alt="" class="h-10 w-10 rounded-sm" />
-		<p class="font-semibold text-gray-12">{$title}</p>
-	</div>
-	<div class="flex items-center gap-2">
-		<Button
-			intent="ghost"
-			size="icon"
-			on:click={() => prevTrack(musics, length)}
-		>
-			<SkipBack />
-		</Button>
-		<Button
-			intent="primary"
-			rounded="full"
-			size="icon"
-			on:click={() => playPauseTrack(raf)}
-			disabled={$isLoading}
-		>
-			{#if $isLoading}
-				<Loader2Icon class="animate-spin" />
-			{:else if $isPlaying}
-				<Pause />
-			{:else}
-				<Play />
-			{/if}
-		</Button>
-		<Button
-			intent="ghost"
-			size="icon"
-			on:click={() => nextTrack(musics, length)}
-		>
-			<SkipForward />
-		</Button>
-		<Button intent="ghost" size="icon">
-			<Heart />
-		</Button>
-	</div>
-	<Progress />
-	<div class="flex items-center gap-2">
-		<Button intent="ghost" size="icon" on:click={handleShuffle}>
-			<Shuffle class={`h-4 w-4 ${$isShuffled ? 'text-yellow-11' : ''}`} />
-		</Button>
-		<Button intent="ghost" size="icon" on:click={handleLoop}>
-			<Repeat class={`h-4 w-4 ${$isLooped ? 'text-yellow-11' : ''}`} />
-		</Button>
-		<Button intent="ghost" size="icon" on:click={handlePlaylist}>
-			<ListPlus class="h-4 w-4" />
-		</Button>
-	</div>
-	<button class="absolute right-1 top-1" on:click={handleClose}>
-		<XIcon class="h-4 w-4" />
-	</button>
-</section>
+<Drawer.Portal class="hidden md:block">
+	<Drawer.Overlay class="fixed inset-0 bg-black/40" />
+	<Drawer.Content
+		class="bodrer-t-gray-5 fixed bottom-0 left-0 right-0 grid grid-cols-[2fr_2fr_5fr_1fr] items-center justify-between gap-4 rounded-t-md border-t bg-gray-1 px-4 py-6"
+	>
+		<div class="flex items-center gap-2">
+			<img src={cover} alt="" class="h-16 w-16 rounded-sm" />
+			<p class="text-xl font-semibold text-gray-12">{$title}</p>
+		</div>
+		<div class="flex items-center gap-2">
+			<Button
+				intent="ghost"
+				size="icon"
+				on:click={() => prevTrack(musics, length)}
+			>
+				<SkipBack />
+			</Button>
+			<Button
+				intent="primary"
+				rounded="full"
+				size="icon"
+				on:click={() => playPauseTrack(raf)}
+				disabled={$isLoading}
+			>
+				{#if $isLoading}
+					<Loader2Icon class="animate-spin" />
+				{:else if $isPlaying}
+					<Pause />
+				{:else}
+					<Play />
+				{/if}
+			</Button>
+			<Button
+				intent="ghost"
+				size="icon"
+				on:click={() => nextTrack(musics, length)}
+			>
+				<SkipForward />
+			</Button>
+			<Button intent="ghost" size="icon">
+				<Heart />
+			</Button>
+		</div>
+		<Progress />
+		<div class="flex items-center gap-2">
+			<Button intent="ghost" size="icon" on:click={handleShuffle}>
+				<Shuffle class={`h-4 w-4 ${$isShuffled ? 'text-yellow-11' : ''}`} />
+			</Button>
+			<Button intent="ghost" size="icon" on:click={handleLoop}>
+				<Repeat class={`h-4 w-4 ${$isLooped ? 'text-yellow-11' : ''}`} />
+			</Button>
+			<Button intent="ghost" size="icon" on:click={handlePlaylist}>
+				<ListPlus class="h-4 w-4" />
+			</Button>
+		</div>
+		<button class="absolute right-1 top-1" on:click={handleClose}>
+			<XIcon class="h-4 w-4" />
+		</button>
+	</Drawer.Content>
+</Drawer.Portal>
+
+<Drawer.Portal class="block md:hidden">
+	<Drawer.Overlay class="fixed inset-0 bg-black/40" />
+	<Drawer.Content
+		class="bodrer-t-gray-5 fixed bottom-0 left-0 right-0 flex flex-col rounded-t-md border-t bg-gray-1"
+	>
+		<div class="flex flex-col items-center justify-center gap-8 px-2 py-8">
+			<div
+				class="mx-auto mb-4 h-1.5 w-12 flex-shrink-0 rounded-full bg-gray-9"
+			/>
+			<div class="flex flex-col items-center gap-2">
+				<img
+					src={cover}
+					alt=""
+					class="mx-auto max-w-56 rounded-md border border-gray-5"
+				/>
+				<p class="text-center text-2xl font-semibold text-gray-12">{$title}</p>
+			</div>
+			<div class="flex items-center gap-4">
+				<Button
+					intent="ghost"
+					size="icon"
+					on:click={() => prevTrack(musics, length)}
+				>
+					<SkipBack />
+				</Button>
+				<Button
+					intent="primary"
+					rounded="full"
+					size="icon"
+					on:click={() => playPauseTrack(raf)}
+					disabled={$isLoading}
+				>
+					{#if $isLoading}
+						<Loader2Icon class="h-8 w-8 animate-spin" />
+					{:else if $isPlaying}
+						<Pause class="h-8 w-8" />
+					{:else}
+						<Play class="h-8 w-8" />
+					{/if}
+				</Button>
+				<Button
+					intent="ghost"
+					size="icon"
+					on:click={() => nextTrack(musics, length)}
+				>
+					<SkipForward />
+				</Button>
+			</div>
+			<Progress />
+			<div class="flex items-center gap-4">
+				<Button intent="ghost" size="icon">
+					<Heart class="h-4 w-4" />
+				</Button>
+				<Button intent="ghost" size="icon" on:click={handleShuffle}>
+					<Shuffle class={`h-4 w-4 ${$isShuffled ? 'text-yellow-11' : ''}`} />
+				</Button>
+				<Button intent="ghost" size="icon" on:click={handleLoop}>
+					<Repeat class={`h-4 w-4 ${$isLooped ? 'text-yellow-11' : ''}`} />
+				</Button>
+				<Button intent="ghost" size="icon" on:click={handlePlaylist}>
+					<ListPlus class="h-4 w-4" />
+				</Button>
+			</div>
+		</div>
+	</Drawer.Content>
+</Drawer.Portal>
