@@ -206,7 +206,7 @@ export const actions: Actions = {
 			if (!metadata) {
 				return setError(form, 'tracks._errors', 'Could not find metadata');
 			}
-			const name = metadata.common.title;
+			const name = metadata.common.title ?? '';
 			const musicExists = await db.query.musics.findFirst({
 				where: (musics, { eq, and }) =>
 					and(eq(musics.name, name), eq(musics.albumId, albumId)),
@@ -214,7 +214,7 @@ export const actions: Actions = {
 			if (musicExists) {
 				continue;
 			}
-			let artists = metadata.common.artists;
+			let artists = metadata.common.artists ?? [];
 			artists = artists[0].split(',').map((item) => item.trim());
 			const titleSlug = musicSlug(track.name);
 			const filename = `${slug}/${crypto.randomUUID()}${titleSlug}`;
@@ -230,6 +230,9 @@ export const actions: Actions = {
 					albumId,
 				})
 				.returning({ musicId: musics.id });
+			if (!newMusic) {
+				continue;
+			}
 			const musicId = newMusic[0].musicId;
 			let authorId;
 			artists?.forEach(async (artist) => {
