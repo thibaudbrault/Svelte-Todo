@@ -4,7 +4,7 @@
 	import { Progress } from 'bits-ui';
 </script>
 
-<div class="flex hidden w-full max-w-[600px] items-center gap-4 md:block">
+<div class="hidden w-full max-w-[600px] items-center gap-4 md:flex">
 	<Progress.Root
 		max={$duration}
 		bind:value={$sliderValue}
@@ -17,7 +17,7 @@
 			}%)`}
 		/>
 	</Progress.Root>
-	<p class="whitespace-nowrap text-xs font-semibold text-gray-11">
+	<p class="whitespace-nowrap text-sm font-semibold text-gray-11">
 		{format($currentTime)} / {format($duration)}
 	</p>
 </div>

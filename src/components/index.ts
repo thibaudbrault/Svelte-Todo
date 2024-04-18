@@ -2,6 +2,7 @@ export { default as Button } from './Button.svelte';
 export { default as Card } from './Card.svelte';
 export { default as Combobox } from './Combobox.svelte';
 export { default as Dialog } from './Dialog.svelte';
+export { default as Dropdown } from './Dropdown.svelte';
 export { default as FileInput } from './FileInput.svelte';
 export { default as Form } from './Form.svelte';
 export { default as InPlaceEdit } from './InPlaceEdit.svelte';

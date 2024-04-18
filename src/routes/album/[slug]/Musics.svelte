@@ -1,15 +1,18 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import { Button } from '$components';
+	import { Button, Dropdown } from '$components';
 	import { trackId } from '$lib/store';
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import { Drawer } from 'vaul-svelte';
 
+	let selectedTrack: number | null = null;
+
 	const handleClick = (index: number) => {
 		$trackId = index;
+		selectedTrack = index;
 		scrollIntoView($trackId);
 		loadTrack($page.data.musics, $page.data.length);
 	};
@@ -37,12 +40,14 @@
 {#if $page.data.musics.length > 0}
 	<div class="hidden space-y-2 md:block">
 		{#each $page.data.musics as music, index}
-			<Drawer.Trigger
-				id={`track-${index}`}
-				on:click={() => handleClick(index)}
-				class={`flex w-full cursor-pointer items-center justify-between rounded-md p-2 ${$trackId === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
+			<div
+				class={`flex w-full cursor-pointer items-center justify-between rounded-md p-2 ${selectedTrack === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
 			>
-				<div class="flex flex-col items-start gap-1">
+				<Drawer.Trigger
+					id={`track-${index}`}
+					on:click={() => handleClick(index)}
+					class="flex flex-1 flex-col items-start gap-1"
+				>
 					<p class="text-xl font-bold">{music.name}</p>
 					{#each music.musicsToAuthors as authors}
 						<p
@@ -51,7 +56,7 @@
 							{authors.author.name}
 						</p>
 					{/each}
-				</div>
+				</Drawer.Trigger>
 				<div class="flex items-center gap-8">
 					<p class="text-sm font-medium">{format(music.duration)}</p>
 					{#if $page.data.session}
@@ -73,19 +78,30 @@
 							</form>
 						{/if}
 					{/if}
-					<p><MoreHorizontal /></p>
+					<Dropdown>
+						<MoreHorizontal slot="trigger" />
+						<svelte:fragment slot="content">
+							{#each music.musicsToAuthors as authors}
+								<p class="font-semibold capitalize">
+									{authors.author.name}
+								</p>
+							{/each}
+						</svelte:fragment>
+					</Dropdown>
 				</div>
-			</Drawer.Trigger>
+			</div>
 		{/each}
 	</div>
 	<div class="block md:hidden">
 		{#each $page.data.musics as music, index}
-			<Drawer.Trigger
-				id={`track-${index}`}
-				on:click={() => handleClick(index)}
+			<div
 				class={`flex w-full cursor-pointer items-center justify-between gap-1 rounded-md p-2 ${$trackId === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
 			>
-				<div class="flex flex-col items-start gap-1">
+				<Drawer.Trigger
+					id={`track-${index}`}
+					on:click={() => handleClick(index)}
+					class="flex flex-1 flex-col items-start gap-1"
+				>
 					<p class="text-left font-bold">{music.name}</p>
 					{#each music.musicsToAuthors as authors}
 						<p
@@ -94,11 +110,20 @@
 							{authors.author.name}
 						</p>
 					{/each}
-				</div>
+				</Drawer.Trigger>
 				<div class="flex items-center gap-8">
-					<p><MoreHorizontal /></p>
+					<Dropdown>
+						<MoreHorizontal slot="trigger" />
+						<svelte:fragment slot="content">
+							{#each music.musicsToAuthors as authors}
+								<p class="font-semibold capitalize">
+									{authors.author.name}
+								</p>
+							{/each}
+						</svelte:fragment>
+					</Dropdown>
 				</div>
-			</Drawer.Trigger>
+			</div>
 		{/each}
 	</div>
 {:else}

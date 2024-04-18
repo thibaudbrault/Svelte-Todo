@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import { Button } from '$components';
+	import { Button, Dropdown } from '$components';
 	import type { SelectMusic } from '$lib/db';
 	import { isPlaying } from '$lib/store.js';
-	import { AddMusic } from '$modules';
-	import { Heart } from 'lucide-svelte';
+	import { AddMusic, DeleteMusics } from '$modules';
+	import { Heart, MoreHorizontal } from 'lucide-svelte';
 
 	export let cover: string;
 	export let name: string;
 	export let release: number;
+	export let albumId: string;
 
 	const calculateTotalDuration = (musics: SelectMusic[]) => {
 		let totalDurationSeconds = 0;
@@ -70,16 +71,32 @@
 			</ul>
 			<div class="flex gap-1">
 				{#if $page.data.session}
-					<form method="POST" use:enhance action="?/addFavoriteAlbum">
-						<input value={$page.data.album.id} name="albumId" hidden />
-						<input value={$page.data.user.id} name="userId" hidden />
-						<Button intent="ghost" size="icon">
-							<Heart />
-						</Button>
-					</form>
+					{#if $page.data.favoritesAlbums.some((fav) => fav.id === albumId)}
+						<form method="POST" use:enhance action="?/removeFavoriteAlbum">
+							<input value={$page.data.album.id} name="albumId" hidden />
+							<input value={$page.data.user.id} name="userId" hidden />
+							<Button intent="ghost" size="icon" class="text-red-400">
+								<Heart class="fill-red-400" />
+							</Button>
+						</form>
+					{:else}
+						<form method="POST" use:enhance action="?/addFavoriteAlbum">
+							<input value={$page.data.album.id} name="albumId" hidden />
+							<input value={$page.data.user.id} name="userId" hidden />
+							<Button intent="ghost" size="icon">
+								<Heart />
+							</Button>
+						</form>
+					{/if}
 				{/if}
 				{#if $page.data.user && $page.data.user.role === 'admin'}
-					<AddMusic />
+					<Dropdown>
+						<MoreHorizontal slot="trigger" />
+						<svelte:fragment slot="content">
+							<AddMusic />
+							<DeleteMusics />
+						</svelte:fragment>
+					</Dropdown>
 				{/if}
 			</div>
 		</div>

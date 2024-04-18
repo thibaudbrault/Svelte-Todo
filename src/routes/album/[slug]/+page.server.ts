@@ -254,4 +254,16 @@ export const actions: Actions = {
 		}
 		return message(form, 'Tracks added successfully');
 	},
+	deleteMusics: async ({ params }) => {
+		const slug = params.slug as string;
+		const album = await db.query.albums.findFirst({
+			where: eq(albums.slug, slug),
+		});
+		if (!album) {
+			return error(404, { message: 'Could not find album' });
+		}
+		const { id: albumId } = album;
+		await db.delete(musics).where(eq(musics.albumId, albumId));
+		return { message: 'Musics deleted successfully' };
+	},
 };

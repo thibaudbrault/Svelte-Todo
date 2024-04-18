@@ -7,10 +7,9 @@
 		isLoading,
 		trackId,
 	} from '$lib/store.js';
-	import { loadTrack, nextTrack } from '$lib/utils';
+	import { nextTrack } from '$lib/utils';
 	import { Player } from '$modules';
 	import { Separator } from 'bits-ui';
-	import { onMount } from 'svelte';
 	import { Drawer } from 'vaul-svelte';
 	import type { PageServerData } from './$types';
 	import Header from './Header.svelte';
@@ -21,15 +20,16 @@
 	$: src = musics[$trackId]?.url;
 
 	let raf: number = 0;
-
-	onMount(() => {
-		loadTrack(musics, length);
-	});
 </script>
 
 <Drawer.Root bind:open={$isDrawerOpen}>
 	<div class="flex flex-col gap-4">
-		<Header cover={album.cover} name={album.name} release={album.release} />
+		<Header
+			cover={album.cover}
+			name={album.name}
+			release={album.release}
+			albumId={album.id}
+		/>
 		<Separator.Root class="mx-auto h-px w-11/12 bg-gray-5" />
 		<Musics />
 	</div>
@@ -42,7 +42,5 @@
 		on:ended={() => nextTrack(musics, length)}
 		hidden
 	/>
-	{#if $isDrawerOpen}
-		<Player {musics} {length} cover={album.cover} {raf} />
-	{/if}
+	<Player {musics} {length} cover={album.cover} {raf} />
 </Drawer.Root>
