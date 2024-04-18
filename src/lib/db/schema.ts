@@ -93,7 +93,7 @@ export const musicsToAuthors = pgTable(
 			.references(() => authors.id, { onDelete: 'cascade' }),
 	},
 	(t) => ({
-		pk: primaryKey(t.musicId, t.authorId),
+		pk: primaryKey({ columns: [t.musicId, t.authorId] }),
 	}),
 );
 
@@ -109,7 +109,7 @@ export const musicToAuthorRelations = relations(musicsToAuthors, ({ one }) => ({
 }));
 
 export const users = pgTable('user', {
-	id: text('id').notNull().primaryKey(),
+	id: uuid('id').notNull().primaryKey(),
 	name: text('name'),
 	email: text('email').notNull(),
 	emailVerified: timestamp('emailVerified', { mode: 'date' }),
@@ -120,7 +120,7 @@ export const users = pgTable('user', {
 export const userFavoritesMusics = pgTable(
 	'user_favorites_musics',
 	{
-		userId: text('user_id')
+		userId: uuid('user_id')
 			.notNull()
 			.references(() => users.id, { onDelete: 'cascade' }),
 		musicId: uuid('music_id')
@@ -128,14 +128,14 @@ export const userFavoritesMusics = pgTable(
 			.references(() => musics.id, { onDelete: 'cascade' }),
 	},
 	(t) => ({
-		pk: primaryKey(t.userId, t.musicId),
+		pk: primaryKey({ columns: [t.userId, t.musicId] }),
 	}),
 );
 
 export const userFavoritesAlbums = pgTable(
 	'user_favorites_albums',
 	{
-		userId: text('user_id')
+		userId: uuid('user_id')
 			.notNull()
 			.references(() => users.id, { onDelete: 'cascade' }),
 		albumId: uuid('album_id')
@@ -143,14 +143,14 @@ export const userFavoritesAlbums = pgTable(
 			.references(() => albums.id, { onDelete: 'cascade' }),
 	},
 	(t) => ({
-		pk: primaryKey(t.userId, t.albumId),
+		pk: primaryKey({ columns: [t.userId, t.albumId] }),
 	}),
 );
 
 export const playlists = pgTable('playlists', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
 	name: text('name').notNull(),
-	userId: text('user_id')
+	userId: uuid('user_id')
 		.notNull()
 		.references(() => users.id),
 });
@@ -168,7 +168,7 @@ export const playlistMusics = pgTable('playlist_musics', {
 export const accounts = pgTable(
 	'account',
 	{
-		userId: text('userId')
+		userId: uuid('userId')
 			.notNull()
 			.references(() => users.id, { onDelete: 'cascade' }),
 		type: text('type').$type<AdapterAccount['type']>().notNull(),
@@ -191,7 +191,7 @@ export const accounts = pgTable(
 
 export const sessions = pgTable('session', {
 	sessionToken: text('sessionToken').notNull().primaryKey(),
-	userId: text('userId')
+	userId: uuid('userId')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade' }),
 	expires: timestamp('expires', { mode: 'date' }).notNull(),
