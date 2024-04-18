@@ -87,10 +87,10 @@ export const musicsToAuthors = pgTable(
 	{
 		musicId: uuid('music_id')
 			.notNull()
-			.references(() => musics.id),
+			.references(() => musics.id, { onDelete: 'cascade' }),
 		authorId: uuid('author_id')
 			.notNull()
-			.references(() => authors.id),
+			.references(() => authors.id, { onDelete: 'cascade' }),
 	},
 	(t) => ({
 		pk: primaryKey(t.musicId, t.authorId),
