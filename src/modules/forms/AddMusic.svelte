@@ -8,9 +8,13 @@
 	const acceptedExtensions = '.flac, .mp3';
 </script>
 
-<Dialog title="New music" trigger="Add music">
-	<BitsDialog.Trigger slot="trigger" class="bg-transparent">
-		<Plus class="h-8 w-8 font-semibold" />
+<Dialog title="New music">
+	<BitsDialog.Trigger
+		slot="trigger"
+		class="flex items-center gap-1 bg-transparent hover:text-yellow-12"
+	>
+		<Plus />
+		<span class="font-semibold">Add</span>
 	</BitsDialog.Trigger>
 	<Tabs.Root value="single" slot="content" class="w-full">
 		<Tabs.List
@@ -33,6 +37,7 @@
 				id="createOneMusic"
 				data={$page.data.formSingle}
 				schema={creatOneMusicSchema}
+				buttonText="Add"
 				class="w-full space-y-4"
 				let:form
 			>
@@ -54,6 +59,7 @@
 				id="createManyMusic"
 				data={$page.data.formMultiple}
 				schema={createManyMusicSchema}
+				buttonText="Add"
 				class="w-full space-y-4"
 				let:form
 			>

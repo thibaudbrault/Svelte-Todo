@@ -31,6 +31,7 @@
 			id="createAlbum"
 			data={$page.data.createAlbumForm}
 			schema={createAlbumSchema}
+			buttonText="Add"
 			class="w-full space-y-4"
 			let:form
 		>
