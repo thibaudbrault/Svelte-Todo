@@ -8,3 +8,10 @@ export const format = (seconds: number): string => {
 
 	return `${minutes}:${seconds}`;
 };
+
+export const renameFileWithExtension = (fileName: string, newName: string) => {
+	const splitFileName = fileName.split('.');
+	const extension = splitFileName.pop();
+	const newFileName = newName + '.' + extension;
+	return newFileName;
+};

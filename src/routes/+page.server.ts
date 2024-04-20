@@ -1,7 +1,7 @@
 import { CLOUDFRONT_URL } from '$env/static/private';
 import { albums, companies, db, games } from '$lib/db';
 import { uploadFile } from '$lib/server';
-import { albumSlug } from '$lib/utils';
+import { albumSlug, renameFileWithExtension } from '$lib/utils';
 import {
 	createAlbumSchema,
 	createCompanySchema,
@@ -102,7 +102,8 @@ export const actions: Actions = {
 		if (albumExists) {
 			return setError(form, 'name', 'Album already exists');
 		}
-		const filename = `${slug}/${crypto.randomUUID()}cover`;
+		let filename = renameFileWithExtension(cover.name, 'cover');
+		filename = `${slug}/${crypto.randomUUID()}${filename}`;
 		const findGame = await db.query.games.findFirst({
 			where: eq(companies.value, game),
 		});
