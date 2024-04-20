@@ -86,7 +86,7 @@
 	{/if}
 </aside>
 
-<nav class="mx-auto block flex w-11/12 justify-between md:hidden">
+<nav class="mx-auto flex w-11/12 justify-between md:hidden">
 	{#each links as link}
 		<a
 			href={link.href}

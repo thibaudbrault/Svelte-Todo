@@ -68,7 +68,7 @@
 <Drawer.Portal>
 	<Drawer.Overlay class="fixed inset-0 bg-black/40" />
 	<Drawer.Content
-		class="bodrer-t-gray-5 fixed bottom-0 left-0 right-0 grid hidden grid-cols-[2fr_2fr_5fr_1fr] items-center justify-between gap-4 rounded-t-md border-t bg-gray-1 px-4 py-6 md:grid"
+		class="bodrer-t-gray-5 fixed bottom-0 left-0 right-0 hidden grid-cols-[2fr_2fr_5fr_1fr] items-center justify-between gap-4 rounded-t-md border-t bg-gray-1 px-4 py-6 md:grid"
 	>
 		<div class="flex items-center gap-2">
 			<img src={cover} alt="" class="h-16 w-16 rounded-sm" />
@@ -126,7 +126,7 @@
 		</button>
 	</Drawer.Content>
 	<Drawer.Content
-		class="bodrer-t-gray-5 fixed bottom-0 left-0 right-0 flex flex flex-col rounded-t-md border-t bg-gray-1 md:hidden"
+		class="bodrer-t-gray-5 fixed bottom-0 left-0 right-0 flex flex-col rounded-t-md border-t bg-gray-1 md:hidden"
 	>
 		<div class="flex flex-col items-center justify-center gap-8 px-2 py-8">
 			<div

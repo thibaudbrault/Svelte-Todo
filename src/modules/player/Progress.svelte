@@ -22,9 +22,7 @@
 	</p>
 </div>
 
-<div
-	class="mx-auto block flex w-11/12 max-w-[600px] items-center gap-4 md:hidden"
->
+<div class="mx-auto flex w-11/12 max-w-[600px] items-center gap-4 md:hidden">
 	<p class="whitespace-nowrap text-sm font-semibold text-gray-11">
 		{format($currentTime)}
 	</p>
