@@ -1,24 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import {
-		audio,
-		currentTime,
-		duration,
-		isDrawerOpen,
-		isLoading,
-		trackId,
-	} from '$lib/store';
-	import { loadTrack, nextTrack } from '$lib/utils';
-	import { Player } from '$modules';
-
-	$: src = $page.data.favoritesMusics[$trackId]?.url;
-
-	let raf: number = 0;
+	import { musics, trackId, length } from '$lib/store';
+	import { loadTrack } from '$lib/utils';
+	import { onMount } from 'svelte';
 
 	const handleClick = (index: number) => {
 		$trackId = index;
-		loadTrack($page.data.favoritesMusics, $page.data.favoritesMusics.length);
+		loadTrack();
 	};
+
+	onMount(() => {
+		$musics = $page.data.favoritesMusics;
+		$length = $page.data.favoritesMusics.length;
+	});
 </script>
 
 <section>
@@ -36,20 +30,3 @@
 		</p>
 	{/if}
 </section>
-<audio
-	{src}
-	bind:this={$audio}
-	bind:duration={$duration}
-	bind:currentTime={$currentTime}
-	on:canplay={() => ($isLoading = false)}
-	on:ended={() => nextTrack($page.data.favoritesMusics, length)}
-	hidden
-/>
-{#if $isDrawerOpen}
-	<Player
-		musics={$page.data.favoritesMusics}
-		length={$page.data.favoritesMusics.length}
-		cover={''}
-		{raf}
-	/>
-{/if}

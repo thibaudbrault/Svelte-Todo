@@ -1,12 +1,13 @@
-import type { SelectMusic } from '$lib/db';
 import {
 	audio,
 	currentTime,
-	isDrawerOpen,
+	isPlayerOpen,
 	isLoading,
 	isLooped,
 	isPlaying,
 	isShuffled,
+	length,
+	musics,
 	sliderValue,
 	title,
 	trackId,
@@ -18,20 +19,20 @@ export const scrollIntoView = (currentTrackId: number) => {
 	track?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 };
 
-export const loadTrack = (musics: SelectMusic[], length: number) => {
+export const loadTrack = () => {
 	isLoading.set(true);
 	sliderValue.set(0);
-	if (length > 0) {
-		title.set(musics[get(trackId)]?.name);
+	if (get(length) > 0) {
+		title.set(get(musics)[get(trackId)]?.name);
 		audio.update(($audio) => {
-			$audio.src = musics[get(trackId)]?.url;
+			$audio.src = get(musics)[get(trackId)]?.url;
 			$audio.load();
 			if (get(isPlaying)) {
 				$audio.play();
 			}
 			return $audio;
 		});
-		isDrawerOpen.set(true);
+		isPlayerOpen.set(true);
 	}
 };
 
@@ -60,11 +61,11 @@ export const playPauseTrack = (raf: number) => {
 	}
 };
 
-export const prevTrack = (musics: SelectMusic[], length: number) => {
+export const prevTrack = () => {
 	currentTime.set(0);
 	let currentTrackId = get(trackId);
 	if (get(isShuffled)) {
-		trackId.set(Math.floor(Math.random() * length));
+		trackId.set(Math.floor(Math.random() * get(length)));
 	} else if (get(isLooped)) {
 		trackId.set(get(trackId));
 	} else {
@@ -72,23 +73,23 @@ export const prevTrack = (musics: SelectMusic[], length: number) => {
 			trackId.set((currentTrackId -= 1));
 			scrollIntoView(currentTrackId);
 		} else {
-			trackId.set(length - 1);
+			trackId.set(get(length) - 1);
 			scrollIntoView(currentTrackId);
 		}
 	}
-	loadTrack(musics, length);
+	loadTrack();
 	switchTrack();
 };
 
-export const nextTrack = (musics: SelectMusic[], length: number) => {
+export const nextTrack = () => {
 	currentTime.set(0);
 	let currentTrackId = get(trackId);
 	if (get(isShuffled)) {
-		trackId.set(Math.floor(Math.random() * length));
+		trackId.set(Math.floor(Math.random() * get(length)));
 	} else if (get(isLooped)) {
 		trackId.set(get(trackId));
 	} else {
-		if (get(trackId) < length - 1) {
+		if (get(trackId) < get(length) - 1) {
 			trackId.set((currentTrackId += 1));
 			scrollIntoView(currentTrackId);
 		} else {
@@ -96,7 +97,7 @@ export const nextTrack = (musics: SelectMusic[], length: number) => {
 			scrollIntoView(currentTrackId);
 		}
 	}
-	loadTrack(musics, length);
+	loadTrack();
 	switchTrack();
 };
 

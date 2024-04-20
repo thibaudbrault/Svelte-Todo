@@ -226,7 +226,7 @@ export const actions: Actions = {
 					name,
 					url: trackUrl,
 					duration: Math.round(metadata.format?.duration ?? 0),
-					number: metadata.common.track.no,
+					number: metadata.common.track.no ?? 0,
 					albumId,
 				})
 				.returning({ musicId: musics.id });

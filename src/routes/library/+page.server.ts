@@ -55,7 +55,7 @@ export const actions: Actions = {
 		await db
 			.update(playlists)
 			.set({ name })
-			.where(and(eq(playlists.id, Number(id)), eq(playlists.userId, userId)));
+			.where(and(eq(playlists.id, id), eq(playlists.userId, userId)));
 		return message(form, 'Playlist updated successfully');
 	},
 	deletePlaylist: async ({ request }) => {
@@ -69,7 +69,7 @@ export const actions: Actions = {
 		const { userId, id } = form.data;
 		await db
 			.delete(playlists)
-			.where(and(eq(playlists.id, Number(id)), eq(playlists.userId, userId)));
+			.where(and(eq(playlists.id, id), eq(playlists.userId, userId)));
 		return message(form, 'Playlist deleted successfully');
 	},
 };

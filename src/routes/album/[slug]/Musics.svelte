@@ -6,26 +6,22 @@
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
-	import { Drawer } from 'vaul-svelte';
-
-	let selectedTrack: number | null = null;
 
 	const handleClick = (index: number) => {
 		$trackId = index;
-		selectedTrack = index;
 		scrollIntoView($trackId);
-		loadTrack($page.data.musics, $page.data.length);
+		loadTrack();
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if (event.key === 'ArrowLeft' && $trackId > 0) {
 			$trackId = $trackId - 1;
 			scrollIntoView($trackId);
-			loadTrack($page.data.musics, $page.data.length);
+			loadTrack();
 		} else if (event.key === 'ArrowRight' && $trackId < $page.data.length - 1) {
 			$trackId = $trackId + 1;
 			scrollIntoView($trackId);
-			loadTrack($page.data.musics, $page.data.length);
+			loadTrack();
 		}
 	};
 
@@ -41,14 +37,14 @@
 	<div class="hidden space-y-2 md:block">
 		{#each $page.data.musics as music, index}
 			<div
-				class={`flex w-full cursor-pointer items-center justify-between rounded-md p-2 ${selectedTrack === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
+				class={`flex w-full cursor-pointer items-center justify-between rounded-md p-2 ${$trackId === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
 			>
-				<Drawer.Trigger
+				<button
 					id={`track-${index}`}
 					on:click={() => handleClick(index)}
 					class="flex flex-1 flex-col items-start gap-1"
 				>
-					<p class="text-xl font-bold">{music.name}</p>
+					<p class="text-left text-xl font-bold">{music.name}</p>
 					{#each music.musicsToAuthors as authors}
 						<p
 							class="flex flex-wrap items-center gap-2 text-xs font-medium capitalize"
@@ -56,7 +52,7 @@
 							{authors.author.name}
 						</p>
 					{/each}
-				</Drawer.Trigger>
+				</button>
 				<div class="flex items-center gap-8">
 					<p class="text-sm font-medium">{format(music.duration)}</p>
 					{#if $page.data.session}
@@ -97,7 +93,7 @@
 			<div
 				class={`flex w-full cursor-pointer items-center justify-between gap-1 rounded-md p-2 ${$trackId === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
 			>
-				<Drawer.Trigger
+				<button
 					id={`track-${index}`}
 					on:click={() => handleClick(index)}
 					class="flex flex-1 flex-col items-start gap-1"
@@ -110,7 +106,7 @@
 							{authors.author.name}
 						</p>
 					{/each}
-				</Drawer.Trigger>
+				</button>
 				<div class="flex items-center gap-8">
 					<Dropdown>
 						<MoreHorizontal slot="trigger" />
