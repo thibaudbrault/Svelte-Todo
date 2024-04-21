@@ -9,8 +9,7 @@ import {
 	userFavoritesMusics,
 } from '$lib/db';
 import {
-	createManyMusicSchema,
-	creatOneMusicSchema,
+	createMusicSchema,
 	favoriteAlbumSchema,
 	favoriteMusicSchema,
 } from '$lib/validation';
@@ -31,8 +30,7 @@ import { musicSlug } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const favoriteForm = await superValidate(zod(favoriteMusicSchema));
-	const formSingle = await superValidate(zod(creatOneMusicSchema));
-	const formMultiple = await superValidate(zod(createManyMusicSchema));
+	const createMusicForm = await superValidate(zod(createMusicSchema));
 	const slug = params.slug;
 	const album = await db.query.albums.findFirst({
 		where: eq(albums.slug, slug),
@@ -69,8 +67,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		musics: albumMusics,
 		likes: albumLikes[0].count,
 		favoriteForm,
-		formSingle,
-		formMultiple,
+		createMusicForm,
 	};
 };
 
@@ -143,47 +140,7 @@ export const actions: Actions = {
 			.where(eq(albums.id, albumId));
 		return message(form, 'Favorite removed successfully');
 	},
-	creatOneMusic: async ({ request, params }) => {
-		try {
-			const slug = params.slug as string;
-			const album = await db.query.albums.findFirst({
-				where: eq(albums.slug, slug),
-			});
-			if (!album) {
-				return error(404, 'Could not find album');
-			}
-			const { id: albumId } = album;
-			const formData = await request.formData();
-			const form = await superValidate(formData, zod(creatOneMusicSchema), {
-				id: 'createOneMusic',
-			});
-			if (!form.valid) {
-				fail(400, { form });
-			}
-			const { name, track, number } = form.data;
-			const filename = `${slug}/${crypto.randomUUID()}${track?.name}`;
-			const buffer = Buffer.from(await track.arrayBuffer());
-			const metadata = await mm.parseBuffer(buffer);
-			await uploadFile(
-				Buffer.from(await track.arrayBuffer()),
-				filename,
-				track.type,
-			);
-			const trackUrl = CLOUDFRONT_URL + filename;
-			await db.insert(musics).values({
-				name,
-				url: trackUrl,
-				duration: Math.round(metadata.format?.duration ?? 0),
-				number: Number(number),
-				albumId,
-			});
-			return withFiles({ form });
-		} catch (error) {
-			console.error(error);
-			fail(500, { message: 'Could not create an album' });
-		}
-	},
-	createManyMusic: async ({ request, params }) => {
+	createMusic: async ({ request, params }) => {
 		const slug = params.slug as string;
 		const album = await db.query.albums.findFirst({
 			where: eq(albums.slug, slug),
@@ -193,8 +150,8 @@ export const actions: Actions = {
 		}
 		const { id: albumId } = album;
 		const formData = await request.formData();
-		const form = await superValidate(formData, zod(createManyMusicSchema), {
-			id: 'createManyMusic',
+		const form = await superValidate(formData, zod(createMusicSchema), {
+			id: 'createMusic',
 		});
 		if (!form.valid) {
 			return fail(400, withFiles({ form }));
