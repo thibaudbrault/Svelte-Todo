@@ -20,21 +20,23 @@
 		<div class="absolute inset-0 rounded-full bg-gray-1 opacity-15" />
 	</div>
 	<div class="flex flex-1 flex-col justify-end gap-4">
-		<div
-			class="flex justify-center text-sm font-semibold capitalize text-yellowA-11 sm:justify-start"
-		>
-			<small>
-				{$page.data.game}
-			</small>
-			<small class="before:mx-2 before:font-bold before:content-['·']">
-				{$page.data.album.release}
-			</small>
+		<div class="flex flex-col gap-1">
+			<div
+				class="flex justify-center text-sm font-semibold capitalize text-yellowA-11 sm:justify-start"
+			>
+				<small>
+					{$page.data.game}
+				</small>
+				<small class="before:mx-2 before:font-bold before:content-['·']">
+					{$page.data.album.release}
+				</small>
+			</div>
+			<h1
+				class="text-center text-4xl font-bold sm:text-left md:text-5xl lg:text-6xl"
+			>
+				{$page.data.album.name}
+			</h1>
 		</div>
-		<h1
-			class="text-center text-4xl font-bold sm:text-left md:text-5xl lg:text-6xl"
-		>
-			{$page.data.album.name}
-		</h1>
 		<div class="flex items-center justify-between">
 			<ul class="flex gap-2 text-gray-11 sm:gap-0">
 				<li>{$page.data.likes} likes</li>
