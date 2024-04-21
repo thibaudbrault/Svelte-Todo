@@ -3,7 +3,6 @@
 
 	export let placeholder: string;
 	export let query: string;
-	console.log(query);
 </script>
 
 <div class="mx-auto w-full [&_svg]:focus-within:text-yellow-12">
