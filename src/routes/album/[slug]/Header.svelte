@@ -2,10 +2,30 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { Button, Dropdown } from '$components';
-	import { isPlaying } from '$lib/store.js';
+	import type { SelectAlbum } from '$lib/db';
+	import { favoritesAlbums, isPlaying } from '$lib/store';
 	import { calculateTotalDuration, formatTotalDuration } from '$lib/utils';
 	import { AddMusic, DeleteMusics } from '$modules';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
+	import { onMount } from 'svelte';
+
+	const handleFavorite = (id: string) => {
+		favoritesAlbums.update((currentFavorites) => {
+			const newFavorites = new Set(currentFavorites);
+			if (newFavorites.has(id)) {
+				newFavorites.delete(id);
+			} else {
+				newFavorites.add(id);
+			}
+			return newFavorites;
+		});
+	};
+
+	onMount(() => {
+		$page.data.favoritesAlbums.forEach((album: SelectAlbum) => {
+			favoritesAlbums.update((current) => current.add(album.id));
+		});
+	});
 </script>
 
 <div class="flex flex-col items-center gap-4 p-4 sm:flex-row">
@@ -49,16 +69,26 @@
 			</ul>
 			<div class="flex gap-1">
 				{#if $page.data.session}
-					{#if $page.data.favoritesAlbums.some((fav) => fav.id === $page.data.album.albumId)}
-						<form method="POST" use:enhance action="?/removeFavoriteAlbum">
+					{#if $favoritesAlbums.has($page.data.album.id)}
+						<form
+							method="POST"
+							use:enhance
+							action="?/removeFavoriteAlbum"
+							on:submit={() => handleFavorite($page.data.album.id)}
+						>
 							<input value={$page.data.album.id} name="albumId" hidden />
 							<input value={$page.data.user.id} name="userId" hidden />
-							<Button intent="ghost" size="icon" class="text-red-400">
-								<Heart class="fill-red-400" />
+							<Button intent="ghost" size="icon" class="text-red-500">
+								<Heart class="fill-red-500" />
 							</Button>
 						</form>
 					{:else}
-						<form method="POST" use:enhance action="?/addFavoriteAlbum">
+						<form
+							method="POST"
+							use:enhance
+							action="?/addFavoriteAlbum"
+							on:submit={() => handleFavorite($page.data.album.id)}
+						>
 							<input value={$page.data.album.id} name="albumId" hidden />
 							<input value={$page.data.user.id} name="userId" hidden />
 							<Button intent="ghost" size="icon">

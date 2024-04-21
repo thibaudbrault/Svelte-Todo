@@ -4,6 +4,7 @@ import type { SelectMusic } from './db';
 export const audio: Writable<HTMLAudioElement> = writable();
 export const musics: Writable<SelectMusic[]> = writable([]);
 export const favoritesMusics: Writable<Set<string>> = writable(new Set());
+export const favoritesAlbums: Writable<Set<string>> = writable(new Set());
 
 export const trackId = writable(0);
 export const currentTime = writable(0);
