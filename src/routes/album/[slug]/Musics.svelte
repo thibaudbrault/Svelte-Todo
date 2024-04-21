@@ -2,7 +2,8 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { Button, Dropdown } from '$components';
-	import { trackId } from '$lib/store';
+	import type { SelectMusic } from '$lib/db';
+	import { favoritesMusics, trackId } from '$lib/store';
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
@@ -25,7 +26,22 @@
 		}
 	};
 
+	const handleFavorite = (id: string) => {
+		favoritesMusics.update((currentFavorites) => {
+			const newFavorites = new Set(currentFavorites);
+			if (newFavorites.has(id)) {
+				newFavorites.delete(id);
+			} else {
+				newFavorites.add(id);
+			}
+			return newFavorites;
+		});
+	};
+
 	onMount(() => {
+		$page.data.favoritesMusics.forEach((music: SelectMusic) => {
+			favoritesMusics.update((current) => current.add(music.id));
+		});
 		document.addEventListener('keydown', handleKeyDown);
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
@@ -56,19 +72,39 @@
 				<div class="flex items-center gap-8">
 					<p class="text-sm font-medium">{format(music.duration)}</p>
 					{#if $page.data.session}
-						{#if $page.data.favoritesMusics.some((fav) => fav.id === music.id)}
-							<form method="POST" use:enhance action="?/removeFavoriteMusic">
+						{#if $favoritesMusics.has(music.id)}
+							<form
+								method="POST"
+								use:enhance
+								action="?/removeFavoriteMusic"
+								on:submit={() => handleFavorite(music.id)}
+							>
 								<input value={music.id} name="musicId" hidden />
 								<input value={$page.data.user.id} name="userId" hidden />
-								<Button intent="ghost" size="icon" class="text-red-400">
-									<Heart class="fill-red-400" />
+								<Button
+									intent="ghost"
+									size="icon"
+									class="text-red-500"
+									type="submit"
+								>
+									<Heart class="fill-red-500" />
 								</Button>
 							</form>
 						{:else}
-							<form method="POST" use:enhance action="?/addFavoriteMusic">
+							<form
+								method="POST"
+								use:enhance
+								action="?/addFavoriteMusic"
+								on:submit={() => handleFavorite(music.id)}
+							>
 								<input value={music.id} name="musicId" hidden />
 								<input value={$page.data.user.id} name="userId" hidden />
-								<Button intent="ghost" size="icon" class="text-inherit">
+								<Button
+									intent="ghost"
+									size="icon"
+									class="text-inherit"
+									type="submit"
+								>
 									<Heart />
 								</Button>
 							</form>
