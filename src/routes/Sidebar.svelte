@@ -31,7 +31,7 @@
 </script>
 
 <aside class="hidden flex-col gap-8 p-4 text-gray-11 md:flex">
-	<h1 class="text-3xl font-bold text-gray-12">PokeMusic</h1>
+	<h1 class="text-3xl font-bold text-gray-12">GameMusic</h1>
 	<div class="flex flex-col gap-2">
 		{#each links as link}
 			<a
