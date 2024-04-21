@@ -60,9 +60,6 @@ export const musics = pgTable('musics', {
 	number: integer('number').notNull(),
 	duration: integer('duration').notNull(),
 	popularity: integer('popularity').default(0),
-	popularityUpdatedAt: timestamp('popularity_updated_at')
-		.defaultNow()
-		.notNull(),
 	albumId: uuid('album_id')
 		.notNull()
 		.references(() => albums.id, { onDelete: 'cascade' }),
