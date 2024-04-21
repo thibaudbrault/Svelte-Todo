@@ -44,6 +44,7 @@
 
 	const handleClose = () => {
 		$isPlayerOpen = false;
+		$isPlaying = false;
 		$audio.pause();
 	};
 
