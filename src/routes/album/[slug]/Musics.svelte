@@ -61,13 +61,13 @@
 					class="flex flex-1 flex-col items-start gap-1"
 				>
 					<p class="text-left text-xl font-bold">{music.name}</p>
-					{#each music.musicsToAuthors as authors}
-						<p
-							class="flex flex-wrap items-center gap-2 text-xs font-medium capitalize"
-						>
-							{authors.author.name}
-						</p>
-					{/each}
+					<ul class="flex items-center gap-2">
+						{#each music.musicsToAuthors as authors}
+							<li class=" text-xs font-medium capitalize">
+								{authors.author.name}
+							</li>
+						{/each}
+					</ul>
 				</button>
 				<div class="flex items-center gap-8">
 					<p class="text-sm font-medium">{format(music.duration)}</p>
