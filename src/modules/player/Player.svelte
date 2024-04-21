@@ -3,9 +3,9 @@
 	import {
 		audio,
 		cover,
-		isPlayerOpen,
 		isLoading,
 		isLooped,
+		isPlayerOpen,
 		isPlaying,
 		isShuffled,
 		title,
