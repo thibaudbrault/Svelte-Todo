@@ -68,6 +68,7 @@ export const musics = pgTable('musics', {
 export const musicsRelations = relations(musics, ({ one, many }) => ({
 	album: one(albums, { fields: [musics.albumId], references: [albums.id] }),
 	musicsToAuthors: many(musicsToAuthors),
+	playlists: many(playlistMusics),
 }));
 
 export const authors = pgTable('authors', {
@@ -147,10 +148,15 @@ export const userFavoritesAlbums = pgTable(
 export const playlists = pgTable('playlists', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
 	name: text('name').notNull(),
+	value: text('value').notNull().unique(),
 	userId: uuid('user_id')
 		.notNull()
 		.references(() => users.id),
 });
+
+export const playlistsRelations = relations(playlists, ({ many }) => ({
+	musics: many(playlistMusics),
+}));
 
 export const playlistMusics = pgTable('playlist_musics', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
@@ -161,6 +167,17 @@ export const playlistMusics = pgTable('playlist_musics', {
 		.notNull()
 		.references(() => musics.id),
 });
+
+export const playlistMusicsRelations = relations(playlistMusics, ({ one }) => ({
+	playlist: one(playlists, {
+		fields: [playlistMusics.playlistId],
+		references: [playlists.id],
+	}),
+	music: one(musics, {
+		fields: [playlistMusics.musicId],
+		references: [musics.id],
+	}),
+}));
 
 export const accounts = pgTable(
 	'account',
