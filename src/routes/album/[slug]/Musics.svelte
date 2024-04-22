@@ -5,6 +5,7 @@
 	import type { SelectMusic } from '$lib/db';
 	import { favoritesMusics, trackId } from '$lib/store';
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
+	import { AddToPlaylistD } from '$modules';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 
@@ -114,10 +115,16 @@
 						<MoreHorizontal slot="trigger" />
 						<svelte:fragment slot="content">
 							{#each music.musicsToAuthors as authors}
-								<p class="font-semibold capitalize">
+								<p
+									class="text-left font-semibold capitalize hover:text-yellow-12"
+								>
 									{authors.author.name}
 								</p>
 							{/each}
+							<AddToPlaylistD
+								musicId={music.id}
+								triggerClass="font-semibold capitalize text-left hover:text-yellow-12"
+							/>
 						</svelte:fragment>
 					</Dropdown>
 				</div>

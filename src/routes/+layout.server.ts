@@ -1,25 +1,25 @@
 import {
-	createAlbumSchema,
-	createGameSchema,
-	createCompanySchema,
-} from '$lib/validation';
-import { zod } from 'sveltekit-superforms/adapters';
-import type { LayoutServerLoad } from './$types';
-import { superValidate } from 'sveltekit-superforms';
-import {
+	albums,
+	companies,
 	db,
 	games,
-	companies,
-	users,
-	playlists,
 	musics,
-	userFavoritesMusics,
-	type SelectMusic,
-	type SelectAlbum,
+	playlists,
 	userFavoritesAlbums,
-	albums,
+	userFavoritesMusics,
+	users,
+	type SelectAlbum,
+	type SelectMusic,
 } from '$lib/db';
+import {
+	createAlbumSchema,
+	createCompanySchema,
+	createGameSchema,
+} from '$lib/validation';
 import { eq } from 'drizzle-orm';
+import { superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
+import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async (event) => {
 	const createAlbumForm = await superValidate(zod(createAlbumSchema));
@@ -39,6 +39,9 @@ export const load: LayoutServerLoad = async (event) => {
 		if (user) {
 			userPlaylists = await db.query.playlists.findMany({
 				where: eq(playlists.userId, user.id),
+				with: {
+					musics: true,
+				},
 			});
 			const favoritesMusicsRequest = await db
 				.select({ musics })

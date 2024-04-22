@@ -1,3 +1,4 @@
+import { CLOUDFRONT_URL } from '$env/static/private';
 import {
 	albums,
 	authors,
@@ -5,16 +6,22 @@ import {
 	games,
 	musics,
 	musicsToAuthors,
+	playlistMusics,
 	userFavoritesAlbums,
 	userFavoritesMusics,
 } from '$lib/db';
+import { uploadFile } from '$lib/server';
+import { musicSlug } from '$lib/utils';
 import {
+	addToPlaylistSchema,
 	createMusicSchema,
 	favoriteAlbumSchema,
 	favoriteMusicSchema,
+	playlistSchema,
 } from '$lib/validation';
-import { error, fail, type Actions, redirect } from '@sveltejs/kit';
-import { eq, count, and, sql } from 'drizzle-orm';
+import { error, fail, redirect, type Actions } from '@sveltejs/kit';
+import { and, count, eq, sql } from 'drizzle-orm';
+import * as mm from 'music-metadata';
 import {
 	message,
 	setError,
@@ -23,13 +30,10 @@ import {
 } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { PageServerLoad } from './$types';
-import { uploadFile } from '$lib/server';
-import { CLOUDFRONT_URL } from '$env/static/private';
-import * as mm from 'music-metadata';
-import { musicSlug } from '$lib/utils';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const favoriteForm = await superValidate(zod(favoriteMusicSchema));
+	const addToPlaylistForm = await superValidate(zod(playlistSchema));
 	const createMusicForm = await superValidate(zod(createMusicSchema));
 	const slug = params.slug;
 	const album = await db.query.albums.findFirst({
@@ -68,6 +72,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		likes: albumLikes[0].count,
 		favoriteForm,
 		createMusicForm,
+		addToPlaylistForm,
 	};
 };
 
@@ -139,6 +144,29 @@ export const actions: Actions = {
 			.set({ popularity: sql<number>`popularity - 1` })
 			.where(eq(albums.id, albumId));
 		return message(form, 'Favorite removed successfully');
+	},
+	addToPlaylist: async ({ request }) => {
+		const formData = await request.formData();
+		const form = await superValidate(formData, zod(addToPlaylistSchema));
+		if (!form.valid) {
+			fail(400, { form });
+		}
+		const { userId, musicId, name } = form.data;
+		const playlist = await db.query.playlists.findFirst({
+			where: (playlists, { eq, and }) =>
+				and(eq(playlists.value, name), eq(playlists.userId, userId)),
+			columns: {
+				id: true,
+			},
+		});
+		if (!playlist) {
+			return error(404, { message: 'Could not find playlist' });
+		}
+		await db.insert(playlistMusics).values({
+			musicId,
+			playlistId: playlist?.id,
+		});
+		return message(form, 'Playlist updated successfully');
 	},
 	createMusic: async ({ request, params }) => {
 		const slug = params.slug as string;

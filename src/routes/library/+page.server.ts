@@ -30,6 +30,7 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 		const { name, userId } = form.data;
+		const value = name.toLowerCase();
 		const playlistExists = await db.query.playlists.findFirst({
 			where: (playlists, { eq, and }) =>
 				and(eq(playlists.name, name), eq(playlists.userId, userId)),
@@ -39,6 +40,7 @@ export const actions: Actions = {
 		}
 		await db.insert(playlists).values({
 			name,
+			value,
 			userId,
 		});
 		return message(form, 'Playlist created successfully');
@@ -52,9 +54,10 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 		const { name, userId, id } = form.data;
+		const value = name.toLowerCase();
 		await db
 			.update(playlists)
-			.set({ name })
+			.set({ name, value })
 			.where(and(eq(playlists.id, id), eq(playlists.userId, userId)));
 		return message(form, 'Playlist updated successfully');
 	},
