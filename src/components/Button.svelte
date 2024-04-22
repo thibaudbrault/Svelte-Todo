@@ -11,8 +11,11 @@
 				intent: {
 					primary:
 						'text-gray-1 bg-gray-12 hover:bg-gray-11 shadow-transparent disabled:bg-gray-11',
-					secondary: 'text-gray-12 shadow-grayA-7 bg-transparent',
+					secondary:
+						'text-gray-12 shadow-grayA-7 bg-transparent hover:shadow-grayA-8',
 					ghost: 'text-gray-12 shadow-transparent bg-transparent',
+					destructive:
+						'text-redA-11 bg-red-surface shadow-redA-7 hover:shadow-redA-8',
 				},
 				weight: {
 					normal: 'font-normal',
