@@ -8,6 +8,11 @@
 @import '@radix-ui/colors/yellow-dark';
 @import '@radix-ui/colors/yellow-dark-alpha';
 
+@import '@radix-ui/colors/red';
+@import '@radix-ui/colors/red-alpha';
+@import '@radix-ui/colors/red-dark';
+@import '@radix-ui/colors/red-dark-alpha';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
