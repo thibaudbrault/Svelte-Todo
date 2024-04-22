@@ -10,16 +10,23 @@
 	export let form;
 	export let icon;
 
-	$: filteredItems = $value
-		? items.filter((item) => item.value.includes($value.toLowerCase()))
-		: items;
+	let touchedInput = false;
 
-	const { value } = formFieldProxy(form, field);
+	$: filteredItems =
+		$value && touchedInput
+			? items.filter((item) => item.value.includes($value.toLowerCase()))
+			: items;
+
+	const { value, errors } = formFieldProxy(form, field);
 </script>
 
 <div class="flex flex-col gap-1">
 	<Label.Root class="text-sm font-semibold" for={field}>{label}</Label.Root>
-	<Combobox.Root items={filteredItems} bind:inputValue={$value}>
+	<Combobox.Root
+		items={filteredItems}
+		bind:inputValue={$value}
+		bind:touchedInput
+	>
 		<div class="relative">
 			<svelte:component
 				this={icon}
@@ -58,4 +65,5 @@
 		</Combobox.Content>
 		<Combobox.HiddenInput name={field} />
 	</Combobox.Root>
+	{#if $errors}<small class="text-xs text-red-400">{$errors}</small>{/if}
 </div>
