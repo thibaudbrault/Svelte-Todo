@@ -6,6 +6,7 @@
 	import { favoritesMusics, trackId } from '$lib/store';
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
 	import { AddToPlaylistD } from '$modules';
+	import { Separator } from 'bits-ui';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 
@@ -50,9 +51,18 @@
 	});
 </script>
 
-{#if $page.data.musics.length > 0}
-	<div class="hidden space-y-2 md:block">
-		{#each $page.data.musics as music, index}
+<div class="flex flex-col gap-4 p-4">
+	<div class="flex flex-col gap-2">
+		<h1 class="text-4xl font-bold md:text-5xl lg:text-6xl">
+			{$page.data.author.name}
+		</h1>
+		<p class="text-gray-11">
+			{$page.data.author.musicsToAuthors.length} titles
+		</p>
+	</div>
+	<Separator.Root class="mx-auto h-px w-11/12 bg-gray-5" />
+	<ul class="space-y-2">
+		{#each $page.data.author.musicsToAuthors as musics, index}
 			<div
 				class={`flex w-full cursor-pointer items-center justify-between rounded-md p-2 ${$trackId === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
 			>
@@ -61,26 +71,19 @@
 					on:click={() => handleClick(index)}
 					class="flex flex-1 flex-col items-start gap-1"
 				>
-					<p class="text-left text-xl font-bold">{music.name}</p>
-					<ul class="flex items-center gap-2">
-						{#each music.musicsToAuthors as authors}
-							<li class=" text-xs font-medium capitalize">
-								{authors.author.name}
-							</li>
-						{/each}
-					</ul>
+					<p class="text-left text-xl font-bold">{musics.music.name}</p>
 				</button>
 				<div class="flex items-center gap-8">
-					<p class="text-sm font-medium">{format(music.duration)}</p>
+					<p class="text-sm font-medium">{format(musics.music.duration)}</p>
 					{#if $page.data.session}
-						{#if $favoritesMusics.has(music.id)}
+						{#if $favoritesMusics.has(musics.music.id)}
 							<form
 								method="POST"
 								use:enhance
 								action="?/removeFavoriteMusic"
-								on:submit={() => handleFavorite(music.id)}
+								on:submit={() => handleFavorite(musics.music.id)}
 							>
-								<input value={music.id} name="musicId" hidden />
+								<input value={musics.music.id} name="musicId" hidden />
 								<input value={$page.data.user.id} name="userId" hidden />
 								<Button
 									intent="ghost"
@@ -96,9 +99,9 @@
 								method="POST"
 								use:enhance
 								action="?/addFavoriteMusic"
-								on:submit={() => handleFavorite(music.id)}
+								on:submit={() => handleFavorite(musics.music.id)}
 							>
-								<input value={music.id} name="musicId" hidden />
+								<input value={musics.music.id} name="musicId" hidden />
 								<input value={$page.data.user.id} name="userId" hidden />
 								<Button
 									intent="ghost"
@@ -114,16 +117,8 @@
 					<Dropdown>
 						<MoreHorizontal slot="trigger" />
 						<svelte:fragment slot="content">
-							{#each music.musicsToAuthors as authors}
-								<a
-									href={`/author/${authors.author.slug}`}
-									class="text-left font-semibold capitalize hover:text-yellow-12"
-								>
-									{authors.author.name}
-								</a>
-							{/each}
 							<AddToPlaylistD
-								musicId={music.id}
+								musicId={musics.music.id}
 								triggerClass="font-semibold capitalize text-left hover:text-yellow-12"
 							/>
 						</svelte:fragment>
@@ -131,43 +126,5 @@
 				</div>
 			</div>
 		{/each}
-	</div>
-	<div class="block md:hidden">
-		{#each $page.data.musics as music, index}
-			<div
-				class={`flex w-full cursor-pointer items-center justify-between gap-1 rounded-md p-2 ${$trackId === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
-			>
-				<button
-					id={`track-${index}`}
-					on:click={() => handleClick(index)}
-					class="flex flex-1 flex-col items-start gap-1"
-				>
-					<p class="text-left font-bold">{music.name}</p>
-					{#each music.musicsToAuthors as authors}
-						<p
-							class="flex flex-wrap items-center gap-2 text-xs font-medium capitalize"
-						>
-							{authors.author.name}
-						</p>
-					{/each}
-				</button>
-				<div class="flex items-center gap-8">
-					<Dropdown>
-						<MoreHorizontal slot="trigger" />
-						<svelte:fragment slot="content">
-							{#each music.musicsToAuthors as authors}
-								<p class="font-semibold capitalize">
-									{authors.author.name}
-								</p>
-							{/each}
-						</svelte:fragment>
-					</Dropdown>
-				</div>
-			</div>
-		{/each}
-	</div>
-{:else}
-	<p class="col-span-5 py-4 text-center text-xl font-bold capitalize">
-		No music
-	</p>
-{/if}
+	</ul>
+</div>
