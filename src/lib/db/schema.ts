@@ -74,6 +74,7 @@ export const musicsRelations = relations(musics, ({ one, many }) => ({
 export const authors = pgTable('authors', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
 	name: text('name').notNull().unique(),
+	slug: text('slug').notNull().unique(),
 });
 
 export const authorsRelations = relations(authors, ({ many }) => ({

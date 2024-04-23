@@ -11,7 +11,7 @@ import {
 	userFavoritesMusics,
 } from '$lib/db';
 import { uploadFile } from '$lib/server';
-import { musicSlug } from '$lib/utils';
+import { authorSlug, musicSlug } from '$lib/utils';
 import {
 	addToPlaylistSchema,
 	createMusicSchema,
@@ -221,14 +221,16 @@ export const actions: Actions = {
 			const musicId = newMusic[0].musicId;
 			let authorId;
 			artists?.forEach(async (artist) => {
+				const slug = authorSlug(artist);
 				const artistExists = await db.query.authors.findFirst({
-					where: eq(authors.name, artist),
+					where: eq(authors.slug, slug),
 				});
 				if (!artistExists) {
 					const newAuthor = await db
 						.insert(authors)
 						.values({
 							name: artist,
+							slug,
 						})
 						.returning({ authorId: authors.id });
 					authorId = newAuthor[0].authorId;

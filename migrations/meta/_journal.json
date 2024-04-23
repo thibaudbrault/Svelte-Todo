@@ -232,6 +232,13 @@
       "when": 1713790697328,
       "tag": "0032_brown_speed_demon",
       "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "5",
+      "when": 1713874382744,
+      "tag": "0033_early_zodiak",
+      "breakpoints": true
     }
   ]
 }
