@@ -7,8 +7,6 @@
 
 	export let triggerClass: string;
 	export let musicId: string;
-
-	console.log($page.data.user);
 </script>
 
 <Dialog title="Add to playlist">
