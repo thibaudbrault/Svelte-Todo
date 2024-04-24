@@ -8,6 +8,7 @@
 		LogInIcon,
 		LogOutIcon,
 		SearchIcon,
+		Settings,
 		User2,
 	} from 'lucide-svelte';
 
@@ -81,6 +82,10 @@
 				<AddAlbumF />
 				<AddGameF />
 				<AddCompanyF />
+				<a href="/settings" class="flex items-center gap-4 hover:text-gray-12">
+					<Settings class="text-yellow-12" />
+					<span class="font-semibold">Settings</span>
+				</a>
 			</div>
 		</div>
 	{/if}
