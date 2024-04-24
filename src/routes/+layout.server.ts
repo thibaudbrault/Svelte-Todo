@@ -1,9 +1,7 @@
 import {
-	albums,
 	companies,
 	db,
 	games,
-	musics,
 	playlists,
 	userFavoritesAlbums,
 	userFavoritesMusics,
@@ -29,40 +27,53 @@ export const load: LayoutServerLoad = async (event) => {
 	const allCompanies = await db.select().from(companies);
 	const session = await event.locals.auth();
 	let user;
-	let userPlaylists;
+	let allPlaylists;
 	const favoritesMusics: SelectMusic[] = [];
 	const favoritesAlbums: SelectAlbum[] = [];
 	if (session?.user?.email) {
 		user = await db.query.users.findFirst({
 			where: eq(users.email, session?.user?.email),
 		});
-		if (user) {
-			userPlaylists = await db.query.playlists.findMany({
-				where: eq(playlists.userId, user.id),
-				with: {
-					musics: true,
+		allPlaylists = await db.query.playlists.findMany({
+			where: eq(playlists.userId, user?.id),
+			with: {
+				musics: true,
+			},
+		});
+		const musicsRequest = await db.query.userFavoritesMusics.findMany({
+			where: eq(userFavoritesMusics.userId, user?.id),
+			with: {
+				music: {
+					with: {
+						musicsToAuthors: {
+							with: {
+								author: true,
+							},
+						},
+						album: {
+							columns: {
+								cover: true,
+							},
+						},
+					},
 				},
+			},
+		});
+		const albumsRequest = await db.query.userFavoritesAlbums.findMany({
+			where: eq(userFavoritesAlbums.userId, user?.id),
+			with: {
+				album: true,
+			},
+		});
+		if (musicsRequest) {
+			musicsRequest.forEach((item) => {
+				favoritesMusics.push(item.music);
 			});
-			const favoritesMusicsRequest = await db
-				.select({ musics })
-				.from(userFavoritesMusics)
-				.leftJoin(musics, eq(userFavoritesMusics.musicId, musics.id))
-				.where(eq(userFavoritesMusics.userId, user.id));
-			const favoritesAlbumsRequest = await db
-				.select({ albums })
-				.from(userFavoritesAlbums)
-				.leftJoin(albums, eq(userFavoritesAlbums.albumId, albums.id))
-				.where(eq(userFavoritesAlbums.userId, user.id));
-			if (favoritesMusicsRequest) {
-				favoritesMusicsRequest.forEach((item) => {
-					favoritesMusics.push(item.musics);
-				});
-			}
-			if (favoritesAlbumsRequest) {
-				favoritesAlbumsRequest.forEach((item) => {
-					favoritesAlbums.push(item.albums);
-				});
-			}
+		}
+		if (albumsRequest) {
+			albumsRequest.forEach((item) => {
+				favoritesAlbums.push(item.album);
+			});
 		}
 	}
 	return {
@@ -72,7 +83,7 @@ export const load: LayoutServerLoad = async (event) => {
 		games: allGames,
 		companies: allCompanies,
 		user,
-		playlists: userPlaylists,
+		playlists: allPlaylists,
 		favoritesMusics,
 		favoritesAlbums,
 		session,

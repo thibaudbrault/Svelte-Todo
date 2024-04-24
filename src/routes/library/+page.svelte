@@ -1,8 +1,12 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { cover, favoritesMusics, length, musics, trackId } from '$lib/store';
 	import { Tabs } from 'bits-ui';
-	import Playlists from './Playlists.svelte';
-	import Musics from './Musics.svelte';
+	import { onMount } from 'svelte';
 	import Albums from './Albums.svelte';
+	import Playlists from './Playlists.svelte';
+	import type { SelectMusic } from '$lib/db';
+	import { Musics } from '$modules';
 
 	const tabs = [
 		{
@@ -24,6 +28,16 @@
 	];
 
 	let value = 'playlists';
+
+	$: $cover = $page.data.favoritesMusics[$trackId].album.cover;
+
+	onMount(() => {
+		$musics = $page.data.favoritesMusics;
+		$length = $page.data.favoritesMusics.length;
+		$page.data.favoritesMusics.forEach((music: SelectMusic) => {
+			favoritesMusics.update((current) => current.add(music.id));
+		});
+	});
 </script>
 
 <Tabs.Root bind:value class="mt-4 space-y-8 md:mt-0">
