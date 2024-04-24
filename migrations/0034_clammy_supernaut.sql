@@ -1,0 +1,2 @@
+ALTER TABLE "playlist_musics" ADD CONSTRAINT "playlist_musics_playlist_id_music_id_pk" PRIMARY KEY("playlist_id","music_id");--> statement-breakpoint
+ALTER TABLE "playlist_musics" DROP COLUMN IF EXISTS "id";

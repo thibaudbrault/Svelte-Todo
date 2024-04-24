@@ -25,6 +25,7 @@ export const albums = pgTable('albums', {
 
 export const albumsRelations = relations(albums, ({ one, many }) => ({
 	games: one(games, { fields: [albums.gameId], references: [games.id] }),
+	favoritedByUsers: many(userFavoritesAlbums),
 	music: many(musics),
 }));
 
@@ -68,6 +69,7 @@ export const musics = pgTable('musics', {
 export const musicsRelations = relations(musics, ({ one, many }) => ({
 	album: one(albums, { fields: [musics.albumId], references: [albums.id] }),
 	musicsToAuthors: many(musicsToAuthors),
+	favoritedByUsers: many(userFavoritesMusics),
 	playlists: many(playlistMusics),
 }));
 
@@ -116,6 +118,11 @@ export const users = pgTable('user', {
 	role: roleEnum('role').default('user'),
 });
 
+export const usersRelations = relations(users, ({ many }) => ({
+	favoriteMusics: many(userFavoritesMusics),
+	favoriteAlbums: many(userFavoritesAlbums),
+}));
+
 export const userFavoritesMusics = pgTable(
 	'user_favorites_musics',
 	{
@@ -128,6 +135,20 @@ export const userFavoritesMusics = pgTable(
 	},
 	(t) => ({
 		pk: primaryKey({ columns: [t.userId, t.musicId] }),
+	}),
+);
+
+export const userFavoritesMusicsRelations = relations(
+	userFavoritesMusics,
+	({ one }) => ({
+		music: one(musics, {
+			fields: [userFavoritesMusics.musicId],
+			references: [musics.id],
+		}),
+		user: one(users, {
+			fields: [userFavoritesMusics.userId],
+			references: [users.id],
+		}),
 	}),
 );
 
@@ -146,6 +167,20 @@ export const userFavoritesAlbums = pgTable(
 	}),
 );
 
+export const userFavoritesAlbumsRelations = relations(
+	userFavoritesAlbums,
+	({ one }) => ({
+		album: one(albums, {
+			fields: [userFavoritesAlbums.albumId],
+			references: [albums.id],
+		}),
+		user: one(users, {
+			fields: [userFavoritesAlbums.userId],
+			references: [users.id],
+		}),
+	}),
+);
+
 export const playlists = pgTable('playlists', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
 	name: text('name').notNull(),
@@ -159,15 +194,20 @@ export const playlistsRelations = relations(playlists, ({ many }) => ({
 	musics: many(playlistMusics),
 }));
 
-export const playlistMusics = pgTable('playlist_musics', {
-	id: uuid('id').notNull().primaryKey().defaultRandom(),
-	playlistId: uuid('playlist_id')
-		.notNull()
-		.references(() => playlists.id),
-	musicId: uuid('music_id')
-		.notNull()
-		.references(() => musics.id),
-});
+export const playlistMusics = pgTable(
+	'playlist_musics',
+	{
+		playlistId: uuid('playlist_id')
+			.notNull()
+			.references(() => playlists.id),
+		musicId: uuid('music_id')
+			.notNull()
+			.references(() => musics.id),
+	},
+	(t) => ({
+		pk: primaryKey({ columns: [t.playlistId, t.musicId] }),
+	}),
+);
 
 export const playlistMusicsRelations = relations(playlistMusics, ({ one }) => ({
 	playlist: one(playlists, {
