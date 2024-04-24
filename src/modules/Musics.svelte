@@ -2,8 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { Button, Dropdown } from '$components';
-	import type { SelectMusic } from '$lib/db';
-	import { favoritesMusics, trackId } from '$lib/store';
+	import { favoritesMusics, musics, trackId, length } from '$lib/store';
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
 	import { AddToPlaylistD } from '$modules';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
@@ -20,7 +19,7 @@
 			$trackId = $trackId - 1;
 			scrollIntoView($trackId);
 			loadTrack();
-		} else if (event.key === 'ArrowRight' && $trackId < $page.data.length - 1) {
+		} else if (event.key === 'ArrowRight' && $trackId < $length - 1) {
 			$trackId = $trackId + 1;
 			scrollIntoView($trackId);
 			loadTrack();
@@ -40,9 +39,6 @@
 	};
 
 	onMount(() => {
-		$page.data.favoritesMusics.forEach((music: SelectMusic) => {
-			favoritesMusics.update((current) => current.add(music.id));
-		});
 		document.addEventListener('keydown', handleKeyDown);
 		return () => {
 			document.removeEventListener('keydown', handleKeyDown);
@@ -50,9 +46,9 @@
 	});
 </script>
 
-{#if $page.data.musics.length > 0}
+{#if $musics.length > 0}
 	<div class="hidden space-y-2 md:block">
-		{#each $page.data.musics as music, index}
+		{#each $musics as music, index}
 			<div
 				class={`flex w-full cursor-pointer items-center justify-between rounded-md p-2 ${$trackId === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
 			>
@@ -133,7 +129,7 @@
 		{/each}
 	</div>
 	<div class="block md:hidden">
-		{#each $page.data.musics as music, index}
+		{#each $musics as music, index}
 			<div
 				class={`flex w-full cursor-pointer items-center justify-between gap-1 rounded-md p-2 ${$trackId === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
 			>
