@@ -20,7 +20,7 @@
 			id="createCompany"
 			data={$page.data.createCompanyForm}
 			schema={createCompanySchema}
-			buttonText="Add"
+			buttonText="Create"
 			class="w-full space-y-4"
 			let:form
 		>

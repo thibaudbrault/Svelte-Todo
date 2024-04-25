@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Combobox, Label } from 'bits-ui';
 	import { Check, ChevronsUpDown } from 'lucide-svelte';
+	import { fly } from 'svelte/transition';
 	import { formFieldProxy } from 'sveltekit-superforms/client';
 
 	export let items: { value: string; name: string }[];
@@ -44,6 +45,7 @@
 
 		<Combobox.Content
 			class="w-full rounded-md border border-gray-7 bg-gray-1 px-1 py-3 outline-none"
+			transition={fly}
 			sideOffset={8}
 		>
 			{#each filteredItems as item (item.value)}

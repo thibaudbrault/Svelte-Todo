@@ -18,7 +18,7 @@
 			id="createPlaylist"
 			data={$page.data.playlistForm}
 			schema={playlistSchema}
-			buttonText="Add"
+			buttonText="CReate"
 			class="w-full space-y-4"
 			let:form
 		>

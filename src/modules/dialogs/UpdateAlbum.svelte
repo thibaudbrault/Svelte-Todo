@@ -8,41 +8,42 @@
 		NumberInput,
 		TextInput,
 	} from '$components';
-	import { createAlbumSchema } from '$lib/validation';
+	import type { SelectAlbum } from '$lib/db';
+	import { updateAlbumSchema } from '$lib/validation';
 	import { Dialog as BitsDialog } from 'bits-ui';
-	import { Gamepad2, Plus } from 'lucide-svelte';
+	import { Gamepad2 } from 'lucide-svelte';
 
 	const acceptedExtensions = '.jpg, .jpeg, .png, .webp';
 
 	const currentYear = new Date().getFullYear();
+
+	export let album: SelectAlbum;
 </script>
 
-<Dialog title="New album">
-	<BitsDialog.Trigger
-		slot="trigger"
-		class="flex items-center gap-4 hover:text-gray-12"
-	>
-		<Plus class="text-yellow-12" />
-		<span class="font-semibold">Album</span>
+<Dialog title="Update album">
+	<BitsDialog.Trigger slot="trigger" class="hover:text-yellow-12">
+		{album.name}
 	</BitsDialog.Trigger>
 	<div slot="content" class="w-full">
 		<Form
-			action="?/createAlbum"
-			id="createAlbum"
-			data={$page.data.createAlbumForm}
-			schema={createAlbumSchema}
-			buttonText="Create"
+			action="?/updateAlbum"
+			id="updateAlbum"
+			data={$page.data.updateAlbumForm}
+			schema={updateAlbumSchema}
+			buttonText="Update"
 			class="w-full space-y-4"
 			let:form
 		>
 			<fieldset class="flex w-full flex-col gap-2">
-				<TextInput {form} field="name" label="Name" />
+				<input value={album.id} name="albumId" hidden />
+				<TextInput {form} field="name" label="Name" placeholder={album.name} />
 				<NumberInput
 					{form}
 					field="release"
 					label="Release"
 					min="1950"
 					max={currentYear}
+					placeholder={album.release}
 				/>
 				<Combobox
 					{form}

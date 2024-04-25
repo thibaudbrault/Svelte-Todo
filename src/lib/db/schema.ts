@@ -273,5 +273,11 @@ export type SelectMusic = typeof musics.$inferSelect;
 export type InsertAuthor = typeof authors.$inferInsert;
 export type SelectAuthor = typeof authors.$inferSelect;
 
+export type InsertGame = typeof games.$inferInsert;
+export type SelectGame = typeof games.$inferSelect;
+
+export type InsertCompany = typeof companies.$inferInsert;
+export type SelectCompany = typeof companies.$inferSelect;
+
 export type InsertUser = typeof users.$inferInsert;
 export type SelectUser = typeof users.$inferSelect;

@@ -1,4 +1,5 @@
 import {
+	albums,
 	companies,
 	db,
 	games,
@@ -23,8 +24,12 @@ export const load: LayoutServerLoad = async (event) => {
 	const createAlbumForm = await superValidate(zod(createAlbumSchema));
 	const createGameForm = await superValidate(zod(createGameSchema));
 	const createCompanyForm = await superValidate(zod(createCompanySchema));
-	const allGames = await db.select().from(games);
-	const allCompanies = await db.select().from(companies);
+	const allGames = await db.select().from(games).orderBy(games.name);
+	const allCompanies = await db
+		.select()
+		.from(companies)
+		.orderBy(companies.name);
+	const allAlbums = await db.select().from(albums).orderBy(albums.createdAt);
 	const session = await event.locals.auth();
 	let user;
 	let allPlaylists;
@@ -82,6 +87,7 @@ export const load: LayoutServerLoad = async (event) => {
 		createCompanyForm,
 		games: allGames,
 		companies: allCompanies,
+		albums: allAlbums,
 		user,
 		playlists: allPlaylists,
 		favoritesMusics,

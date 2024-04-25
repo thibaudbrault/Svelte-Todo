@@ -5,5 +5,6 @@ export { default as CreateCompany } from './CreateCompany.svelte';
 export { default as CreateGame } from './CreateGame.svelte';
 export { default as CreatePlaylist } from './CreatePlaylist.svelte';
 export { default as DeleteMusics } from './DeleteMusics.svelte';
+export { default as UpdateAlbum } from './UpdateAlbum.svelte';
 export { default as UpdateCompany } from './UpdateCompany.svelte';
 export { default as UpdateGame } from './UpdateGame.svelte';

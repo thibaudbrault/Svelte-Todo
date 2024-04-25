@@ -22,7 +22,7 @@
 			id="createMusic"
 			data={$page.data.createMusicForm}
 			schema={createMusicSchema}
-			buttonText="Add"
+			buttonText="Create"
 			class="w-full space-y-4"
 			let:form
 		>
