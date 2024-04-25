@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { Button } from '$components';
-	import { CreatePlaylistD } from '$modules';
+	import { CreatePlaylist } from '$modules';
 	import { Collapsible } from 'bits-ui';
 	import { ChevronsUpDown } from 'lucide-svelte';
 	import { slide } from 'svelte/transition';
@@ -47,5 +47,5 @@
 			No playlist
 		</p>
 	{/if}
-	<CreatePlaylistD />
+	<CreatePlaylist />
 </section>

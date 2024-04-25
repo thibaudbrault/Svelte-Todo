@@ -1,2 +1,9 @@
-export { default as AddToPlaylistD } from './AddToPlaylist.svelte';
-export { default as CreatePlaylistD } from './CreatePlaylist.svelte';
+export { default as AddToPlaylist } from './AddToPlaylist.svelte';
+export { default as CreatePlaylist } from './CreatePlaylist.svelte';
+export { default as UpdateGame } from './UpdateGame.svelte';
+export { default as UpdateCompany } from './UpdateCompany.svelte';
+export { default as AddAlbum } from './AddAlbum.svelte';
+export { default as AddGame } from './AddGame.svelte';
+export { default as AddCompany } from './AddCompany.svelte';
+export { default as AddMusic } from './AddMusic.svelte';
+export { default as DeleteMusics } from './DeleteMusics.svelte';

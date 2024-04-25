@@ -5,7 +5,7 @@
 	import type { SelectAlbum } from '$lib/db';
 	import { favoritesAlbums, isPlaying } from '$lib/store';
 	import { calculateTotalDuration, formatTotalDuration } from '$lib/utils';
-	import { AddMusicF, DeleteMusicsF } from '$modules';
+	import { AddMusic, DeleteMusics } from '$modules';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 
@@ -101,8 +101,8 @@
 					<Dropdown>
 						<MoreHorizontal slot="trigger" />
 						<svelte:fragment slot="content">
-							<AddMusicF />
-							<DeleteMusicsF />
+							<AddMusic />
+							<DeleteMusics />
 						</svelte:fragment>
 					</Dropdown>
 				{/if}

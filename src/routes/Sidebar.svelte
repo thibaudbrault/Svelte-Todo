@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { AddAlbumF, AddCompanyF, AddGameF } from '$modules/forms';
+	import { AddAlbum, AddCompany, AddGame } from '$modules/forms';
 	import { signIn, signOut } from '@auth/sveltekit/client';
 	import {
 		AudioLines,
@@ -79,9 +79,9 @@
 		<div class="flex flex-col gap-2">
 			<p class="text-sm font-bold">Admin</p>
 			<div class="flex flex-col gap-4">
-				<AddAlbumF />
-				<AddGameF />
-				<AddCompanyF />
+				<AddAlbum />
+				<AddGame />
+				<AddCompany />
 				<a href="/settings" class="flex items-center gap-4 hover:text-gray-12">
 					<Settings class="text-yellow-12" />
 					<span class="font-semibold">Settings</span>

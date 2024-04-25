@@ -4,7 +4,7 @@
 	import { Button, Dropdown } from '$components';
 	import { favoritesMusics, musics, trackId, length } from '$lib/store';
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
-	import { AddToPlaylistD } from '$modules';
+	import { AddToPlaylist } from '$modules';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 
@@ -118,7 +118,7 @@
 									{authors.author.name}
 								</a>
 							{/each}
-							<AddToPlaylistD
+							<AddToPlaylist
 								musicId={music.id}
 								triggerClass="font-semibold capitalize text-left hover:text-yellow-12"
 							/>
