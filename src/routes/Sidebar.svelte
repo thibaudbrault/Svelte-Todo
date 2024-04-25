@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { AddAlbum, AddCompany, AddGame } from '$modules/forms';
+	import { AddAlbum, AddCompany, AddGame } from '$modules';
 	import { signIn, signOut } from '@auth/sveltekit/client';
 	import {
 		AudioLines,
