@@ -36,6 +36,7 @@
 		errors={$errors}
 		allErrors={$allErrors}
 		delayed={$delayed}
+		submitting={$submitting}
 	/>
 	{#if withButton}
 		<Button
