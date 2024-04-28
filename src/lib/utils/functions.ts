@@ -26,7 +26,6 @@ export const loadTrack = () => {
 		title.set(get(musics)[get(trackId)]?.name);
 		audio.update(($audio) => {
 			$audio.src = get(musics)[get(trackId)]?.url;
-			$audio.load();
 			if (get(isPlaying)) {
 				$audio.play();
 			}
