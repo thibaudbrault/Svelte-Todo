@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import type { SelectMusic } from '$lib/db';
 	import { cover, favoritesMusics, length, musics } from '$lib/store';
+	import { Musics } from '$modules';
 	import { Separator } from 'bits-ui';
 	import { onMount } from 'svelte';
 	import Header from './Header.svelte';
-	import { Musics } from '$modules';
-	import type { SelectMusic } from '$lib/db';
+
+	$: $musics = $page.data.musics;
 
 	onMount(() => {
-		$musics = $page.data.musics;
 		$length = $page.data.length;
 		$cover = $page.data.album.cover;
 		$page.data.favoritesMusics.forEach((music: SelectMusic) => {
