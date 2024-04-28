@@ -2,14 +2,20 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { Button, Dropdown } from '$components';
-	import { favoritesMusics, musics, trackId, length } from '$lib/store';
+	import {
+		authors,
+		favoritesMusics,
+		length,
+		musics,
+		trackId,
+	} from '$lib/store';
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
 	import { AddToPlaylist } from '$modules';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
-	import { onMount } from 'svelte';
 
 	const handleClick = (index: number) => {
 		$trackId = index;
+		$authors = $musics[$trackId].musicsToAuthors;
 		scrollIntoView($trackId);
 		loadTrack();
 	};
@@ -37,13 +43,6 @@
 			return newFavorites;
 		});
 	};
-
-	onMount(() => {
-		document.addEventListener('keydown', handleKeyDown);
-		return () => {
-			document.removeEventListener('keydown', handleKeyDown);
-		};
-	});
 </script>
 
 {#if $musics.length > 0}
@@ -55,6 +54,7 @@
 				<button
 					id={`track-${index}`}
 					on:click={() => handleClick(index)}
+					on:keydown={handleKeyDown}
 					class="flex flex-1 flex-col items-start gap-1"
 				>
 					<p class="text-left text-xl font-bold">{music.name}</p>
