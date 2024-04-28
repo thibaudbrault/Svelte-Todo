@@ -25,7 +25,7 @@
 	toastOptions={{ style: 'font-weight: 600; font-size: 1.25rem;' }}
 />
 <main
-	class={`relative flex h-screen flex-col-reverse gap-y-4 bg-gray-1 p-4 text-gray-12 md:flex-row ${$isPlayerOpen ? 'pb-36' : ''}`}
+	class={`relative flex h-screen flex-col-reverse gap-y-4 bg-gray-1 p-4 text-gray-12 md:flex-row ${$isPlayerOpen ? 'pb-28' : ''}`}
 >
 	<Sidebar />
 	<section
@@ -39,7 +39,7 @@
 		bind:duration={$duration}
 		bind:currentTime={$currentTime}
 		on:canplay={() => ($isLoading = false)}
-		on:ended={nextTrack}
+		on:ended={() => nextTrack()}
 		hidden
 	/>
 	{#if $audio?.src && $isPlayerOpen}
