@@ -67,6 +67,6 @@
 		<Albums />
 	</Tabs.Content>
 	<Tabs.Content value="artists">
-		<p>artists</p>
+		<p class="text-center text-2xl font-semibold">Coming soon</p>
 	</Tabs.Content>
 </Tabs.Root>
