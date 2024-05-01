@@ -5,7 +5,9 @@
 </script>
 
 <div class="mx-auto flex w-11/12 max-w-[600px] items-center gap-4">
-	<p class="whitespace-nowrap text-sm font-semibold text-gray-11">
+	<p
+		class="w-6 whitespace-nowrap text-center text-sm font-semibold text-gray-11"
+	>
 		{format($currentTime)}
 	</p>
 	<Progress.Root
@@ -20,7 +22,9 @@
 			}%)`}
 		/>
 	</Progress.Root>
-	<p class="whitespace-nowrap text-sm font-semibold text-gray-11">
+	<p
+		class="w-6 whitespace-nowrap text-center text-sm font-semibold text-gray-11"
+	>
 		{format($duration)}
 	</p>
 </div>
