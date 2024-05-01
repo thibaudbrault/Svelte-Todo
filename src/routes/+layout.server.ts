@@ -1,5 +1,4 @@
 import {
-	albums,
 	companies,
 	db,
 	games,
@@ -29,7 +28,6 @@ export const load: LayoutServerLoad = async (event) => {
 		.select()
 		.from(companies)
 		.orderBy(companies.name);
-	const allAlbums = await db.select().from(albums).orderBy(albums.createdAt);
 	const session = await event.locals.auth();
 	let user;
 	let allPlaylists;
@@ -87,7 +85,6 @@ export const load: LayoutServerLoad = async (event) => {
 		createCompanyForm,
 		games: allGames,
 		companies: allCompanies,
-		albums: allAlbums,
 		user,
 		playlists: allPlaylists,
 		favoritesMusics,

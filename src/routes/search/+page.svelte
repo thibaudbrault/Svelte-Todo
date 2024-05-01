@@ -28,6 +28,8 @@
 					title={album.name}
 					alt={album.name}
 					cover={album.cover}
+					release={album.release}
+					game={album.games.name}
 					link={`/album/${album.slug}`}
 				/>
 			{/each}
@@ -39,6 +41,8 @@
 					title={album.name}
 					alt={album.name}
 					cover={album.cover}
+					release={album.release}
+					game={album.games.name}
 					link={`/album/${album.slug}`}
 				/>
 			{/each}

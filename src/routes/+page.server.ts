@@ -8,7 +8,7 @@ import {
 	createGameSchema,
 } from '$lib/validation';
 import { fail } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import {
 	message,
 	setError,
@@ -19,15 +19,25 @@ import { zod } from 'sveltekit-superforms/adapters';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const allAlbums = await db.query.albums.findMany();
+	const album = await db.execute(
+		sql`select * from ${albums} order by random() limit 1`,
+	);
 	const latestAlbums = await db.query.albums.findMany({
 		orderBy: (albums, { desc }) => [desc(albums.createdAt)],
+		with: {
+			games: true,
+		},
+		limit: 10,
 	});
 	const popularAlbums = await db.query.albums.findMany({
 		orderBy: (albums, { desc }) => [desc(albums.popularity)],
+		with: {
+			games: true,
+		},
+		limit: 10,
 	});
 	return {
-		albums: allAlbums,
+		album,
 		latestAlbums,
 		popularAlbums,
 	};

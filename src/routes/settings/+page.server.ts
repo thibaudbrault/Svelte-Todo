@@ -18,12 +18,14 @@ export const load: PageServerLoad = async (event) => {
 	const updateGameForm = await superValidate(zod(updateGameSchema));
 	const updateCompanyForm = await superValidate(zod(updateCompanySchema));
 	const session = await event.locals.auth();
+	const allAlbums = await db.select().from(albums);
 	if (!session?.user) throw redirect(303, 'auth/signin');
 	const user = await db.query.users.findFirst({
-		where: eq(users.email, session.user.email),
+		where: eq(users.email, session.user?.email),
 	});
 	if (user?.role !== 'admin') throw redirect(303, '/');
 	return {
+		albums: allAlbums,
 		updateAlbumForm,
 		updateGameForm,
 		updateCompanyForm,
