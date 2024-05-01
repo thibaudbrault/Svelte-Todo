@@ -185,6 +185,7 @@ export const actions: Actions = {
 			return fail(400, withFiles({ form }));
 		}
 		const { tracks } = form.data;
+		let uploadedTracks = 0;
 		for (const track of tracks) {
 			const buffer = Buffer.from(await track.arrayBuffer());
 			const metadata = await mm.parseBuffer(buffer);
@@ -192,9 +193,14 @@ export const actions: Actions = {
 				return setError(form, 'tracks._errors', 'Could not find metadata');
 			}
 			const name = metadata.common.title ?? '';
+			const number = metadata.common.track.no ?? 0;
 			const musicExists = await db.query.musics.findFirst({
 				where: (musics, { eq, and }) =>
-					and(eq(musics.name, name), eq(musics.albumId, albumId)),
+					and(
+						eq(musics.name, name),
+						eq(musics.albumId, albumId),
+						eq(musics.number, number),
+					),
 			});
 			if (musicExists) {
 				continue;
@@ -211,13 +217,14 @@ export const actions: Actions = {
 					name,
 					url: trackUrl,
 					duration: Math.round(metadata.format?.duration ?? 0),
-					number: metadata.common.track.no ?? 0,
+					number,
 					albumId,
 				})
 				.returning({ musicId: musics.id });
 			if (!newMusic) {
 				continue;
 			}
+			uploadedTracks += 1;
 			const musicId = newMusic[0].musicId;
 			let authorId;
 			artists?.forEach(async (artist) => {
@@ -243,7 +250,11 @@ export const actions: Actions = {
 				});
 			});
 		}
-		return message(form, 'Tracks added successfully');
+		if (uploadedTracks === 0) {
+			return error(500, { message: 'Tracks already exist' });
+		} else {
+			return message(form, 'Tracks added successfully');
+		}
 	},
 	deleteMusics: async ({ params }) => {
 		const slug = params.slug as string;
