@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { Button } from '$components';
-	import { CreatePlaylist } from '$modules';
+	import { CreatePlaylist, Musics } from '$modules';
 	import { Collapsible } from 'bits-ui';
 	import { ChevronsUpDown } from 'lucide-svelte';
 	import { slide } from 'svelte/transition';
@@ -24,9 +24,7 @@
 					<Collapsible.Content transition={slide}>
 						<div class="flex flex-col gap-4">
 							{#if playlist.musics.length > 0}
-								{#each playlist.musics as music}
-									<p>{music.name}</p>
-								{/each}
+								<Musics />
 							{:else}
 								<p class="text-center text-2xl font-semibold capitalize">
 									No musics

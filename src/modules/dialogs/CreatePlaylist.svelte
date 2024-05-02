@@ -10,7 +10,9 @@
 		slot="trigger"
 		class="!mb-16 w-full rounded-md bg-transparent px-4 py-2 text-gray-12 shadow-sm shadow-grayA-7 hover:shadow-grayA-8"
 	>
-		<span class="font-semibold">New Playlist</span>
+		<span class="font-semibold lowercase" style="font-variant: small-caps;"
+			>New Playlist</span
+		>
 	</BitsDialog.Trigger>
 	<div slot="content" class="w-full">
 		<Form

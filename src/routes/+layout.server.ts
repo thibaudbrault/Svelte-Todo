@@ -40,7 +40,24 @@ export const load: LayoutServerLoad = async (event) => {
 		allPlaylists = await db.query.playlists.findMany({
 			where: eq(playlists.userId, user?.id),
 			with: {
-				musics: true,
+				musics: {
+					with: {
+						music: {
+							with: {
+								musicsToAuthors: {
+									with: {
+										author: true,
+									},
+								},
+								album: {
+									columns: {
+										cover: true,
+									},
+								},
+							},
+						},
+					},
+				},
 			},
 		});
 		const musicsRequest = await db.query.userFavoritesMusics.findMany({
