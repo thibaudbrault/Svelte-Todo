@@ -14,7 +14,7 @@ I don't have a name for this app
 - [ ] Add musics to playlist
 - [ ] Author page
 - [ ] Improve UI / UX
-- [ ] Admin page to modify games and companies
+- [x] Admin page to modify games and companies
 - [ ] Admin functionalities to modify albums and musics data
 - [ ] Profile page
 - [ ] Order musics by popularity or by number (currently only number)
