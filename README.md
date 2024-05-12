@@ -11,8 +11,8 @@ I don't have a name for this app
 - [x] File upload with AWS S3
 - [x] Put musics and albums in favorites
 - [x] Create / delete playlists
-- [ ] Add musics to playlist
-- [ ] Author page
+- [ ] Fully functioning playlist feature
+- [x] Author page
 - [ ] Improve UI / UX
 - [x] Admin page to modify games and companies
 - [ ] Admin functionalities to modify albums and musics data
