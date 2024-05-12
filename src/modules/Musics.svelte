@@ -21,12 +21,20 @@
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
-		if (event.key === 'ArrowLeft' && $trackId > 0) {
-			$trackId = $trackId - 1;
+		if (event.key === 'ArrowLeft') {
+			if ($trackId > 0) {
+				$trackId = $trackId - 1;
+			} else {
+				$trackId = $length - 1;
+			}
 			scrollIntoView($trackId);
 			loadTrack();
-		} else if (event.key === 'ArrowRight' && $trackId < $length - 1) {
-			$trackId = $trackId + 1;
+		} else if (event.key === 'ArrowRight') {
+			if ($trackId < $length - 1) {
+				$trackId = $trackId + 1;
+			} else {
+				$trackId = 0;
+			}
 			scrollIntoView($trackId);
 			loadTrack();
 		}
