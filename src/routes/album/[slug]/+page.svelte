@@ -8,9 +8,9 @@
 	import Header from './Header.svelte';
 
 	$: $musics = $page.data.musics;
+	$: $length = $page.data.length;
 
 	onMount(() => {
-		$length = $page.data.length;
 		$cover = $page.data.album.cover;
 		$page.data.favoritesMusics.forEach((music: SelectMusic) => {
 			favoritesMusics.update((current) => current.add(music.id));
