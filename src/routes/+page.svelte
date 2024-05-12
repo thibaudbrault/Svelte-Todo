@@ -70,7 +70,13 @@
 		{/if}
 	</div>
 	<div class="space-y-2">
-		<h2 class="text-2xl font-bold">Latest albums</h2>
+		<div class="flex items-baseline gap-2">
+			<h2 class="text-2xl font-bold">Latest albums</h2>
+			<a
+				href="/album/latest"
+				class="text-xs font-semibold text-gray-11 hover:underline">Show all</a
+			>
+		</div>
 		<div class="flex flex-wrap gap-1">
 			{#each $page.data.latestAlbums as album}
 				<Card
@@ -85,7 +91,13 @@
 		</div>
 	</div>
 	<div class="space-y-2">
-		<h2 class="text-2xl font-bold">Popular albums</h2>
+		<div class="flex items-baseline gap-2">
+			<h2 class="text-2xl font-bold">Popular albums</h2>
+			<a
+				href="/album/popular"
+				class="text-xs font-semibold text-gray-11 hover:underline">Show all</a
+			>
+		</div>
 		<div class="flex shrink-0 flex-wrap gap-1">
 			{#each $page.data.popularAlbums as album}
 				<Card
