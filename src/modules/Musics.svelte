@@ -10,7 +10,7 @@
 		trackId,
 	} from '$lib/store';
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
-	import { AddToPlaylist } from '$modules';
+	import { AddToPlaylist, UpdateMusic } from '$modules';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
 
 	const handleClick = (index: number) => {
@@ -119,17 +119,14 @@
 						<MoreHorizontal slot="trigger" />
 						<svelte:fragment slot="content">
 							{#each music.musicsToAuthors as authors}
-								<a
-									href={`/author/${authors.author.slug}`}
-									class="text-left font-semibold capitalize hover:text-yellow-12"
-								>
+								<a href={`/author/${authors.author.slug}`} class="triggerClass">
 									{authors.author.name}
 								</a>
 							{/each}
-							<AddToPlaylist
-								musicId={music.id}
-								triggerClass="font-semibold capitalize text-left hover:text-yellow-12"
-							/>
+							<AddToPlaylist musicId={music.id} />
+							{#if $page.data.user.role === 'admin'}
+								<UpdateMusic musicId={music.id} />
+							{/if}
 						</svelte:fragment>
 					</Dropdown>
 				</div>

@@ -8,3 +8,4 @@ export { default as DeleteMusics } from './DeleteMusics.svelte';
 export { default as UpdateAlbum } from './UpdateAlbum.svelte';
 export { default as UpdateCompany } from './UpdateCompany.svelte';
 export { default as UpdateGame } from './UpdateGame.svelte';
+export { default as UpdateMusic } from './UpdateMusic.svelte';
