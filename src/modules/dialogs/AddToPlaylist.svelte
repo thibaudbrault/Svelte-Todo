@@ -5,12 +5,11 @@
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { ListMusic } from 'lucide-svelte';
 
-	export let triggerClass: string;
 	export let musicId: string;
 </script>
 
 <Dialog title="Add to playlist">
-	<BitsDialog.Trigger slot="trigger" class={triggerClass}>
+	<BitsDialog.Trigger slot="trigger" class="triggerClass">
 		Playlist
 	</BitsDialog.Trigger>
 	<div slot="content" class="w-full">
