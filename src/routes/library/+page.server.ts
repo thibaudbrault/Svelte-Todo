@@ -13,8 +13,8 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	const playlistForm = await superValidate(zod(playlistSchema));
-	const session = await event.locals.auth();
-	if (!session?.user) throw redirect(303, 'auth/signin');
+	const session = event.locals.session;
+	if (!session?.user) throw redirect(303, '/');
 	return {
 		playlistForm,
 	};

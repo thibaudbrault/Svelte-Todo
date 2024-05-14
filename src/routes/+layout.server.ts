@@ -28,7 +28,7 @@ export const load: LayoutServerLoad = async (event) => {
 		.select()
 		.from(companies)
 		.orderBy(companies.name);
-	const session = await event.locals.auth();
+	const session = event.locals.session;
 	let user;
 	let allPlaylists;
 	const favoritesMusics: SelectMusic[] = [];
