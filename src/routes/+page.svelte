@@ -26,7 +26,7 @@
 				/>
 			</div>
 		</div>
-		{#if $page.data.user}
+		<!-- {#if $page.data.user}
 			<div class="min-w-72 space-y-2">
 				<h2
 					class="font-semibold lowercase text-gray-11"
@@ -67,7 +67,7 @@
 					</li>
 				</ul>
 			</div>
-		{/if}
+		{/if} -->
 	</div>
 	<div class="space-y-2">
 		<div class="flex items-baseline gap-2">
