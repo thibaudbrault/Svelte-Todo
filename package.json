@@ -17,9 +17,9 @@
 		"prettier:write": "prettier --write .",
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
-		"studio": "drizzle-kit studio --config drizzle.config.ts",
-		"generate": "drizzle-kit generate:pg --config drizzle.config.ts",
-		"migrate": "drizzle-kit push:pg --config drizzle.config.ts",
+		"studio": "drizzle-kit studio",
+		"generate": "drizzle-kit generate",
+		"migrate": "drizzle-kit push",
 		"prepare": "husky"
 	},
 	"devDependencies": {
