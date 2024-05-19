@@ -2,10 +2,6 @@ import {
 	companies,
 	db,
 	games,
-	playlists,
-	userFavoritesAlbums,
-	userFavoritesMusics,
-	users,
 	type SelectAlbum,
 	type SelectMusic,
 } from '$lib/db';
@@ -14,7 +10,6 @@ import {
 	createCompanySchema,
 	createGameSchema,
 } from '$lib/validation';
-import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { LayoutServerLoad } from './$types';

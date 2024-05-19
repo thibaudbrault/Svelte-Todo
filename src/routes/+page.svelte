@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Card } from '$components';
-	import { AudioLines, Heart, ListMusic } from 'lucide-svelte';
+	import { AudioLines } from 'lucide-svelte';
 </script>
 
 {#if $page.data.album.length > 0}
@@ -113,6 +113,10 @@
 			</div>
 		</div>
 	</div>
-	{:else}
-	<p class="text-center text-4xl font-semibold capitalize flex justify-center items-center h-full">No album <br />Come back later</p>
+{:else}
+	<p
+		class="flex h-full items-center justify-center text-center text-4xl font-semibold capitalize"
+	>
+		No album <br />Come back later
+	</p>
 {/if}

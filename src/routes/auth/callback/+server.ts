@@ -12,7 +12,7 @@ export const GET = async (event) => {
 		if (!error) {
 			throw redirect(303, `/${next.slice(1)}`);
 		}
-		console.error(error)
+		console.error(error);
 	}
 	throw redirect(303, '/');
 };
