@@ -1,10 +1,8 @@
 {
-  "id": "e839d2e0-3c1f-47a7-82cc-295c1836bd2b",
-  "prevId": "e6c0d386-75e0-440e-a9d6-9b45a66eb0ca",
-  "version": "5",
-  "dialect": "pg",
+  "version": "6",
+  "dialect": "postgresql",
   "tables": {
-    "account": {
+    "public.account": {
       "name": "account",
       "schema": "",
       "columns": {
@@ -80,15 +78,15 @@
         "account_userId_user_id_fk": {
           "name": "account_userId_user_id_fk",
           "tableFrom": "account",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -102,7 +100,7 @@
       },
       "uniqueConstraints": {}
     },
-    "albums": {
+    "public.albums": {
       "name": "albums",
       "schema": "",
       "columns": {
@@ -150,28 +148,28 @@
       "uniqueConstraints": {
         "albums_name_unique": {
           "name": "albums_name_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ]
+          ],
+          "nullsNotDistinct": false
         },
         "albums_slug_unique": {
           "name": "albums_slug_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "slug"
-          ]
+          ],
+          "nullsNotDistinct": false
         },
         "albums_cover_unique": {
           "name": "albums_cover_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "cover"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
-    "authors": {
+    "public.authors": {
       "name": "authors",
       "schema": "",
       "columns": {
@@ -194,14 +192,14 @@
       "uniqueConstraints": {
         "authors_name_unique": {
           "name": "authors_name_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "name"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
-    "musics": {
+    "public.musics": {
       "name": "musics",
       "schema": "",
       "columns": {
@@ -247,29 +245,29 @@
         "musics_album_id_albums_id_fk": {
           "name": "musics_album_id_albums_id_fk",
           "tableFrom": "musics",
-          "tableTo": "albums",
           "columnsFrom": [
             "album_id"
           ],
+          "tableTo": "albums",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "musics_url_unique": {
           "name": "musics_url_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "url"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       }
     },
-    "musics_to_authors": {
+    "public.musics_to_authors": {
       "name": "musics_to_authors",
       "schema": "",
       "columns": {
@@ -291,28 +289,28 @@
         "musics_to_authors_music_id_musics_id_fk": {
           "name": "musics_to_authors_music_id_musics_id_fk",
           "tableFrom": "musics_to_authors",
-          "tableTo": "musics",
           "columnsFrom": [
             "music_id"
           ],
+          "tableTo": "musics",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         },
         "musics_to_authors_author_id_authors_id_fk": {
           "name": "musics_to_authors_author_id_authors_id_fk",
           "tableFrom": "musics_to_authors",
-          "tableTo": "authors",
           "columnsFrom": [
             "author_id"
           ],
+          "tableTo": "authors",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -326,7 +324,7 @@
       },
       "uniqueConstraints": {}
     },
-    "session": {
+    "public.session": {
       "name": "session",
       "schema": "",
       "columns": {
@@ -354,21 +352,21 @@
         "session_userId_user_id_fk": {
           "name": "session_userId_user_id_fk",
           "tableFrom": "session",
-          "tableTo": "user",
           "columnsFrom": [
             "userId"
           ],
+          "tableTo": "user",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
+    "public.user": {
       "name": "user",
       "schema": "",
       "columns": {
@@ -408,7 +406,7 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "verificationToken": {
+    "public.verificationToken": {
       "name": "verificationToken",
       "schema": "",
       "columns": {
@@ -446,17 +444,20 @@
     }
   },
   "enums": {
-    "category": {
+    "public.category": {
       "name": "category",
-      "values": {
-        "pokemon": "pokemon"
-      }
+      "schema": "public",
+      "values": [
+        "pokemon"
+      ]
     }
   },
   "schemas": {},
   "_meta": {
-    "columns": {},
     "schemas": {},
-    "tables": {}
-  }
+    "tables": {},
+    "columns": {}
+  },
+  "id": "e839d2e0-3c1f-47a7-82cc-295c1836bd2b",
+  "prevId": "e6c0d386-75e0-440e-a9d6-9b45a66eb0ca"
 }

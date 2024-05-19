@@ -19,7 +19,7 @@
 		"lint:fix": "eslint --fix",
 		"studio": "drizzle-kit studio",
 		"generate": "drizzle-kit generate",
-		"migrate": "drizzle-kit push",
+		"push": "drizzle-kit push",
 		"prepare": "husky"
 	},
 	"devDependencies": {

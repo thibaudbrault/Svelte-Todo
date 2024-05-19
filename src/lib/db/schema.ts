@@ -59,9 +59,9 @@ export const users = pgTable('users', {
 	image: text('image'),
 	role: roleEnum('role').default('user'),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
-	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 })
-		.$onUpdate(() => new Date())
-		.notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -74,9 +74,9 @@ export const authors = pgTable('authors', {
 	name: text('name').notNull().unique(),
 	slug: text('slug').notNull().unique(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
-	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 })
-		.$onUpdate(() => new Date())
-		.notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
 });
 
 export const authorsRelations = relations(authors, ({ many }) => ({
@@ -88,9 +88,9 @@ export const playlists = pgTable('playlists', {
 	name: text('name').notNull(),
 	value: text('value').notNull().unique(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
-	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 })
-		.$onUpdate(() => new Date())
-		.notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
 	userId: uuid('user_id').notNull(),
 });
 
@@ -104,9 +104,9 @@ export const games = pgTable('games', {
 	name: text('name').notNull().unique(),
 	value: text('value').notNull().unique(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
-	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 })
-		.$onUpdate(() => new Date())
-		.notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
 	companyId: uuid('company_id').notNull(),
 });
 
@@ -123,9 +123,9 @@ export const companies = pgTable('companies', {
 	name: text('name').notNull().unique(),
 	value: text('value').notNull().unique(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
-	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 })
-		.$onUpdate(() => new Date())
-		.notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
 });
 
 export const companiesRelations = relations(companies, ({ many }) => ({
