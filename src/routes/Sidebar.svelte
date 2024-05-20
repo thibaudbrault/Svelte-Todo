@@ -84,7 +84,7 @@
 			{/if}
 		</div>
 	</div>
-	{#if $page.data.user && $page.data.user.role === 'admin'}
+	{#if $page.data.session && $page.data.profile.role === 'admin'}
 		<div class="flex flex-col gap-2">
 			<p class="text-sm font-bold">Admin</p>
 			<div class="flex flex-col gap-4">

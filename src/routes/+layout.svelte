@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
+	import { goto, invalidate } from '$app/navigation';
 	import {
 		audio,
 		currentTime,
@@ -10,11 +11,10 @@
 	import { nextTrack } from '$lib/utils';
 	import { Player } from '$modules';
 	import { inject } from '@vercel/analytics';
+	import { onMount } from 'svelte';
 	import { Toaster } from 'svelte-sonner';
 	import '../app.css';
 	import Sidebar from './Sidebar.svelte';
-	import { goto, invalidate } from '$app/navigation';
-	import { onMount } from 'svelte';
 
 	inject({ mode: dev ? 'development' : 'production' });
 
@@ -26,10 +26,6 @@
 	onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
 			if (!newSession) {
-				/**
-				 * Queue this as a task so the navigation won't prevent the
-				 * triggering function from completing
-				 */
 				setTimeout(() => {
 					goto('/', { invalidateAll: true });
 				});
