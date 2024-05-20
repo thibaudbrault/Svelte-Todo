@@ -262,3 +262,9 @@ export type SelectCompany = typeof companies.$inferSelect;
 
 export type InsertUser = typeof users.$inferInsert;
 export type SelectUser = typeof users.$inferSelect;
+
+export type InsertFavoritesMusic = typeof favoritesMusics.$inferInsert;
+export type SelectFavoritesMusic = typeof favoritesMusics.$inferSelect;
+
+export type SelectFavoritesAlbum = typeof favoritesAlbums.$inferSelect;
+export type InsertFavoritesAlbum = typeof favoritesAlbums.$inferInsert;
