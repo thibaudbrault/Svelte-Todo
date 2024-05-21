@@ -41,7 +41,7 @@
 			{/each}
 		</Collapsible.Root>
 	{:else}
-		<p class="col-span-5 py-4 text-center text-xl font-bold capitalize">
+		<p class="col-span-5 py-4 text-center text-2xl font-semibold capitalize">
 			No playlist
 		</p>
 	{/if}
