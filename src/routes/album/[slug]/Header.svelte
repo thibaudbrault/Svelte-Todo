@@ -97,7 +97,7 @@
 						</form>
 					{/if}
 				{/if}
-				{#if $page.data.user && $page.data.user.role === 'admin'}
+				{#if $page.data.user && $page.data.profile.role === 'admin'}
 					<Dropdown>
 						<MoreHorizontal slot="trigger" />
 						<svelte:fragment slot="content">

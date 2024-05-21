@@ -29,7 +29,7 @@
 
 	let value = 'playlists';
 
-	$: $cover = $page.data.favoritesMusics[$trackId].album.cover;
+	$: $cover = $page.data.favoritesMusics[$trackId]?.album.cover;
 
 	onMount(() => {
 		$musics = $page.data.favoritesMusics;
