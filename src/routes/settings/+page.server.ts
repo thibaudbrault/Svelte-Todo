@@ -14,16 +14,16 @@ import { deleteFile, uploadFile } from '$lib/server';
 import { CLOUDFRONT_URL } from '$env/static/private';
 
 export const load: PageServerLoad = async (event) => {
+	const { session, user } = await event.locals.safeGetSession();
 	const updateAlbumForm = await superValidate(zod(updateAlbumSchema));
 	const updateGameForm = await superValidate(zod(updateGameSchema));
 	const updateCompanyForm = await superValidate(zod(updateCompanySchema));
-	const session = await event.locals.auth();
+	if (!session) throw redirect(303, '/');
 	const allAlbums = await db.select().from(albums);
-	if (!session?.user) throw redirect(303, 'auth/signin');
-	const user = await db.query.users.findFirst({
-		where: eq(users.email, session.user?.email),
+	const profile = await db.query.users.findFirst({
+		where: eq(users.email, user?.email),
 	});
-	if (user?.role !== 'admin') throw redirect(303, '/');
+	if (profile?.role !== 'admin') throw redirect(303, '/');
 	return {
 		albums: allAlbums,
 		updateAlbumForm,

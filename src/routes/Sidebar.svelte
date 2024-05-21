@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { CreateAlbum, CreateCompany, CreateGame } from '$modules';
-	import { signIn, signOut } from '@auth/sveltekit/client';
 	import {
 		AudioLines,
 		LibraryBig,
@@ -11,6 +10,15 @@
 		Settings,
 		User2,
 	} from 'lucide-svelte';
+
+	$: ({ supabase } = $page.data);
+
+	$: logout = async () => {
+		const { error } = await supabase.auth.signOut();
+		if (error) {
+			console.error(error);
+		}
+	};
 
 	const links = [
 		{
@@ -59,23 +67,24 @@
 				</a>
 				<button
 					class="flex items-center gap-4 rounded-md p-2 hover:text-gray-12"
-					on:click={() => signOut()}
+					on:click={logout}
 				>
 					<LogOutIcon class="text-yellow-12" />
 					<span class="font-semibold">Log Out</span>
 				</button>
 			{:else}
-				<button
-					class="flex items-center gap-4 rounded-md hover:text-gray-12"
-					on:click={() => signIn('github')}
-				>
-					<LogInIcon class="text-yellow-12" />
-					<span class="font-semibold">Log In</span>
-				</button>
+				<form method="POST" action="?/login">
+					<button
+						class="flex items-center gap-4 rounded-md p-2 hover:text-gray-12"
+					>
+						<LogInIcon class="text-yellow-12" />
+						<span class="font-semibold">Log In</span>
+					</button>
+				</form>
 			{/if}
 		</div>
 	</div>
-	{#if $page.data.user && $page.data.user.role === 'admin'}
+	{#if $page.data.session && $page.data.profile.role === 'admin'}
 		<div class="flex flex-col gap-2">
 			<p class="text-sm font-bold">Admin</p>
 			<div class="flex flex-col gap-4">
@@ -111,16 +120,15 @@
 		</a>
 		<button
 			class="flex items-center gap-4 rounded-md p-2 hover:text-gray-12"
-			on:click={() => signOut()}
+			on:click={logout}
 		>
 			<LogOutIcon class="text-yellow-12" />
 		</button>
 	{:else}
-		<button
-			class="flex items-center gap-4 rounded-md hover:text-gray-12"
-			on:click={() => signIn('github')}
-		>
-			<LogInIcon class="text-yellow-12" />
-		</button>
+		<form method="POST" action="?/login">
+			<button class="flex items-center gap-4 rounded-md hover:text-gray-12">
+				<LogInIcon class="text-yellow-12" />
+			</button>
+		</form>
 	{/if}
 </nav>

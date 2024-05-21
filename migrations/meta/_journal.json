@@ -246,6 +246,20 @@
       "when": 1713962674069,
       "tag": "0034_clammy_supernaut",
       "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "5",
+      "when": 1715776508107,
+      "tag": "0035_black_nemesis",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "6",
+      "when": 1716141531026,
+      "tag": "0036_kind_squirrel_girl",
+      "breakpoints": true
     }
   ]
 }

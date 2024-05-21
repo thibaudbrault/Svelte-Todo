@@ -1,4 +1,3 @@
-import type { AdapterAccount } from '@auth/core/adapters';
 import { relations } from 'drizzle-orm';
 import {
 	integer,
@@ -20,19 +19,94 @@ export const albums = pgTable('albums', {
 	release: integer('release').notNull(),
 	popularity: integer('popularity').default(0),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
 	gameId: uuid('game_id').notNull(),
 });
 
 export const albumsRelations = relations(albums, ({ one, many }) => ({
 	games: one(games, { fields: [albums.gameId], references: [games.id] }),
-	favoritedByUsers: many(userFavoritesAlbums),
+	favoritedByUsers: many(favoritesAlbums),
 	music: many(musics),
+}));
+
+export const musics = pgTable('musics', {
+	id: uuid('id').notNull().primaryKey().defaultRandom(),
+	name: text('name').notNull(),
+	url: text('url').notNull().unique(),
+	number: integer('number').notNull(),
+	duration: integer('duration').notNull(),
+	popularity: integer('popularity').default(0),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
+	albumId: uuid('album_id').notNull(),
+});
+
+export const musicsRelations = relations(musics, ({ one, many }) => ({
+	album: one(albums, { fields: [musics.albumId], references: [albums.id] }),
+	authors: many(musicsToAuthors),
+	favoritedByUsers: many(favoritesMusics),
+	playlists: many(playlistMusics),
+}));
+
+export const users = pgTable('users', {
+	id: uuid('id').notNull().primaryKey(),
+	name: text('name'),
+	email: text('email').notNull(),
+	image: text('image'),
+	role: roleEnum('role').default('user'),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
+});
+
+export const usersRelations = relations(users, ({ many }) => ({
+	musics: many(favoritesMusics),
+	albums: many(favoritesAlbums),
+}));
+
+export const authors = pgTable('authors', {
+	id: uuid('id').notNull().primaryKey().defaultRandom(),
+	name: text('name').notNull().unique(),
+	slug: text('slug').notNull().unique(),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
+});
+
+export const authorsRelations = relations(authors, ({ many }) => ({
+	musics: many(musicsToAuthors),
+}));
+
+export const playlists = pgTable('playlists', {
+	id: uuid('id').notNull().primaryKey().defaultRandom(),
+	name: text('name').notNull(),
+	value: text('value').notNull().unique(),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
+	userId: uuid('user_id').notNull(),
+});
+
+export const playlistsRelations = relations(playlists, ({ one, many }) => ({
+	user: one(users, { fields: [playlists.userId], references: [users.id] }),
+	musics: many(playlistMusics),
 }));
 
 export const games = pgTable('games', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
 	name: text('name').notNull().unique(),
 	value: text('value').notNull().unique(),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
 	companyId: uuid('company_id').notNull(),
 });
 
@@ -48,43 +122,18 @@ export const companies = pgTable('companies', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
 	name: text('name').notNull().unique(),
 	value: text('value').notNull().unique(),
+	createdAt: timestamp('created_at').defaultNow().notNull(),
+	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
+		() => new Date(),
+	),
 });
 
 export const companiesRelations = relations(companies, ({ many }) => ({
 	games: many(games),
 }));
 
-export const musics = pgTable('musics', {
-	id: uuid('id').notNull().primaryKey().defaultRandom(),
-	name: text('name').notNull(),
-	url: text('url').notNull().unique(),
-	number: integer('number').notNull(),
-	duration: integer('duration').notNull(),
-	popularity: integer('popularity').default(0),
-	albumId: uuid('album_id')
-		.notNull()
-		.references(() => albums.id, { onDelete: 'cascade' }),
-});
-
-export const musicsRelations = relations(musics, ({ one, many }) => ({
-	album: one(albums, { fields: [musics.albumId], references: [albums.id] }),
-	musicsToAuthors: many(musicsToAuthors),
-	favoritedByUsers: many(userFavoritesMusics),
-	playlists: many(playlistMusics),
-}));
-
-export const authors = pgTable('authors', {
-	id: uuid('id').notNull().primaryKey().defaultRandom(),
-	name: text('name').notNull().unique(),
-	slug: text('slug').notNull().unique(),
-});
-
-export const authorsRelations = relations(authors, ({ many }) => ({
-	musicsToAuthors: many(musicsToAuthors),
-}));
-
 export const musicsToAuthors = pgTable(
-	'musics_to_authors',
+	'musics_authors',
 	{
 		musicId: uuid('music_id')
 			.notNull()
@@ -98,33 +147,22 @@ export const musicsToAuthors = pgTable(
 	}),
 );
 
-export const musicToAuthorRelations = relations(musicsToAuthors, ({ one }) => ({
-	music: one(musics, {
-		fields: [musicsToAuthors.musicId],
-		references: [musics.id],
+export const musicToAuthorsRelations = relations(
+	musicsToAuthors,
+	({ one }) => ({
+		music: one(musics, {
+			fields: [musicsToAuthors.musicId],
+			references: [musics.id],
+		}),
+		author: one(authors, {
+			fields: [musicsToAuthors.authorId],
+			references: [authors.id],
+		}),
 	}),
-	author: one(authors, {
-		fields: [musicsToAuthors.authorId],
-		references: [authors.id],
-	}),
-}));
+);
 
-export const users = pgTable('user', {
-	id: uuid('id').notNull().primaryKey(),
-	name: text('name'),
-	email: text('email').notNull(),
-	emailVerified: timestamp('emailVerified', { mode: 'date' }),
-	image: text('image'),
-	role: roleEnum('role').default('user'),
-});
-
-export const usersRelations = relations(users, ({ many }) => ({
-	favoriteMusics: many(userFavoritesMusics),
-	favoriteAlbums: many(userFavoritesAlbums),
-}));
-
-export const userFavoritesMusics = pgTable(
-	'user_favorites_musics',
+export const favoritesMusics = pgTable(
+	'favorites_musics',
 	{
 		userId: uuid('user_id')
 			.notNull()
@@ -138,22 +176,22 @@ export const userFavoritesMusics = pgTable(
 	}),
 );
 
-export const userFavoritesMusicsRelations = relations(
-	userFavoritesMusics,
+export const favoritesMusicsRelations = relations(
+	favoritesMusics,
 	({ one }) => ({
 		music: one(musics, {
-			fields: [userFavoritesMusics.musicId],
+			fields: [favoritesMusics.musicId],
 			references: [musics.id],
 		}),
 		user: one(users, {
-			fields: [userFavoritesMusics.userId],
+			fields: [favoritesMusics.userId],
 			references: [users.id],
 		}),
 	}),
 );
 
-export const userFavoritesAlbums = pgTable(
-	'user_favorites_albums',
+export const favoritesAlbums = pgTable(
+	'favorites_albums',
 	{
 		userId: uuid('user_id')
 			.notNull()
@@ -167,32 +205,19 @@ export const userFavoritesAlbums = pgTable(
 	}),
 );
 
-export const userFavoritesAlbumsRelations = relations(
-	userFavoritesAlbums,
+export const favoritesAlbumsRelations = relations(
+	favoritesAlbums,
 	({ one }) => ({
 		album: one(albums, {
-			fields: [userFavoritesAlbums.albumId],
+			fields: [favoritesAlbums.albumId],
 			references: [albums.id],
 		}),
 		user: one(users, {
-			fields: [userFavoritesAlbums.userId],
+			fields: [favoritesAlbums.userId],
 			references: [users.id],
 		}),
 	}),
 );
-
-export const playlists = pgTable('playlists', {
-	id: uuid('id').notNull().primaryKey().defaultRandom(),
-	name: text('name').notNull(),
-	value: text('value').notNull().unique(),
-	userId: uuid('user_id')
-		.notNull()
-		.references(() => users.id),
-});
-
-export const playlistsRelations = relations(playlists, ({ many }) => ({
-	musics: many(playlistMusics),
-}));
 
 export const playlistMusics = pgTable(
 	'playlist_musics',
@@ -220,50 +245,6 @@ export const playlistMusicsRelations = relations(playlistMusics, ({ one }) => ({
 	}),
 }));
 
-export const accounts = pgTable(
-	'account',
-	{
-		userId: uuid('userId')
-			.notNull()
-			.references(() => users.id, { onDelete: 'cascade' }),
-		type: text('type').$type<AdapterAccount['type']>().notNull(),
-		provider: text('provider').notNull(),
-		providerAccountId: text('providerAccountId').notNull(),
-		refresh_token: text('refresh_token'),
-		access_token: text('access_token'),
-		expires_at: integer('expires_at'),
-		token_type: text('token_type'),
-		scope: text('scope'),
-		id_token: text('id_token'),
-		session_state: text('session_state'),
-	},
-	(account) => ({
-		compoundKey: primaryKey({
-			columns: [account.provider, account.providerAccountId],
-		}),
-	}),
-);
-
-export const sessions = pgTable('session', {
-	sessionToken: text('sessionToken').notNull().primaryKey(),
-	userId: uuid('userId')
-		.notNull()
-		.references(() => users.id, { onDelete: 'cascade' }),
-	expires: timestamp('expires', { mode: 'date' }).notNull(),
-});
-
-export const verificationTokens = pgTable(
-	'verificationToken',
-	{
-		identifier: text('identifier').notNull(),
-		token: text('token').notNull(),
-		expires: timestamp('expires', { mode: 'date' }).notNull(),
-	},
-	(vt) => ({
-		compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-	}),
-);
-
 export type InsertAlbum = typeof albums.$inferInsert;
 export type SelectAlbum = typeof albums.$inferSelect;
 
@@ -281,3 +262,9 @@ export type SelectCompany = typeof companies.$inferSelect;
 
 export type InsertUser = typeof users.$inferInsert;
 export type SelectUser = typeof users.$inferSelect;
+
+export type InsertFavoritesMusic = typeof favoritesMusics.$inferInsert;
+export type SelectFavoritesMusic = typeof favoritesMusics.$inferSelect;
+
+export type SelectFavoritesAlbum = typeof favoritesAlbums.$inferSelect;
+export type InsertFavoritesAlbum = typeof favoritesAlbums.$inferInsert;

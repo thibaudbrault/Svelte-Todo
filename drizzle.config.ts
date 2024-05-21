@@ -8,8 +8,8 @@ if (!DATABASE_URL) {
 export default {
 	schema: './src/lib/db/schema.ts',
 	out: './migrations',
-	driver: 'pg',
+	dialect: 'postgresql',
 	dbCredentials: {
-		connectionString: DATABASE_URL,
+		url: DATABASE_URL,
 	},
 } satisfies Config;

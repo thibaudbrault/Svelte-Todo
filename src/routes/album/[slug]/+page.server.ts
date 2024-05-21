@@ -3,12 +3,12 @@ import {
 	albums,
 	authors,
 	db,
+	favoritesAlbums,
+	favoritesMusics,
 	games,
 	musics,
 	musicsToAuthors,
 	playlistMusics,
-	userFavoritesAlbums,
-	userFavoritesMusics,
 } from '$lib/db';
 import { uploadFile } from '$lib/server';
 import { authorSlug, musicSlug } from '$lib/utils';
@@ -53,7 +53,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		where: eq(musics.albumId, album.id),
 		orderBy: musics.number,
 		with: {
-			musicsToAuthors: {
+			authors: {
 				with: {
 					author: true,
 				},
@@ -62,8 +62,8 @@ export const load: PageServerLoad = async ({ params }) => {
 	});
 	const albumLikes = await db
 		.select({ count: count() })
-		.from(userFavoritesAlbums)
-		.where(eq(userFavoritesAlbums.albumId, album.id));
+		.from(favoritesAlbums)
+		.where(eq(favoritesAlbums.albumId, album.id));
 	return {
 		album,
 		game: game?.name ?? '',
@@ -84,7 +84,7 @@ export const actions: Actions = {
 			fail(400, { form });
 		}
 		const { userId, musicId } = form.data;
-		await db.insert(userFavoritesMusics).values({
+		await db.insert(favoritesMusics).values({
 			userId: userId,
 			musicId,
 		});
@@ -98,11 +98,11 @@ export const actions: Actions = {
 		}
 		const { userId, musicId } = form.data;
 		await db
-			.delete(userFavoritesMusics)
+			.delete(favoritesMusics)
 			.where(
 				and(
-					eq(userFavoritesMusics.userId, userId),
-					eq(userFavoritesMusics.musicId, musicId),
+					eq(favoritesMusics.userId, userId),
+					eq(favoritesMusics.musicId, musicId),
 				),
 			);
 		return message(form, 'Favorite removed successfully');
@@ -114,7 +114,7 @@ export const actions: Actions = {
 			fail(400, { form });
 		}
 		const { userId, albumId } = form.data;
-		await db.insert(userFavoritesAlbums).values({
+		await db.insert(favoritesAlbums).values({
 			userId: userId,
 			albumId,
 		});
@@ -132,11 +132,11 @@ export const actions: Actions = {
 		}
 		const { userId, albumId } = form.data;
 		await db
-			.delete(userFavoritesAlbums)
+			.delete(favoritesAlbums)
 			.where(
 				and(
-					eq(userFavoritesAlbums.userId, userId),
-					eq(userFavoritesAlbums.albumId, albumId),
+					eq(favoritesAlbums.userId, userId),
+					eq(favoritesAlbums.albumId, albumId),
 				),
 			);
 		await db

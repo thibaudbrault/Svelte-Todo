@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		with: {
 			music: {
 				with: {
-					musicsToAuthors: {
+					authors: {
 						with: {
 							author: true,
 						},

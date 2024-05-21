@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { dev } from '$app/environment';
+	import { goto, invalidate } from '$app/navigation';
 	import {
 		audio,
 		currentTime,
@@ -10,6 +11,7 @@
 	import { nextTrack } from '$lib/utils';
 	import { Player } from '$modules';
 	import { inject } from '@vercel/analytics';
+	import { onMount } from 'svelte';
 	import { Toaster } from 'svelte-sonner';
 	import '../app.css';
 	import Sidebar from './Sidebar.svelte';
@@ -17,6 +19,24 @@
 	inject({ mode: dev ? 'development' : 'production' });
 
 	let raf: number = 0;
+
+	export let data;
+	$: ({ session, supabase } = data);
+
+	onMount(() => {
+		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
+			if (!newSession) {
+				setTimeout(() => {
+					goto('/', { invalidateAll: true });
+				});
+			}
+			if (newSession?.expires_at !== session?.expires_at) {
+				invalidate('supabase:auth');
+			}
+		});
+
+		return () => data.subscription.unsubscribe();
+	});
 </script>
 
 <Toaster

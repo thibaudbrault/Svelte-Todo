@@ -1,10 +1,10 @@
 import {
 	companies,
 	db,
+	favoritesAlbums,
+	favoritesMusics,
 	games,
 	playlists,
-	userFavoritesAlbums,
-	userFavoritesMusics,
 	users,
 	type SelectAlbum,
 	type SelectMusic,
@@ -20,6 +20,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async (event) => {
+	const { session, user } = await event.locals.safeGetSession();
 	const createAlbumForm = await superValidate(zod(createAlbumSchema));
 	const createGameForm = await superValidate(zod(createGameSchema));
 	const createCompanyForm = await superValidate(zod(createCompanySchema));
@@ -28,23 +29,22 @@ export const load: LayoutServerLoad = async (event) => {
 		.select()
 		.from(companies)
 		.orderBy(companies.name);
-	const session = await event.locals.auth();
-	let user;
 	let allPlaylists;
-	const favoritesMusics: SelectMusic[] = [];
-	const favoritesAlbums: SelectAlbum[] = [];
-	if (session?.user?.email) {
-		user = await db.query.users.findFirst({
-			where: eq(users.email, session?.user?.email),
+	let profile;
+	const favMusics: SelectMusic[] = [];
+	const favAlbums: SelectAlbum[] = [];
+	if (user?.email) {
+		profile = await db.query.users.findFirst({
+			where: eq(users.email, user?.email),
 		});
 		allPlaylists = await db.query.playlists.findMany({
-			where: eq(playlists.userId, user?.id),
+			where: eq(playlists.userId, user.id),
 			with: {
 				musics: {
 					with: {
 						music: {
 							with: {
-								musicsToAuthors: {
+								authors: {
 									with: {
 										author: true,
 									},
@@ -60,12 +60,12 @@ export const load: LayoutServerLoad = async (event) => {
 				},
 			},
 		});
-		const musicsRequest = await db.query.userFavoritesMusics.findMany({
-			where: eq(userFavoritesMusics.userId, user?.id),
+		const musicsRequest = await db.query.favoritesMusics.findMany({
+			where: eq(favoritesMusics.userId, user?.id),
 			with: {
 				music: {
 					with: {
-						musicsToAuthors: {
+						authors: {
 							with: {
 								author: true,
 							},
@@ -79,20 +79,20 @@ export const load: LayoutServerLoad = async (event) => {
 				},
 			},
 		});
-		const albumsRequest = await db.query.userFavoritesAlbums.findMany({
-			where: eq(userFavoritesAlbums.userId, user?.id),
+		const albumsRequest = await db.query.favoritesAlbums.findMany({
+			where: eq(favoritesAlbums.userId, user.id),
 			with: {
 				album: true,
 			},
 		});
 		if (musicsRequest) {
 			musicsRequest.forEach((item) => {
-				favoritesMusics.push(item.music);
+				favMusics.push(item.music);
 			});
 		}
 		if (albumsRequest) {
 			albumsRequest.forEach((item) => {
-				favoritesAlbums.push(item.album);
+				favAlbums.push(item.album);
 			});
 		}
 	}
@@ -102,10 +102,10 @@ export const load: LayoutServerLoad = async (event) => {
 		createCompanyForm,
 		games: allGames,
 		companies: allCompanies,
-		user,
 		playlists: allPlaylists,
-		favoritesMusics,
-		favoritesAlbums,
+		favoritesMusics: favMusics,
+		favoritesAlbums: favAlbums,
 		session,
+		profile,
 	};
 };
