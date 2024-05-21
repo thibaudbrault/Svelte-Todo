@@ -15,7 +15,7 @@
 
 	const handleClick = (index: number) => {
 		$trackId = index;
-		$authors = $musics[$trackId].musicsToAuthors;
+		$authors = $musics[$trackId].authors;
 		scrollIntoView($trackId);
 		loadTrack();
 	};
@@ -67,7 +67,7 @@
 				>
 					<p class="text-left text-xl font-bold">{music.name}</p>
 					<ul class="flex items-center gap-2">
-						{#each music.musicsToAuthors as authors}
+						{#each music.authors as authors}
 							<li class=" text-xs font-medium capitalize">
 								{authors.author.name}
 							</li>
@@ -118,7 +118,7 @@
 					<Dropdown>
 						<MoreHorizontal slot="trigger" />
 						<svelte:fragment slot="content">
-							{#each music.musicsToAuthors as authors}
+							{#each music.authors as authors}
 								<a href={`/author/${authors.author.slug}`} class="triggerClass">
 									{authors.author.name}
 								</a>
@@ -144,7 +144,7 @@
 					class="flex flex-1 flex-col items-start gap-1"
 				>
 					<p class="text-left font-bold">{music.name}</p>
-					{#each music.musicsToAuthors as authors}
+					{#each music.authors as authors}
 						<p
 							class="flex flex-wrap items-center gap-2 text-xs font-medium capitalize"
 						>
@@ -156,7 +156,7 @@
 					<Dropdown>
 						<MoreHorizontal slot="trigger" />
 						<svelte:fragment slot="content">
-							{#each music.musicsToAuthors as authors}
+							{#each music.authors as authors}
 								<p class="font-semibold capitalize">
 									{authors.author.name}
 								</p>

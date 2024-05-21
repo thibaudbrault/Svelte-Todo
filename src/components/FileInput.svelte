@@ -7,7 +7,6 @@
 	export let field: string;
 	export let label: string | undefined = undefined;
 	export let form;
-	export let submitting: boolean;
 	export let isMultiple: boolean = false;
 
 	const { value, errors, constraints } = formFieldProxy(form, field);
@@ -74,7 +73,6 @@
 					{...$constraints}
 					{...$$restProps}
 					class="hidden"
-					disabled={submitting}
 				/>
 			</div>
 		</div>

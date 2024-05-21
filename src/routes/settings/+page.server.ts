@@ -18,10 +18,10 @@ export const load: PageServerLoad = async (event) => {
 	const updateAlbumForm = await superValidate(zod(updateAlbumSchema));
 	const updateGameForm = await superValidate(zod(updateGameSchema));
 	const updateCompanyForm = await superValidate(zod(updateCompanySchema));
-	if (!session) throw redirect(303, '/');
+	if (!session || !user) throw redirect(303, '/');
 	const allAlbums = await db.select().from(albums);
 	const profile = await db.query.users.findFirst({
-		where: eq(users.email, user?.email),
+		where: eq(users.email, user.email!),
 	});
 	if (profile?.role !== 'admin') throw redirect(303, '/');
 	return {
@@ -55,7 +55,7 @@ export const actions: Actions = {
 		let filename = renameFileWithExtension(cover.name, 'cover');
 		filename = `${slug}/${crypto.randomUUID()}${filename}`;
 		const findGame = await db.query.games.findFirst({
-			where: eq(companies.value, game),
+			where: eq(companies.value, game!),
 		});
 		if (!findGame) {
 			return setError(form, 'game', 'Game not found');
@@ -93,13 +93,13 @@ export const actions: Actions = {
 		const { name, gameId, company } = form.data;
 		const value = name?.toLowerCase();
 		const gameExists = await db.query.games.findFirst({
-			where: eq(games.value, value),
+			where: eq(games.value, value!),
 		});
 		if (gameExists) {
 			return setError(form, 'name', 'Game already exists');
 		}
 		const findCompany = await db.query.companies.findFirst({
-			where: eq(companies.value, company),
+			where: eq(companies.value, company!),
 		});
 		if (!findCompany) {
 			return setError(form, 'company', 'Company not found');
