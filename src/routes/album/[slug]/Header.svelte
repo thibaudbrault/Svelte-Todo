@@ -67,7 +67,7 @@
 					{formatTotalDuration(calculateTotalDuration($page.data.musics))}
 				</li>
 			</ul>
-			<div class="flex gap-1">
+			<div class="flex gap-2">
 				{#if $page.data.session}
 					{#if $favoritesAlbums.has($page.data.album.id)}
 						<form

@@ -74,7 +74,7 @@
 						{/each}
 					</ul>
 				</button>
-				<div class="flex items-center gap-8">
+				<div class="flex items-center gap-4">
 					<p class="text-sm font-medium">{format(music.duration)}</p>
 					{#if $page.data.session}
 						{#if $favoritesMusics.has(music.id)}
