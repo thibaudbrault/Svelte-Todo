@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { Card } from '$components';
 	import { UpdateAlbum, UpdateCompany, UpdateGame } from '$modules';
 	import { Separator } from 'bits-ui';
 </script>
@@ -11,7 +12,16 @@
 		<h2 class="text-3xl font-semibold">Albums</h2>
 		<div class="flex flex-col items-start gap-2">
 			{#each $page.data.albums as album}
-				<UpdateAlbum {album} />
+				<Card
+					title={album.name}
+					alt={album.name}
+					cover={album.cover}
+					release={album.release}
+					game={album.games.name}
+					link=""
+				>
+					<UpdateAlbum {album} slot="form" />
+				</Card>
 			{/each}
 		</div>
 	</div>
