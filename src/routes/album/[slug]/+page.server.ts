@@ -81,7 +81,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(favoriteMusicSchema));
 		if (!form.valid) {
-			fail(400, { form });
+			return fail(400, { form });
 		}
 		const { userId, musicId } = form.data;
 		await db.insert(favoritesMusics).values({
@@ -94,7 +94,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(favoriteMusicSchema));
 		if (!form.valid) {
-			fail(400, { form });
+			return fail(400, { form });
 		}
 		const { userId, musicId } = form.data;
 		await db
@@ -111,7 +111,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(favoriteAlbumSchema));
 		if (!form.valid) {
-			fail(400, { form });
+			return fail(400, { form });
 		}
 		const { userId, albumId } = form.data;
 		await db.insert(favoritesAlbums).values({
@@ -128,7 +128,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(favoriteAlbumSchema));
 		if (!form.valid) {
-			fail(400, { form });
+			return fail(400, { form });
 		}
 		const { userId, albumId } = form.data;
 		await db
@@ -149,7 +149,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(addToPlaylistSchema));
 		if (!form.valid) {
-			fail(400, { form });
+			return fail(400, { form });
 		}
 		const { userId, musicId, name } = form.data;
 		const playlist = await db.query.playlists.findFirst({
