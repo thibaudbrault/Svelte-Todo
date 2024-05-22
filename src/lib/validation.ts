@@ -38,6 +38,11 @@ export const updateCompanySchema = z.object({
 	companyId: z.string().min(1, { message: 'Company ID is required' }),
 });
 
+export const updateUserSchema = z.object({
+	id: z.string().min(1, { message: 'User ID is required' }),
+	name: z.string().min(1, { message: 'Enter a name' }),
+});
+
 export const playlistSchema = z.object({
 	name: z.string().min(1, { message: 'Enter a name' }),
 });
