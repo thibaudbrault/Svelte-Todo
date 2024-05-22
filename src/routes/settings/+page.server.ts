@@ -15,11 +15,15 @@ import { CLOUDFRONT_URL } from '$env/static/private';
 
 export const load: PageServerLoad = async (event) => {
 	const { session, user } = await event.locals.safeGetSession();
+	if (!session || !user) throw redirect(303, '/');
 	const updateAlbumForm = await superValidate(zod(updateAlbumSchema));
 	const updateGameForm = await superValidate(zod(updateGameSchema));
 	const updateCompanyForm = await superValidate(zod(updateCompanySchema));
-	if (!session || !user) throw redirect(303, '/');
-	const allAlbums = await db.select().from(albums);
+	const allAlbums = await db.query.albums.findMany({
+		with: {
+			games: true,
+		},
+	});
 	const profile = await db.query.users.findFirst({
 		where: eq(users.email, user.email!),
 	});
@@ -36,7 +40,7 @@ export const actions: Actions = {
 	updateAlbum: async ({ request }) => {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(updateAlbumSchema), {
-			id: 'createAlbum',
+			id: 'updateAlbum',
 		});
 		if (!form.valid) {
 			return fail(400, withFiles({ form }));
