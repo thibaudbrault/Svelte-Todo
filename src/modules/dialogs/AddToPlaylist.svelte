@@ -22,7 +22,7 @@
 			class="w-full space-y-4"
 			let:form
 		>
-			<input value={$page.data.user.id} name="userId" hidden />
+			<input value={$page.data.profile.id} name="userId" hidden />
 			<input value={musicId} name="musicId" hidden />
 			<Combobox
 				{form}

@@ -77,7 +77,7 @@
 							on:submit={() => handleFavorite($page.data.album.id)}
 						>
 							<input value={$page.data.album.id} name="albumId" hidden />
-							<input value={$page.data.user.id} name="userId" hidden />
+							<input value={$page.data.profile.id} name="userId" hidden />
 							<Button intent="ghost" size="icon" class="text-red-500">
 								<Heart class="fill-red-500" />
 							</Button>
@@ -90,7 +90,7 @@
 							on:submit={() => handleFavorite($page.data.album.id)}
 						>
 							<input value={$page.data.album.id} name="albumId" hidden />
-							<input value={$page.data.user.id} name="userId" hidden />
+							<input value={$page.data.profile.id} name="userId" hidden />
 							<Button intent="ghost" size="icon">
 								<Heart />
 							</Button>

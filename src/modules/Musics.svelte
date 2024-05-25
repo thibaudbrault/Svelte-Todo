@@ -85,7 +85,7 @@
 								on:submit={() => handleFavorite(music.id)}
 							>
 								<input value={music.id} name="musicId" hidden />
-								<input value={$page.data.user.id} name="userId" hidden />
+								<input value={$page.data.profile.id} name="userId" hidden />
 								<Button
 									intent="ghost"
 									size="icon"
@@ -103,7 +103,7 @@
 								on:submit={() => handleFavorite(music.id)}
 							>
 								<input value={music.id} name="musicId" hidden />
-								<input value={$page.data.user.id} name="userId" hidden />
+								<input value={$page.data.profile.id} name="userId" hidden />
 								<Button
 									intent="ghost"
 									size="icon"
@@ -123,8 +123,10 @@
 									{authors.author.name}
 								</a>
 							{/each}
-							<AddToPlaylist musicId={music.id} />
-							{#if $page.data.user.role === 'admin'}
+							{#if $page.data.user}
+								<AddToPlaylist musicId={music.id} />
+							{/if}
+							{#if $page.data.profile?.role === 'admin'}
 								<UpdateMusic musicId={music.id} />
 							{/if}
 						</svelte:fragment>

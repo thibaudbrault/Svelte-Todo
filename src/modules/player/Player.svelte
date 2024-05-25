@@ -112,7 +112,7 @@
 				<svelte:fragment slot="content">
 					{#each $page.data.playlists as playlist}
 						<form>
-							<input value={$page.data.user.id} name="userId" hidden />
+							<input value={$page.data.profile.id} name="userId" hidden />
 							<input value={$musics[$trackId].id} name="musicId" hidden />
 							<input value={playlist.name} name="name" hidden />
 							<button>{playlist.name}</button>

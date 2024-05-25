@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Card } from '$components';
-	import { AudioLines } from 'lucide-svelte';
+	import { AudioLines, Heart, ListMusic } from 'lucide-svelte';
 </script>
 
 {#if $page.data.album.length > 0}
@@ -27,13 +27,13 @@
 					/>
 				</div>
 			</div>
-			<!-- {#if $page.data.user}
+			{#if $page.data.user}
 				<div class="min-w-72 space-y-2">
 					<h2
 						class="font-semibold lowercase text-gray-11"
 						style="font-variant: small-caps;"
 					>
-						{$page.data.user.name}'s statistics
+						{$page.data.profile.name}'s statistics
 					</h2>
 					<ul class="flex w-full flex-col gap-2">
 						<li
@@ -68,7 +68,7 @@
 						</li>
 					</ul>
 				</div>
-			{/if} -->
+			{/if}
 		</div>
 		<div class="space-y-2">
 			<div class="flex items-baseline gap-2">

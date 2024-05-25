@@ -24,7 +24,7 @@
 			class="w-full space-y-4"
 			let:form
 		>
-			<input value={$page.data.user.id} name="userId" hidden />
+			<input value={$page.data.profile.id} name="userId" hidden />
 			<TextInput {form} field="name" label="Name" />
 		</Form>
 	</div>
