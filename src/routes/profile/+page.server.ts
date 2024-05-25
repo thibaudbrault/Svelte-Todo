@@ -8,7 +8,7 @@ import { eq } from 'drizzle-orm';
 
 export const load: PageServerLoad = async (event) => {
 	const { session } = await event.locals.safeGetSession();
-	if (!session) throw redirect(303, '/');
+	if (!session) throw redirect(303, '/login');
 	const updateUserForm = await superValidate(zod(updateUserSchema));
 	return {
 		updateUserForm,
@@ -25,7 +25,6 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 		const { id, name } = form.data;
-		console.log(form.data);
 		await db.update(users).set({ name }).where(eq(users.id, id));
 		return { message: 'Name updated successfully' };
 	},

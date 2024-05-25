@@ -7,7 +7,7 @@ import {
 	createCompanySchema,
 	createGameSchema,
 } from '$lib/validation';
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { eq, sql } from 'drizzle-orm';
 import {
 	message,
@@ -44,21 +44,6 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	login: async ({ locals: { supabase } }) => {
-		const { data, error } = await supabase.auth.signInWithOAuth({
-			provider: 'google',
-			options: {
-				redirectTo: 'http://localhost:5173/auth/callback',
-			},
-		});
-		if (error) {
-			console.error(error);
-			return redirect(303, '/auth/error');
-		}
-		if (data.url) {
-			return redirect(302, data.url);
-		}
-	},
 	createCompany: async ({ request }) => {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(createCompanySchema), {

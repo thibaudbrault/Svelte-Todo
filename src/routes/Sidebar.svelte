@@ -73,14 +73,13 @@
 					<span class="font-semibold">Log Out</span>
 				</button>
 			{:else}
-				<form method="POST" action="?/login">
-					<button
-						class="flex items-center gap-4 rounded-md p-2 hover:text-gray-12"
-					>
-						<LogInIcon class="text-yellow-12" />
-						<span class="font-semibold">Log In</span>
-					</button>
-				</form>
+				<a
+					href="/login"
+					class="flex items-center gap-4 rounded-md p-2 hover:text-gray-12"
+				>
+					<LogInIcon class="text-yellow-12" />
+					<span class="font-semibold">Log In</span>
+				</a>
 			{/if}
 		</div>
 	</div>
