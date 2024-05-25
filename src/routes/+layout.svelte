@@ -3,10 +3,12 @@
 	import { goto, invalidate } from '$app/navigation';
 	import {
 		audio,
+		cover,
 		currentTime,
 		duration,
 		isLoading,
 		isPlayerOpen,
+		isZen,
 	} from '$lib/store';
 	import { nextTrack } from '$lib/utils';
 	import { Player } from '$modules';
@@ -47,12 +49,18 @@
 <main
 	class={`relative flex h-screen flex-col-reverse gap-y-4 bg-gray-1 p-4 text-gray-12 md:flex-row ${$isPlayerOpen ? 'pb-28' : ''}`}
 >
-	<Sidebar />
-	<section
-		class="h-full w-full flex-1 overflow-y-auto rounded-md border border-gray-5 bg-gray-2 p-4"
-	>
-		<slot />
-	</section>
+	{#if !$isZen}
+		<Sidebar />
+		<section
+			class="h-full w-full flex-1 overflow-y-auto rounded-md border border-gray-5 bg-gray-2 p-4"
+		>
+			<slot />
+		</section>
+	{:else}
+		<div class="flex h-full w-full items-center justify-center">
+			<img src={$cover} alt="" class={'size-96 rounded-full'} />
+		</div>
+	{/if}
 	<audio
 		src={$audio?.src}
 		bind:this={$audio}

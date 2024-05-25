@@ -21,3 +21,4 @@ export const isLooped = writable(false);
 export const isShuffled = writable(false);
 export const isLoading = writable(true);
 export const isPlayerOpen = writable(false);
+export const isZen = writable(false);

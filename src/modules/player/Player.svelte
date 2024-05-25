@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Button, Dropdown } from '$components';
+	import { Button, Dropdown, Tooltip } from '$components';
 	import {
 		authors,
 		cover,
@@ -8,6 +8,7 @@
 		isLooped,
 		isPlaying,
 		isShuffled,
+		isZen,
 		musics,
 		title,
 		trackId,
@@ -17,6 +18,7 @@
 		Heart,
 		ListPlus,
 		Loader2Icon,
+		LoaderPinwheel,
 		Pause,
 		Play,
 		Repeat,
@@ -55,7 +57,7 @@
 </script>
 
 <div
-	class="fixed bottom-0 left-0 right-0 hidden grid-cols-[300px_1fr_100px] items-center justify-center gap-4 border-t border-t-yellow-5 bg-gray-1 px-4 py-2 md:grid"
+	class="fixed bottom-0 left-0 right-0 hidden grid-cols-[300px_1fr_150px] items-center justify-center gap-4 border-t border-t-yellow-5 bg-gray-1 px-4 py-2 md:grid"
 >
 	<div class="flex items-center gap-2">
 		<img
@@ -124,6 +126,19 @@
 		<Button intent="ghost" size="icon">
 			<Heart class="size-5" />
 		</Button>
+		<Tooltip>
+			<Button
+				slot="trigger"
+				intent="ghost"
+				size="icon"
+				on:click={() => {
+					$isZen = !$isZen;
+				}}
+			>
+				<LoaderPinwheel class="size-5" />
+			</Button>
+			<p slot="content" class="font-medium">Focus mode</p>
+		</Tooltip>
 	</div>
 </div>
 <div
