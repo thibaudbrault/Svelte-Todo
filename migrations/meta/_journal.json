@@ -260,6 +260,13 @@
       "when": 1716141531026,
       "tag": "0036_kind_squirrel_girl",
       "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "6",
+      "when": 1716627186885,
+      "tag": "0037_cheerful_firebrand",
+      "breakpoints": true
     }
   ]
 }

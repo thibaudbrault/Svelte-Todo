@@ -193,7 +193,11 @@ export const actions: Actions = {
 				return setError(form, 'tracks._errors', 'Could not find metadata');
 			}
 			const name = metadata.common.title ?? '';
-			const number = metadata.common.track.no ?? 0;
+			const number = parseFloat(
+				metadata.common.disk.no?.toString() +
+					'.' +
+					metadata.common.track.no?.toString().padStart(2, '0'),
+			);
 			const musicExists = await db.query.musics.findFirst({
 				where: (musics, { eq, and }) =>
 					and(
