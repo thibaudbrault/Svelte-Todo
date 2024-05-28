@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Combobox, Label } from 'bits-ui';
 	import { Check, ChevronsUpDown } from 'lucide-svelte';
+	import { fly } from 'svelte/transition';
 	import { formFieldProxy } from 'sveltekit-superforms/client';
 
 	export let items: { value: string; name: string }[];
@@ -10,16 +11,23 @@
 	export let form;
 	export let icon;
 
-	$: filteredItems = $value
-		? items.filter((item) => item.value.includes($value.toLowerCase()))
-		: items;
+	let touchedInput = false;
 
-	const { value } = formFieldProxy(form, field);
+	$: filteredItems =
+		$value && touchedInput
+			? items.filter((item) => item.value.includes($value.toLowerCase()))
+			: items;
+
+	const { value, errors } = formFieldProxy(form, field);
 </script>
 
 <div class="flex flex-col gap-1">
 	<Label.Root class="text-sm font-semibold" for={field}>{label}</Label.Root>
-	<Combobox.Root items={filteredItems} bind:inputValue={$value}>
+	<Combobox.Root
+		items={filteredItems}
+		bind:inputValue={$value}
+		bind:touchedInput
+	>
 		<div class="relative">
 			<svelte:component
 				this={icon}
@@ -37,6 +45,7 @@
 
 		<Combobox.Content
 			class="w-full rounded-md border border-gray-7 bg-gray-1 px-1 py-3 outline-none"
+			transition={fly}
 			sideOffset={8}
 		>
 			{#each filteredItems as item (item.value)}
@@ -58,4 +67,5 @@
 		</Combobox.Content>
 		<Combobox.HiddenInput name={field} />
 	</Combobox.Root>
+	{#if $errors}<small class="text-xs text-red-400">{$errors}</small>{/if}
 </div>

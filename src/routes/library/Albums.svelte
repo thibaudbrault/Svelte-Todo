@@ -12,11 +12,15 @@
 					alt={album.name}
 					cover={album.cover}
 					link={`/album/${album.slug}`}
+					release={album.release}
+					game={album.games.name}
 				/>
 			{/each}
 		</div>
 	{:else}
-		<p class="col-span-5 py-4 text-center text-xl font-bold capitalize">
+		<p
+			class="col-span-5 py-4 text-center text-xl font-semibold capitalize md:text-2xl"
+		>
 			No album
 		</p>
 	{/if}

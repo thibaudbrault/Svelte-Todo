@@ -1,0 +1,1 @@
+ALTER TABLE "musics" ALTER COLUMN "number" SET DATA TYPE real;

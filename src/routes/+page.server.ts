@@ -1,14 +1,14 @@
 import { CLOUDFRONT_URL } from '$env/static/private';
 import { albums, companies, db, games } from '$lib/db';
 import { uploadFile } from '$lib/server';
-import { albumSlug } from '$lib/utils';
+import { albumSlug, renameFileWithExtension } from '$lib/utils';
 import {
 	createAlbumSchema,
 	createCompanySchema,
 	createGameSchema,
 } from '$lib/validation';
 import { fail } from '@sveltejs/kit';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import {
 	message,
 	setError,
@@ -19,15 +19,25 @@ import { zod } from 'sveltekit-superforms/adapters';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const allAlbums = await db.query.albums.findMany();
+	const album = await db.execute(
+		sql`select * from ${albums} order by random() limit 1`,
+	);
 	const latestAlbums = await db.query.albums.findMany({
 		orderBy: (albums, { desc }) => [desc(albums.createdAt)],
+		with: {
+			games: true,
+		},
+		limit: 10,
 	});
 	const popularAlbums = await db.query.albums.findMany({
 		orderBy: (albums, { desc }) => [desc(albums.popularity)],
+		with: {
+			games: true,
+		},
+		limit: 10,
 	});
 	return {
-		albums: allAlbums,
+		album,
 		latestAlbums,
 		popularAlbums,
 	};
@@ -102,7 +112,8 @@ export const actions: Actions = {
 		if (albumExists) {
 			return setError(form, 'name', 'Album already exists');
 		}
-		const filename = `${slug}/${crypto.randomUUID()}cover`;
+		let filename = renameFileWithExtension(cover.name, 'cover');
+		filename = `${slug}/${crypto.randomUUID()}${filename}`;
 		const findGame = await db.query.games.findFirst({
 			where: eq(companies.value, game),
 		});

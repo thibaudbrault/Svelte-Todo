@@ -4,7 +4,12 @@
 	import { Progress } from 'bits-ui';
 </script>
 
-<div class="flex w-full max-w-[600px] items-center gap-4">
+<div class="mx-auto flex w-11/12 max-w-[600px] items-center gap-4">
+	<p
+		class="w-6 whitespace-nowrap text-center text-sm font-semibold text-gray-11"
+	>
+		{format($currentTime)}
+	</p>
 	<Progress.Root
 		max={$duration}
 		bind:value={$sliderValue}
@@ -17,7 +22,9 @@
 			}%)`}
 		/>
 	</Progress.Root>
-	<p class="whitespace-nowrap text-xs font-semibold text-gray-11">
-		{format($currentTime)} / {format($duration)}
+	<p
+		class="w-6 whitespace-nowrap text-center text-sm font-semibold text-gray-11"
+	>
+		{format($duration)}
 	</p>
 </div>

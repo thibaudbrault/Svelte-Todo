@@ -13,8 +13,8 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async (event) => {
 	const playlistForm = await superValidate(zod(playlistSchema));
-	const session = await event.locals.auth();
-	if (!session?.user) throw redirect(303, 'auth/signin');
+	const { session } = await event.locals.safeGetSession();
+	if (!session) throw redirect(303, '/login');
 	return {
 		playlistForm,
 	};
@@ -30,6 +30,7 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 		const { name, userId } = form.data;
+		const value = name.toLowerCase();
 		const playlistExists = await db.query.playlists.findFirst({
 			where: (playlists, { eq, and }) =>
 				and(eq(playlists.name, name), eq(playlists.userId, userId)),
@@ -39,6 +40,7 @@ export const actions: Actions = {
 		}
 		await db.insert(playlists).values({
 			name,
+			value,
 			userId,
 		});
 		return message(form, 'Playlist created successfully');
@@ -52,10 +54,11 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 		const { name, userId, id } = form.data;
+		const value = name.toLowerCase();
 		await db
 			.update(playlists)
-			.set({ name })
-			.where(and(eq(playlists.id, Number(id)), eq(playlists.userId, userId)));
+			.set({ name, value })
+			.where(and(eq(playlists.id, id), eq(playlists.userId, userId)));
 		return message(form, 'Playlist updated successfully');
 	},
 	deletePlaylist: async ({ request }) => {
@@ -69,7 +72,7 @@ export const actions: Actions = {
 		const { userId, id } = form.data;
 		await db
 			.delete(playlists)
-			.where(and(eq(playlists.id, Number(id)), eq(playlists.userId, userId)));
+			.where(and(eq(playlists.id, id), eq(playlists.userId, userId)));
 		return message(form, 'Playlist deleted successfully');
 	},
 };

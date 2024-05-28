@@ -1,65 +1,99 @@
 import {
+	companies,
+	db,
+	favoritesAlbums,
+	favoritesMusics,
+	games,
+	playlists,
+	users,
+	type SelectAlbum,
+	type SelectMusic,
+} from '$lib/db';
+import {
 	createAlbumSchema,
-	createGameSchema,
 	createCompanySchema,
+	createGameSchema,
 } from '$lib/validation';
+import { eq } from 'drizzle-orm';
+import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { LayoutServerLoad } from './$types';
-import { superValidate } from 'sveltekit-superforms';
-import {
-	db,
-	games,
-	companies,
-	users,
-	playlists,
-	musics,
-	userFavoritesMusics,
-	type SelectMusic,
-	type SelectAlbum,
-	userFavoritesAlbums,
-	albums,
-} from '$lib/db';
-import { eq } from 'drizzle-orm';
 
 export const load: LayoutServerLoad = async (event) => {
+	const { session, user } = await event.locals.safeGetSession();
 	const createAlbumForm = await superValidate(zod(createAlbumSchema));
 	const createGameForm = await superValidate(zod(createGameSchema));
 	const createCompanyForm = await superValidate(zod(createCompanySchema));
-	const allGames = await db.select().from(games);
-	const allCompanies = await db.select().from(companies);
-	const session = await event.locals.auth();
-	let user;
-	let userPlaylists;
-	const favoritesMusics: SelectMusic[] = [];
-	const favoritesAlbums: SelectAlbum[] = [];
-	if (session?.user?.email) {
-		user = await db.query.users.findFirst({
-			where: eq(users.email, session?.user?.email),
+	const allGames = await db.select().from(games).orderBy(games.name);
+	const allCompanies = await db
+		.select()
+		.from(companies)
+		.orderBy(companies.name);
+	let allPlaylists;
+	let profile;
+	const favMusics: SelectMusic[] = [];
+	const favAlbums: SelectAlbum[] = [];
+	if (user?.email) {
+		profile = await db.query.users.findFirst({
+			where: eq(users.email, user?.email),
 		});
-		if (user) {
-			userPlaylists = await db.query.playlists.findMany({
-				where: eq(playlists.userId, user.id),
+		allPlaylists = await db.query.playlists.findMany({
+			where: eq(playlists.userId, user.id),
+			with: {
+				musics: {
+					with: {
+						music: {
+							with: {
+								authors: {
+									with: {
+										author: true,
+									},
+								},
+								album: {
+									columns: {
+										cover: true,
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		});
+		const musicsRequest = await db.query.favoritesMusics.findMany({
+			where: eq(favoritesMusics.userId, user?.id),
+			with: {
+				music: {
+					with: {
+						authors: {
+							with: {
+								author: true,
+							},
+						},
+						album: {
+							columns: {
+								cover: true,
+							},
+						},
+					},
+				},
+			},
+		});
+		const albumsRequest = await db.query.favoritesAlbums.findMany({
+			where: eq(favoritesAlbums.userId, user.id),
+			with: {
+				album: true,
+			},
+		});
+		if (musicsRequest) {
+			musicsRequest.forEach((item) => {
+				favMusics.push(item.music);
 			});
-			const favoritesMusicsRequest = await db
-				.select({ musics })
-				.from(userFavoritesMusics)
-				.leftJoin(musics, eq(userFavoritesMusics.musicId, musics.id))
-				.where(eq(userFavoritesMusics.userId, user.id));
-			const favoritesAlbumsRequest = await db
-				.select({ albums })
-				.from(userFavoritesAlbums)
-				.leftJoin(albums, eq(userFavoritesAlbums.albumId, albums.id))
-				.where(eq(userFavoritesAlbums.userId, user.id));
-			if (favoritesMusicsRequest) {
-				favoritesMusicsRequest.forEach((item) => {
-					favoritesMusics.push(item.musics);
-				});
-			}
-			if (favoritesAlbumsRequest) {
-				favoritesAlbumsRequest.forEach((item) => {
-					favoritesAlbums.push(item.albums);
-				});
-			}
+		}
+		if (albumsRequest) {
+			albumsRequest.forEach((item) => {
+				favAlbums.push(item.album);
+			});
 		}
 	}
 	return {
@@ -68,10 +102,10 @@ export const load: LayoutServerLoad = async (event) => {
 		createCompanyForm,
 		games: allGames,
 		companies: allCompanies,
-		user,
-		playlists: userPlaylists,
-		favoritesMusics,
-		favoritesAlbums,
+		playlists: allPlaylists,
+		favoritesMusics: favMusics,
+		favoritesAlbums: favAlbums,
 		session,
+		profile,
 	};
 };

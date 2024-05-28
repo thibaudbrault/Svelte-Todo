@@ -8,6 +8,7 @@
 	export let id: string;
 	export let schema;
 	export let withButton: boolean = true;
+	export let buttonText: string;
 
 	export const _form = superForm(data, {
 		dataType: 'form',
@@ -35,6 +36,7 @@
 		errors={$errors}
 		allErrors={$allErrors}
 		delayed={$delayed}
+		submitting={$submitting}
 	/>
 	{#if withButton}
 		<Button
@@ -48,7 +50,7 @@
 			{#if $submitting}
 				<Loader2Icon class="animate-spin" />
 			{:else}
-				Add
+				{buttonText}
 			{/if}
 		</Button>
 	{/if}

@@ -197,6 +197,76 @@
       "when": 1711907023583,
       "tag": "0027_normal_prism",
       "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "5",
+      "when": 1713429869265,
+      "tag": "0028_dark_jack_flag",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "5",
+      "when": 1713431421305,
+      "tag": "0029_tan_doctor_strange",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "5",
+      "when": 1713448408475,
+      "tag": "0030_strange_payback",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "5",
+      "when": 1713716366745,
+      "tag": "0031_neat_tyrannus",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "5",
+      "when": 1713790697328,
+      "tag": "0032_brown_speed_demon",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "5",
+      "when": 1713874382744,
+      "tag": "0033_early_zodiak",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "5",
+      "when": 1713962674069,
+      "tag": "0034_clammy_supernaut",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "5",
+      "when": 1715776508107,
+      "tag": "0035_black_nemesis",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "6",
+      "when": 1716141531026,
+      "tag": "0036_kind_squirrel_girl",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "6",
+      "when": 1716627186885,
+      "tag": "0037_cheerful_firebrand",
+      "breakpoints": true
     }
   ]
 }

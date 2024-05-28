@@ -1,45 +1,50 @@
 <script lang="ts">
-	import {
-		audio,
-		currentTime,
-		duration,
-		isLoading,
-		showPlayer,
-		trackId,
-	} from '$lib/store.js';
-	import { loadTrack, nextTrack } from '$lib/utils';
-	import { Player } from '$modules';
+	import { page } from '$app/stores';
+	import type { SelectMusic } from '$lib/db';
+	import { cover, favoritesMusics, length, musics, trackId } from '$lib/store';
+	import { Musics } from '$modules';
 	import { Separator } from 'bits-ui';
 	import { onMount } from 'svelte';
-	import type { PageServerData } from './$types';
 	import Header from './Header.svelte';
-	import Musics from './Musics.svelte';
+	import { Search } from '$components';
+	import { debounce } from '$lib/utils';
 
-	export let data: PageServerData;
-	$: ({ musics, album, length } = data);
-	$: src = musics[$trackId]?.url;
+	let query: string = '';
+	let filteredMusics = [];
 
-	let raf: number = 0;
+	$: if (filteredMusics.length > 0) {
+		musics.set(filteredMusics);
+	} else {
+		musics.set($page.data.musics);
+	}
+
+	$: $length = $page.data.length;
+
+	const search = () => {
+		filteredMusics = $page.data.musics.filter((music) => {
+			let musicName = music.name.toLowerCase();
+			return musicName.includes(query.toLowerCase());
+		});
+	};
 
 	onMount(() => {
-		loadTrack(musics, length);
+		$cover = $page.data.album.cover;
+		$trackId = 0;
+		$page.data.favoritesMusics.forEach((music: SelectMusic) => {
+			favoritesMusics.update((current) => current.add(music.id));
+		});
 	});
 </script>
 
 <div class="flex flex-col gap-4">
-	<Header cover={album.cover} name={album.name} release={album.release} />
+	<Header />
 	<Separator.Root class="mx-auto h-px w-11/12 bg-gray-5" />
-	<Musics />
+	<Search bind:query on:input={debounce(search)} placeholder="Search title" />
+	{#if query && filteredMusics.length === 0}
+		<p class="mt-8 flex items-center justify-center text-4xl font-semibold">
+			No Results
+		</p>
+	{:else}
+		<Musics />
+	{/if}
 </div>
-<audio
-	{src}
-	bind:this={$audio}
-	bind:duration={$duration}
-	bind:currentTime={$currentTime}
-	on:canplay={() => ($isLoading = false)}
-	on:ended={() => nextTrack(musics, length)}
-	hidden
-/>
-{#if $showPlayer}
-	<Player {musics} {length} cover={album.cover} {raf} />
-{/if}

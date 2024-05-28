@@ -4,24 +4,12 @@
 	import { fade } from 'svelte/transition';
 
 	export let title: string;
-	export let trigger: string = '';
 </script>
 
 <Dialog.Root>
-	<slot name="trigger">
-		<Dialog.Trigger
-			class="w-full rounded-md bg-gray-12 px-4 py-2 text-xl font-semibold lowercase text-gray-1 transition-all duration-300 ease-in-out hover:bg-gray-11"
-			style="font-variant: small-caps;"
-		>
-			{trigger}
-		</Dialog.Trigger>
-	</slot>
+	<slot name="trigger" />
 	<Dialog.Portal>
-		<Dialog.Overlay
-			transition={fade}
-			transitionConfig={{ duration: 150 }}
-			class="fixed inset-0 z-50 bg-black/80"
-		/>
+		<Dialog.Overlay transition={fade} class="fixed inset-0 z-50 bg-black/80" />
 		<Dialog.Content
 			class="fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] space-y-4 rounded-md border border-gray-6 bg-gray-2 p-4 outline-none"
 		>

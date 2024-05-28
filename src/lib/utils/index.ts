@@ -1,5 +1,6 @@
 export * from './cn';
 export * from './constants';
+export * from './debounce';
 export * from './formatter';
-export * from './slugify';
 export * from './functions';
+export * from './slugify';
