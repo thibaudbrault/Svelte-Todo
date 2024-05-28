@@ -41,15 +41,15 @@
 </script>
 
 <Tabs.Root bind:value class="mt-4 space-y-8 md:mt-0">
-	<div class="flex items-center justify-between gap-4">
-		<h2 class="text-4xl font-bold capitalize">{value}</h2>
+	<div class="flex flex-col items-center justify-between gap-4 md:flex-row">
+		<h2 class="text-3xl font-bold capitalize md:text-4xl">{value}</h2>
 		<Tabs.List
-			class="flex w-fit items-center justify-center gap-4 rounded-md bg-gray-12 px-4 py-2 text-gray-1"
+			class="flex w-fit items-center justify-center gap-4 rounded-md bg-gray-12 px-2 py-1 text-gray-1 md:px-4 md:py-2"
 		>
 			{#each tabs as tab}
 				<Tabs.Trigger
 					value={tab.value}
-					class="rounded-md px-2 py-1 text-xl font-semibold lowercase data-[state=active]:bg-gray-3 data-[state=active]:text-gray-12"
+					class="rounded-md px-2 py-1 text-base font-semibold lowercase data-[state=active]:bg-gray-3 data-[state=active]:text-gray-12 md:text-xl"
 					style="font-variant: small-caps;"
 				>
 					{tab.label}
@@ -67,6 +67,8 @@
 		<Albums />
 	</Tabs.Content>
 	<Tabs.Content value="artists">
-		<p class="text-center text-2xl font-semibold">Coming soon</p>
+		<p class="py-4 text-center text-xl font-semibold capitalize md:text-2xl">
+			Coming soon
+		</p>
 	</Tabs.Content>
 </Tabs.Root>

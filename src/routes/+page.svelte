@@ -6,11 +6,11 @@
 
 {#if $page.data.album.length > 0}
 	<div class="flex flex-col gap-8">
-		<div class="flex w-full items-center gap-8">
-			<div class="space-y-2">
+		<div class="flex w-full flex-col items-center gap-8 md:flex-row">
+			<div class="w-full space-y-2 md:w-auto">
 				<h2 class="text-2xl font-bold text-yellow-12">Random album</h2>
 				<div
-					class="relative flex w-72 flex-col items-center justify-center rounded-md border border-yellowA-6 bg-yellow-surface py-8 transition-all duration-300 ease-in-out"
+					class="relative flex w-full flex-col items-center justify-center rounded-md border border-yellowA-6 bg-yellow-surface py-8 transition-all duration-300 ease-in-out md:w-72"
 				>
 					<img
 						src={$page.data.album[0].cover}
@@ -28,7 +28,7 @@
 				</div>
 			</div>
 			{#if $page.data.user}
-				<div class="min-w-72 space-y-2">
+				<div class="w-full space-y-2 md:min-w-72">
 					<h2
 						class="font-semibold lowercase text-gray-11"
 						style="font-variant: small-caps;"
@@ -78,7 +78,7 @@
 					class="text-xs font-semibold text-gray-11 hover:underline">Show all</a
 				>
 			</div>
-			<div class="flex flex-wrap gap-1">
+			<div class="flex flex-wrap justify-evenly gap-1 md:justify-around">
 				{#each $page.data.latestAlbums as album}
 					<Card
 						title={album.name}
@@ -99,7 +99,9 @@
 					class="text-xs font-semibold text-gray-11 hover:underline">Show all</a
 				>
 			</div>
-			<div class="flex shrink-0 flex-wrap gap-1">
+			<div
+				class="flex shrink-0 flex-wrap justify-evenly gap-1 md:justify-around"
+			>
 				{#each $page.data.popularAlbums as album}
 					<Card
 						title={album.name}

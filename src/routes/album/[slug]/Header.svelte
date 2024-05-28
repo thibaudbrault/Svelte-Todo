@@ -30,7 +30,7 @@
 
 <div class="flex flex-col items-center gap-4 p-4 sm:flex-row">
 	<div
-		class="relative max-w-52 rounded-full border border-gray-5 sm:h-28 sm:w-28 md:h-40 md:w-40 lg:h-52 lg:w-52"
+		class="relative max-w-52 rounded-full border border-gray-5 sm:size-28 md:size-40 lg:size-52"
 	>
 		<img
 			src={$page.data.album.cover}
@@ -52,12 +52,12 @@
 				</small>
 			</div>
 			<h1
-				class="text-center text-4xl font-bold sm:text-left md:text-5xl lg:text-6xl"
+				class="text-center text-3xl font-bold sm:text-left md:text-5xl lg:text-6xl"
 			>
 				{$page.data.album.name}
 			</h1>
 		</div>
-		<div class="flex items-center justify-between">
+		<div class="flex items-center justify-between text-sm sm:text-base">
 			<ul class="flex gap-2 text-gray-11 sm:gap-0">
 				<li>{$page.data.likes} likes</li>
 				<li class="sm:before:mx-2 sm:before:font-bold sm:before:content-['·']">

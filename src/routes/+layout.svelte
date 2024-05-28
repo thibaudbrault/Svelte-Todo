@@ -47,7 +47,7 @@
 	toastOptions={{ style: 'font-weight: 600; font-size: 1.25rem;' }}
 />
 <main
-	class={`relative flex h-screen flex-col-reverse gap-y-4 bg-gray-1 p-4 text-gray-12 md:flex-row ${$isPlayerOpen ? 'pb-28' : ''}`}
+	class={`relative flex h-screen flex-col-reverse gap-y-4 bg-gray-1 p-4 text-gray-12 md:flex-row ${$isPlayerOpen ? 'md:pb-28' : ''}`}
 >
 	{#if !$isZen}
 		<Sidebar />
@@ -56,6 +56,9 @@
 		>
 			<slot />
 		</section>
+		<div class="md:hidden">
+			<h1 class="text-2xl font-bold">GameMusic</h1>
+		</div>
 	{:else}
 		<div class="flex h-full w-full items-center justify-center">
 			<img src={$cover} alt="" class={'size-96 rounded-full'} />

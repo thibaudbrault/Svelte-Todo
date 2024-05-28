@@ -18,7 +18,9 @@
 			{/each}
 		</div>
 	{:else}
-		<p class="col-span-5 py-4 text-center text-2xl font-semibold capitalize">
+		<p
+			class="col-span-5 py-4 text-center text-xl font-semibold capitalize md:text-2xl"
+		>
 			No album
 		</p>
 	{/if}
