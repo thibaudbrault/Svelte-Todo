@@ -78,7 +78,7 @@
 					class="text-xs font-semibold text-gray-11 hover:underline">Show all</a
 				>
 			</div>
-			<div class="flex flex-wrap justify-evenly gap-1 md:justify-around">
+			<div class="flex flex-wrap justify-evenly gap-1 md:justify-normal">
 				{#each $page.data.latestAlbums as album}
 					<Card
 						title={album.name}
@@ -100,7 +100,7 @@
 				>
 			</div>
 			<div
-				class="flex shrink-0 flex-wrap justify-evenly gap-1 md:justify-around"
+				class="flex shrink-0 flex-wrap justify-evenly gap-1 md:justify-normal"
 			>
 				{#each $page.data.popularAlbums as album}
 					<Card
