@@ -11,7 +11,7 @@
 		isZen,
 	} from '$lib/store';
 	import { nextTrack } from '$lib/utils';
-	import { Player } from '$modules';
+	import { Player, PlayerMobile } from '$modules';
 	import { inject } from '@vercel/analytics';
 	import { onMount } from 'svelte';
 	import { Toaster } from 'svelte-sonner';
@@ -21,6 +21,7 @@
 	inject({ mode: dev ? 'development' : 'production' });
 
 	let raf: number = 0;
+	let innerWidth = 0;
 
 	export let data;
 	$: ({ session, supabase } = data);
@@ -46,6 +47,7 @@
 	position="top-center"
 	toastOptions={{ style: 'font-weight: 600; font-size: 1.25rem;' }}
 />
+<svelte:window bind:innerWidth />
 <main
 	class={`relative flex h-screen flex-col-reverse gap-y-4 bg-gray-1 p-4 text-gray-12 md:flex-row ${$isPlayerOpen ? 'md:pb-28' : ''}`}
 >
@@ -74,6 +76,10 @@
 		hidden
 	/>
 	{#if $audio?.src && $isPlayerOpen}
-		<Player {raf} />
+		{#if innerWidth > 768}
+			<Player {raf} />
+		{:else}
+			<PlayerMobile {raf} />
+		{/if}
 	{/if}
 </main>
