@@ -22,6 +22,9 @@ export const load: PageServerLoad = async () => {
 	const album = await db.execute(
 		sql`select * from ${albums} order by random() limit 1`,
 	);
+	const allGames = await db.query.games.findMany({
+		limit: 10,
+	});
 	const latestAlbums = await db.query.albums.findMany({
 		orderBy: (albums, { desc }) => [desc(albums.createdAt)],
 		with: {
@@ -38,6 +41,7 @@ export const load: PageServerLoad = async () => {
 	});
 	return {
 		album,
+		games: allGames,
 		latestAlbums,
 		popularAlbums,
 	};

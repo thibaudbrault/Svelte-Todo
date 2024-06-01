@@ -1,7 +1,42 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Card } from '$components';
-	import { AudioLines, Heart, ListMusic } from 'lucide-svelte';
+	import {
+		ArrowLeft,
+		ArrowRight,
+		AudioLines,
+		Heart,
+		ListMusic,
+	} from 'lucide-svelte';
+	import { register } from 'swiper/element/bundle';
+	import type { SwiperContainer } from 'swiper/element/bundle';
+	import type { SwiperOptions } from 'swiper/types';
+	import { onMount } from 'svelte';
+
+	register();
+
+	let swiperEl: SwiperContainer | undefined;
+	let swiperNextElem: HTMLElement | undefined;
+	let swiperPrevElem: HTMLElement | undefined;
+	onMount(() => {
+		if (
+			swiperEl != undefined &&
+			swiperNextElem != undefined &&
+			swiperPrevElem != undefined
+		) {
+			const swiperParams: SwiperOptions = {
+				navigation: {
+					nextEl: swiperNextElem,
+					prevEl: swiperPrevElem,
+				},
+				slidesPerView: 4,
+				slidesPerGroup: 2,
+				mousewheel: true,
+			};
+			Object.assign(swiperEl, swiperParams);
+			swiperEl.initialize();
+		}
+	});
 </script>
 
 {#if $page.data.album.length > 0}
@@ -72,24 +107,57 @@
 		</div>
 		<div class="space-y-2">
 			<div class="flex items-baseline gap-2">
-				<h2 class="text-2xl font-bold">Latest albums</h2>
-				<a
-					href="/album/latest"
-					class="text-xs font-semibold text-gray-11 hover:underline">Show all</a
-				>
+				<h2 class="text-2xl font-bold">Games</h2>
 			</div>
-			<div class="flex flex-wrap justify-evenly gap-1 md:justify-normal">
-				{#each $page.data.latestAlbums as album}
-					<Card
-						title={album.name}
-						alt={album.name}
-						cover={album.cover}
-						release={album.release}
-						game={album.games.name}
-						link={`/album/${album.slug}`}
-					/>
+			<div class="grid auto-cols-max grid-flow-col gap-2 overflow-x-hidden">
+				{#each $page.data.games as game}
+					<div
+						class="flex size-48 items-center justify-center rounded-md bg-gray-3 p-4 text-center"
+					>
+						<p class="text-3xl font-semibold">{game.name}</p>
+					</div>
 				{/each}
 			</div>
+		</div>
+		<div class="space-y-2">
+			<div class="flex items-center justify-between">
+				<div class="flex items-baseline gap-2">
+					<h2 class="text-2xl font-bold">Latest albums</h2>
+					<a
+						href="/album/latest"
+						class="text-xs font-semibold text-gray-11 hover:underline"
+						>Show all</a
+					>
+				</div>
+				<div class="flex gap-2">
+					<button
+						bind:this={swiperPrevElem}
+						class="transition-all duration-300 ease-in-out disabled:text-gray-11 disabled:opacity-60"
+					>
+						<ArrowLeft />
+					</button>
+					<button
+						bind:this={swiperNextElem}
+						class="transition-all duration-300 ease-in-out disabled:text-gray-11 disabled:opacity-60"
+					>
+						<ArrowRight />
+					</button>
+				</div>
+			</div>
+			<swiper-container init="false" bind:this={swiperEl}>
+				{#each $page.data.latestAlbums as album}
+					<swiper-slide>
+						<Card
+							title={album.name}
+							alt={album.name}
+							cover={album.cover}
+							release={album.release}
+							game={album.games.name}
+							link={`/album/${album.slug}`}
+						/>
+					</swiper-slide>
+				{/each}
+			</swiper-container>
 		</div>
 		<div class="space-y-2">
 			<div class="flex items-baseline gap-2">
@@ -99,9 +167,7 @@
 					class="text-xs font-semibold text-gray-11 hover:underline">Show all</a
 				>
 			</div>
-			<div
-				class="flex shrink-0 flex-wrap justify-evenly gap-1 md:justify-normal"
-			>
+			<div class="grid auto-cols-max grid-flow-col overflow-x-hidden">
 				{#each $page.data.popularAlbums as album}
 					<Card
 						title={album.name}
