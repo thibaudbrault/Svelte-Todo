@@ -1,23 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Card } from '$components';
-	import {
-		ArrowLeft,
-		ArrowRight,
-		AudioLines,
-		Heart,
-		ListMusic,
-	} from 'lucide-svelte';
-	import { register } from 'swiper/element/bundle';
-	import type { SwiperContainer } from 'swiper/element/bundle';
-	import type { SwiperOptions } from 'swiper/types';
+	import { LatestSlider, PopularSlider } from '$modules';
+	import { AudioLines, Heart, ListMusic } from 'lucide-svelte';
 	import { onMount } from 'svelte';
+	import type { SwiperContainer } from 'swiper/element/bundle';
+	import { register } from 'swiper/element/bundle';
+	import type { SwiperOptions } from 'swiper/types';
 
 	register();
 
 	let swiperEl: SwiperContainer | undefined;
 	let swiperNextElem: HTMLElement | undefined;
 	let swiperPrevElem: HTMLElement | undefined;
+
 	onMount(() => {
 		if (
 			swiperEl != undefined &&
@@ -114,72 +109,16 @@
 					<div
 						class="flex size-48 items-center justify-center rounded-md bg-gray-3 p-4 text-center"
 					>
-						<p class="text-3xl font-semibold">{game.name}</p>
+						<a
+							href={`/game/${game.value}`}
+							class="text-3xl font-semibold hover:text-yellow-12">{game.name}</a
+						>
 					</div>
 				{/each}
 			</div>
 		</div>
-		<div class="space-y-2">
-			<div class="flex items-center justify-between">
-				<div class="flex items-baseline gap-2">
-					<h2 class="text-2xl font-bold">Latest albums</h2>
-					<a
-						href="/album/latest"
-						class="text-xs font-semibold text-gray-11 hover:underline"
-						>Show all</a
-					>
-				</div>
-				<div class="flex gap-2">
-					<button
-						bind:this={swiperPrevElem}
-						class="transition-all duration-300 ease-in-out disabled:text-gray-11 disabled:opacity-60"
-					>
-						<ArrowLeft />
-					</button>
-					<button
-						bind:this={swiperNextElem}
-						class="transition-all duration-300 ease-in-out disabled:text-gray-11 disabled:opacity-60"
-					>
-						<ArrowRight />
-					</button>
-				</div>
-			</div>
-			<swiper-container init="false" bind:this={swiperEl}>
-				{#each $page.data.latestAlbums as album}
-					<swiper-slide>
-						<Card
-							title={album.name}
-							alt={album.name}
-							cover={album.cover}
-							release={album.release}
-							game={album.games.name}
-							link={`/album/${album.slug}`}
-						/>
-					</swiper-slide>
-				{/each}
-			</swiper-container>
-		</div>
-		<div class="space-y-2">
-			<div class="flex items-baseline gap-2">
-				<h2 class="text-2xl font-bold">Popular albums</h2>
-				<a
-					href="/album/popular"
-					class="text-xs font-semibold text-gray-11 hover:underline">Show all</a
-				>
-			</div>
-			<div class="grid auto-cols-max grid-flow-col overflow-x-hidden">
-				{#each $page.data.popularAlbums as album}
-					<Card
-						title={album.name}
-						alt={album.name}
-						cover={album.cover}
-						release={album.release}
-						game={album.games.name}
-						link={`/album/${album.slug}`}
-					/>
-				{/each}
-			</div>
-		</div>
+		<LatestSlider />
+		<PopularSlider />
 	</div>
 {:else}
 	<p
