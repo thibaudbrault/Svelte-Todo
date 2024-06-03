@@ -36,7 +36,7 @@
 	});
 </script>
 
-<div class="flex flex-col gap-4">
+<div class="space-y-4">
 	<Header />
 	<Separator.Root class="mx-auto h-px w-11/12 bg-gray-5" />
 	<Search bind:query on:input={debounce(search)} placeholder="Search title" />

@@ -104,15 +104,18 @@
 			<div class="flex items-baseline gap-2">
 				<h2 class="text-2xl font-bold">Games</h2>
 			</div>
-			<div class="grid auto-cols-max grid-flow-col gap-2 overflow-x-hidden">
+			<div class="grid auto-cols-max grid-flow-col gap-6 overflow-x-hidden">
 				{#each $page.data.games as game}
 					<div
-						class="flex size-48 items-center justify-center rounded-md bg-gray-3 p-4 text-center"
+						class="relative flex size-48 items-center justify-center rounded-md bg-gray-3 bg-cover bg-center bg-no-repeat p-4 text-center"
+						style="background-image: url({game.cover})"
 					>
 						<a
 							href={`/game/${game.value}`}
-							class="text-3xl font-semibold hover:text-yellow-12">{game.name}</a
+							class="z-10 text-3xl font-semibold hover:text-yellow-12"
+							>{game.name}</a
 						>
+						<div class="absolute inset-0 rounded-md bg-gray-1 opacity-20" />
 					</div>
 				{/each}
 			</div>
