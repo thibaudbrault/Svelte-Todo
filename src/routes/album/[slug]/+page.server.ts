@@ -6,6 +6,7 @@ import {
 	favoritesAlbums,
 	favoritesMusics,
 	games,
+	history,
 	musics,
 	musicsToAuthors,
 	playlistMusics,
@@ -77,6 +78,14 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
+	updateHistory: async ({ request }) => {
+		const formData = await request.formData();
+		const { musicId, userId } = Object.fromEntries(formData) as {
+			musicId: string;
+			userId: string;
+		};
+		await db.update(history).set({ musicId, userId });
+	},
 	addFavoriteMusic: async ({ request }) => {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(favoriteMusicSchema));
