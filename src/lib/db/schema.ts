@@ -104,6 +104,7 @@ export const games = pgTable('games', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
 	name: text('name').notNull().unique(),
 	value: text('value').notNull().unique(),
+	cover: text('cover').notNull().unique(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
 		() => new Date(),
@@ -243,6 +244,33 @@ export const playlistMusicsRelations = relations(playlistMusics, ({ one }) => ({
 	music: one(musics, {
 		fields: [playlistMusics.musicId],
 		references: [musics.id],
+	}),
+}));
+
+export const history = pgTable(
+	'history',
+	{
+		userId: uuid('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		musicId: uuid('music_id')
+			.notNull()
+			.references(() => musics.id, { onDelete: 'cascade' }),
+		listenedAt: timestamp('listened_at').defaultNow().notNull(),
+	},
+	(t) => ({
+		pk: primaryKey({ columns: [t.userId, t.musicId] }),
+	}),
+);
+
+export const historyRelations = relations(history, ({ one }) => ({
+	music: one(musics, {
+		fields: [history.musicId],
+		references: [musics.id],
+	}),
+	user: one(users, {
+		fields: [history.userId],
+		references: [users.id],
 	}),
 }));
 
