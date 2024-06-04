@@ -1,5 +1,10 @@
 import { CLOUDFRONT_URL } from '$env/static/private';
-import { updateHistory } from '$lib/actions';
+import {
+	createAlbum,
+	createGame,
+	createCompany,
+	updateHistory,
+} from '$lib/actions';
 import {
 	albums,
 	authors,
@@ -78,6 +83,9 @@ export const load: PageServerLoad = async ({ params }) => {
 };
 
 export const actions: Actions = {
+	createAlbum,
+	createGame,
+	createCompany,
 	updateHistory,
 	addFavoriteMusic: async ({ request }) => {
 		const formData = await request.formData();

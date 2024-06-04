@@ -5,6 +5,7 @@ import { zod } from 'sveltekit-superforms/adapters';
 import { updateUserSchema } from '$lib/validation';
 import { db, users } from '$lib/db';
 import { eq } from 'drizzle-orm';
+import { createAlbum, createGame, createCompany } from '$lib/actions';
 
 export const load: PageServerLoad = async (event) => {
 	const { session } = await event.locals.safeGetSession();
@@ -16,6 +17,9 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
+	createAlbum,
+	createGame,
+	createCompany,
 	updateUser: async ({ request }) => {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(updateUserSchema), {
