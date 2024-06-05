@@ -1,8 +1,7 @@
 <script>
 	import { Tabs } from 'bits-ui';
-	import Header from './Header.svelte';
 	import Albums from './Albums.svelte';
-	import { page } from '$app/stores';
+	import Header from './Header.svelte';
 
 	const tabs = [
 		{
@@ -20,8 +19,6 @@
 	];
 
 	let value = 'home';
-
-	console.log($page.data.game);
 </script>
 
 <div class="space-y-4">

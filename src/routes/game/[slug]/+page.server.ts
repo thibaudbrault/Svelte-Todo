@@ -1,8 +1,8 @@
-import { db, games, albums } from '$lib/db';
+import { createAlbum, createCompany, createGame } from '$lib/actions';
+import { albums, db, games } from '$lib/db';
+import { redirect } from '@sveltejs/kit';
 import { count, eq } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';
-import { createAlbum, createCompany, createGame } from '$lib/actions';
-import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ params }) => {
 	const slug = params.slug;
@@ -16,6 +16,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	if (!game) {
 		return redirect(300, '/');
 	}
+	// const allMusics = await db.select().from(musics).leftJoin(albums, eq(musics.albumId, albums.id)).leftJoin(games, eq(albums.gameId, games.id))
 	const countAlbums = await db
 		.select({ count: count() })
 		.from(albums)
