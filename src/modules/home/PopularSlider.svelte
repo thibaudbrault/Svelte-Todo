@@ -32,7 +32,7 @@
 		</div>
 	</div>
 	<div
-		class="flex w-full flex-nowrap gap-2 overflow-x-scroll"
+		class="no-scrollbar flex w-full flex-nowrap gap-2 overflow-x-scroll"
 		bind:this={scrollAreaPopular}
 	>
 		{#each $page.data.popularAlbums as album}
