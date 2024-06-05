@@ -1,37 +1,10 @@
 <script lang="ts">
-	import { register } from 'swiper/element/bundle';
-	import type { SwiperContainer } from 'swiper/element/bundle';
-	import type { SwiperOptions } from 'swiper/types';
-	import { onMount } from 'svelte';
-	import { ArrowLeft, ArrowRight } from 'lucide-svelte';
 	import { page } from '$app/stores';
 	import { Card } from '$components';
+	import { scrollFn } from '$lib/utils';
+	import { ArrowLeft, ArrowRight } from 'lucide-svelte';
 
-	register();
-
-	let swiperEl: SwiperContainer | undefined;
-	let swiperNextElem: HTMLElement | undefined;
-	let swiperPrevElem: HTMLElement | undefined;
-
-	onMount(() => {
-		if (
-			swiperEl != undefined &&
-			swiperNextElem != undefined &&
-			swiperPrevElem != undefined
-		) {
-			const swiperParams: SwiperOptions = {
-				navigation: {
-					nextEl: swiperNextElem,
-					prevEl: swiperPrevElem,
-				},
-				slidesPerView: 4,
-				slidesPerGroup: 2,
-				mousewheel: true,
-			};
-			Object.assign(swiperEl, swiperParams);
-			swiperEl.initialize();
-		}
-	});
+	let scrollAreaPopular: HTMLElement | undefined;
 </script>
 
 <div class="space-y-2">
@@ -45,31 +18,32 @@
 		</div>
 		<div class="flex gap-2">
 			<button
-				bind:this={swiperPrevElem}
+				on:click={() => scrollFn(scrollAreaPopular, 'prev')}
 				class="transition-all duration-300 ease-in-out disabled:text-gray-11 disabled:opacity-60"
 			>
 				<ArrowLeft />
 			</button>
 			<button
-				bind:this={swiperNextElem}
+				on:click={() => scrollFn(scrollAreaPopular, 'next')}
 				class="transition-all duration-300 ease-in-out disabled:text-gray-11 disabled:opacity-60"
 			>
 				<ArrowRight />
 			</button>
 		</div>
 	</div>
-	<swiper-container init="false" bind:this={swiperEl}>
+	<div
+		class="flex w-full flex-nowrap gap-2 overflow-x-scroll"
+		bind:this={scrollAreaPopular}
+	>
 		{#each $page.data.popularAlbums as album}
-			<swiper-slide>
-				<Card
-					title={album.name}
-					alt={album.name}
-					cover={album.cover}
-					release={album.release}
-					game={album.games.name}
-					link={`/album/${album.slug}`}
-				/>
-			</swiper-slide>
+			<Card
+				title={album.name}
+				alt={album.name}
+				cover={album.cover}
+				release={album.release}
+				game={album.games.name}
+				link={`/album/${album.slug}`}
+			/>
 		{/each}
-	</swiper-container>
+	</div>
 </div>

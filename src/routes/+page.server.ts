@@ -4,7 +4,7 @@ import { sql } from 'drizzle-orm';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const album = await db.execute(
+	const randomAlbums = await db.execute(
 		sql`select * from ${albums} order by random() limit 1`,
 	);
 	const allGames = await db.query.games.findMany({
@@ -25,7 +25,7 @@ export const load: PageServerLoad = async () => {
 		limit: 10,
 	});
 	return {
-		album,
+		randomAlbums,
 		games: allGames,
 		latestAlbums,
 		popularAlbums,
