@@ -2,6 +2,8 @@
 	import { Tabs } from 'bits-ui';
 	import Albums from './Albums.svelte';
 	import Header from './Header.svelte';
+	import Authors from './Authors.svelte';
+	import Home from './Home.svelte';
 
 	const tabs = [
 		{
@@ -38,10 +40,13 @@
 			{/each}
 		</Tabs.List>
 		<Tabs.Content value="home">
-			<p>home</p>
+			<Home />
 		</Tabs.Content>
 		<Tabs.Content value="albums">
 			<Albums />
+		</Tabs.Content>
+		<Tabs.Content value="artists">
+			<Authors />
 		</Tabs.Content>
 	</Tabs.Root>
 </div>
