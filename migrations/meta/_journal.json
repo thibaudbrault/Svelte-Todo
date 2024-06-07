@@ -274,6 +274,13 @@
       "when": 1717410104758,
       "tag": "0038_salty_hellion",
       "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "6",
+      "when": 1717751703512,
+      "tag": "0039_silky_marten_broadcloak",
+      "breakpoints": true
     }
   ]
 }

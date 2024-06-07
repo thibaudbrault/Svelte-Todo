@@ -163,6 +163,32 @@ export const musicToAuthorsRelations = relations(
 	}),
 );
 
+export const gameToAuthors = pgTable(
+	'games_authors',
+	{
+		gameId: uuid('game_id')
+			.notNull()
+			.references(() => games.id, { onDelete: 'cascade' }),
+		authorId: uuid('author_id')
+			.notNull()
+			.references(() => authors.id, { onDelete: 'cascade' }),
+	},
+	(t) => ({
+		pk: primaryKey({ columns: [t.gameId, t.authorId] }),
+	}),
+);
+
+export const gameToAuthorsRelations = relations(gameToAuthors, ({ one }) => ({
+	game: one(games, {
+		fields: [gameToAuthors.gameId],
+		references: [games.id],
+	}),
+	author: one(authors, {
+		fields: [gameToAuthors.authorId],
+		references: [authors.id],
+	}),
+}));
+
 export const favoritesMusics = pgTable(
 	'favorites_musics',
 	{
