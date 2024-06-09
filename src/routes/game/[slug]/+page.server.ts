@@ -16,6 +16,13 @@ export const load: PageServerLoad = async ({ params }) => {
 	if (!game) {
 		return redirect(300, '/');
 	}
+	const countAlbums = await db
+		.select({ count: count() })
+		.from(albums)
+		.where(eq(albums.gameId, game.id));
+	if (countAlbums[0].count === 0) {
+		return redirect(300, '/');
+	}
 	const authorsRequest = await db.query.gameToAuthors.findMany({
 		where: eq(gameToAuthors.gameId, game?.id),
 		with: {
@@ -42,12 +49,16 @@ export const load: PageServerLoad = async ({ params }) => {
 		};
 	});
 	// const allMusics = await db.select().from(musics).leftJoin(albums, eq(musics.albumId, albums.id)).leftJoin(games, eq(albums.gameId, games.id))
-	const countAlbums = await db
-		.select({ count: count() })
-		.from(albums)
-		.where(eq(albums.gameId, game.id));
 	const popularAlbums = await db.query.albums.findMany({
 		orderBy: (albums, { desc }) => [desc(albums.popularity)],
+		where: eq(albums.gameId, game.id),
+		with: {
+			games: true,
+		},
+		limit: 5,
+	});
+	const latestAlbums = await db.query.albums.findMany({
+		orderBy: (albums, { desc }) => [desc(albums.createdAt)],
 		where: eq(albums.gameId, game.id),
 		with: {
 			games: true,
@@ -59,6 +70,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		authors,
 		countAlbums: countAlbums[0].count,
 		popularAlbums,
+		latestAlbums,
 	};
 };
 
