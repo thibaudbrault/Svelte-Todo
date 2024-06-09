@@ -11,6 +11,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const roleEnum = pgEnum('role', ['admin', 'user']);
+export const visibilityEnum = pgEnum('visibility', ['public', 'private']);
 
 export const albums = pgTable('albums', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
@@ -88,6 +89,7 @@ export const playlists = pgTable('playlists', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
 	name: text('name').notNull(),
 	value: text('value').notNull().unique(),
+	visibility: visibilityEnum('visibility').default('public'),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
 		() => new Date(),

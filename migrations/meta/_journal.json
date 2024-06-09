@@ -281,6 +281,13 @@
       "when": 1717751703512,
       "tag": "0039_silky_marten_broadcloak",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "6",
+      "when": 1717928451010,
+      "tag": "0040_fresh_wiccan",
+      "breakpoints": true
     }
   ]
 }
