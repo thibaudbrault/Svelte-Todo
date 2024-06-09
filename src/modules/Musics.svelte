@@ -4,6 +4,7 @@
 	import { Button, Dropdown } from '$components';
 	import {
 		authors,
+		cover,
 		favoritesMusics,
 		length,
 		musics,
@@ -15,6 +16,7 @@
 
 	const handleClick = async (index: number) => {
 		$trackId = index;
+		$cover = $page.data.album.cover;
 		$authors = $musics[$trackId].authors;
 		scrollIntoView($trackId);
 		loadTrack();
@@ -27,17 +29,17 @@
 			} else {
 				$trackId = $length - 1;
 			}
-			scrollIntoView($trackId);
-			loadTrack();
 		} else if (event.key === 'ArrowRight') {
 			if ($trackId < $length - 1) {
 				$trackId = $trackId + 1;
 			} else {
 				$trackId = 0;
 			}
-			scrollIntoView($trackId);
-			loadTrack();
 		}
+		$cover = $page.data.album.cover;
+		$authors = $musics[$trackId].authors;
+		scrollIntoView($trackId);
+		loadTrack();
 	};
 
 	const handleFavorite = (id: string) => {
@@ -62,11 +64,16 @@
 				{#if $page.data.user}
 					<form
 						method="post"
-						use:enhance
+						use:enhance={() => {
+							return ({ update }) => {
+								update({ reset: false });
+							};
+						}}
 						action="?/updateHistory"
 						class="h-full w-full"
 					>
 						<input value={music.id} name="musicId" hidden />
+						<input value={$page.data.profile.id} name="userId" hidden />
 						<button
 							id={`track-${index}`}
 							on:click={() => handleClick(index)}
