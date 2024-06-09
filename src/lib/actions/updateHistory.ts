@@ -1,4 +1,5 @@
 import { db, history } from '$lib/db';
+import { sql } from 'drizzle-orm';
 
 export const updateHistory = async ({ request }) => {
 	const formData = await request.formData();
@@ -6,5 +7,13 @@ export const updateHistory = async ({ request }) => {
 		musicId: string;
 		userId: string;
 	};
-	await db.update(history).set({ musicId, userId });
+	await db
+		.insert(history)
+		.values({ musicId, userId })
+		.onConflictDoUpdate({
+			target: [history.userId, history.musicId],
+			set: {
+				listenedAt: sql`now()`,
+			},
+		});
 };
