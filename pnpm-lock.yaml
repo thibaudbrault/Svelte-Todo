@@ -45,8 +45,8 @@ dependencies:
     specifier: ^15.1.0
     version: 15.1.0
   lucide-svelte:
-    specifier: ^0.395.0
-    version: 0.395.0(svelte@4.2.18)
+    specifier: ^0.396.0
+    version: 0.396.0(svelte@4.2.18)
   music-metadata:
     specifier: ^8.3.0
     version: 8.3.0
@@ -4293,8 +4293,8 @@ packages:
     dependencies:
       yallist: 4.0.0
 
-  /lucide-svelte@0.395.0(svelte@4.2.18):
-    resolution: {integrity: sha512-gl4HIIGUyj3seZf/CQ6vG38oMnNmdO1lcBQaMsB5pFpnL1T13qlfqjMjfTCnsKMFjiIFr3LttE/LFVi/GXmV0A==}
+  /lucide-svelte@0.396.0(svelte@4.2.18):
+    resolution: {integrity: sha512-0oU3ZwQYzlFB1VyXcCRn1/cTsA+J7d+6MTC9t8lyIz12l0Rcrnoq0LUrGjX1I3r14uwSGrNDUTkdRdrHsl8L1Q==}
     peerDependencies:
       svelte: ^3 || ^4 || ^5.0.0-next.42
     dependencies:
@@ -5494,23 +5494,6 @@ packages:
     peerDependencies:
       '@sveltejs/kit': 1.x || 2.x
       svelte: 3.x || 4.x || >=5.0.0-next.51
-    peerDependenciesMeta:
-      '@sinclair/typebox':
-        optional: true
-      '@vinejs/vine':
-        optional: true
-      arktype:
-        optional: true
-      joi:
-        optional: true
-      superstruct:
-        optional: true
-      valibot:
-        optional: true
-      yup:
-        optional: true
-      zod:
-        optional: true
     dependencies:
       '@sveltejs/kit': 2.5.1(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.18)(vite@5.3.1)
       devalue: 4.3.2
