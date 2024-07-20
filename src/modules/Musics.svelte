@@ -14,9 +14,14 @@
 	import { AddToPlaylist, UpdateMusic } from '$modules';
 	import { Heart, MoreHorizontal } from 'lucide-svelte';
 
+	export let isFavorites: boolean = false;
+	export let isPlaylist: boolean = false;
+
 	const handleClick = async (index: number) => {
+		if (!isFavorites && !isPlaylist) {
+			$cover = $page.data.album.cover;
+		}
 		$trackId = index;
-		$cover = $page.data.album.cover;
 		$authors = $musics[$trackId].authors;
 		scrollIntoView($trackId);
 		loadTrack();
@@ -36,7 +41,9 @@
 				$trackId = 0;
 			}
 		}
-		$cover = $page.data.album.cover;
+		if (!isFavorites && !isPlaylist) {
+			$cover = $page.data.album.cover;
+		}
 		$authors = $musics[$trackId].authors;
 		scrollIntoView($trackId);
 		loadTrack();
@@ -83,7 +90,7 @@
 							<p class="text-left text-xl font-bold">{music.name}</p>
 							<ul class="flex items-center gap-2">
 								{#each music.authors as authors}
-									<li class=" text-xs font-medium capitalize">
+									<li class=" text-sm font-medium capitalize">
 										{authors.author.name}
 									</li>
 								{/each}
@@ -179,13 +186,13 @@
 					class="flex flex-1 flex-col items-start gap-1"
 				>
 					<p class="text-left font-bold">{music.name}</p>
-					{#each music.authors as authors}
-						<p
-							class="flex flex-wrap items-center gap-2 text-xs font-medium capitalize"
-						>
-							{authors.author.name}
-						</p>
-					{/each}
+					<ul class="flex items-center gap-2">
+						{#each music.authors as authors}
+							<li class=" text-xs font-medium capitalize">
+								{authors.author.name}
+							</li>
+						{/each}
+					</ul>
 				</button>
 				<div class="flex items-center gap-8">
 					<Dropdown>
@@ -206,6 +213,6 @@
 	<p
 		class="col-span-5 py-4 text-center text-xl font-semibold capitalize md:text-2xl"
 	>
-		No music
+		No musics
 	</p>
 {/if}

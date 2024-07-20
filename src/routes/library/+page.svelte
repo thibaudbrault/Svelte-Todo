@@ -28,6 +28,7 @@
 	];
 
 	let value = 'playlists';
+	let isFavorites = true;
 
 	$: $cover = $page.data.favoritesMusics[$trackId]?.album.cover;
 
@@ -59,7 +60,7 @@
 		<Playlists />
 	</Tabs.Content>
 	<Tabs.Content value="musics">
-		<Musics />
+		<Musics {isFavorites} />
 	</Tabs.Content>
 	<Tabs.Content value="albums">
 		<Albums />

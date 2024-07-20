@@ -4,6 +4,7 @@
 	import {
 		authors,
 		cover,
+		favoritesMusics,
 		isLoading,
 		isLooped,
 		isPlaying,
@@ -28,6 +29,7 @@
 	} from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import Progress from './Progress.svelte';
+	import { enhance } from '$app/forms';
 
 	export let raf: number;
 
@@ -46,6 +48,18 @@
 			event.preventDefault();
 			playPauseTrack(raf);
 		}
+	};
+
+	const handleFavorite = (id: string) => {
+		favoritesMusics.update((currentFavorites) => {
+			const newFavorites = new Set(currentFavorites);
+			if (newFavorites.has(id)) {
+				newFavorites.delete(id);
+			} else {
+				newFavorites.add(id);
+			}
+			return newFavorites;
+		});
 	};
 
 	onMount(() => {
@@ -113,19 +127,43 @@
 				<ListPlus class="size-5" slot="trigger" />
 				<svelte:fragment slot="content">
 					{#each $page.data.playlists as playlist}
-						<form>
+						<form method="POST" use:enhance action="?/updatePlaylist">
 							<input value={$page.data.profile.id} name="userId" hidden />
 							<input value={$musics[$trackId].id} name="musicId" hidden />
 							<input value={playlist.name} name="name" hidden />
-							<button>{playlist.name}</button>
+							<button class="hover:text-yellow-12">{playlist.name}</button>
 						</form>
 					{/each}
 				</svelte:fragment>
 			</Dropdown>
 		</div>
-		<Button intent="ghost" size="icon">
-			<Heart class="size-5" />
-		</Button>
+		{#if $favoritesMusics.has($musics[$trackId].id)}
+			<form
+				method="POST"
+				use:enhance
+				action="?/removeFavoriteMusic"
+				on:submit={() => handleFavorite($musics[$trackId].id)}
+			>
+				<input value={$musics[$trackId].id} name="musicId" hidden />
+				<input value={$page.data.profile.id} name="userId" hidden />
+				<Button intent="ghost" size="icon" class="text-red-500" type="submit">
+					<Heart class="size-5 fill-red-500" />
+				</Button>
+			</form>
+		{:else}
+			<form
+				method="POST"
+				use:enhance
+				action="?/addFavoriteMusic"
+				on:submit={() => handleFavorite($musics[$trackId].id)}
+			>
+				<input value={$musics[$trackId].id} name="musicId" hidden />
+				<input value={$page.data.profile.id} name="userId" hidden />
+				<Button intent="ghost" size="icon" class="text-inherit" type="submit">
+					<Heart class="size-5" />
+				</Button>
+			</form>
+		{/if}
 		<Tooltip>
 			<Button
 				slot="trigger"
