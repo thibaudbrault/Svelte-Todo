@@ -4,6 +4,7 @@ import {
 	createGame,
 	createCompany,
 	updateHistory,
+	updatePlaylist,
 } from '$lib/actions';
 import {
 	albums,
@@ -87,6 +88,7 @@ export const actions: Actions = {
 	createGame,
 	createCompany,
 	updateHistory,
+	updatePlaylist,
 	addFavoriteMusic: async ({ request }) => {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(favoriteMusicSchema));
