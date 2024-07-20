@@ -2,7 +2,6 @@ import {
 	createBrowserClient,
 	createServerClient,
 	isBrowser,
-	parse,
 } from '@supabase/ssr';
 
 import {
@@ -19,20 +18,14 @@ export const load: LayoutLoad = async ({ data, depends, fetch }) => {
 				global: {
 					fetch,
 				},
-				cookies: {
-					get(key) {
-						const cookie = parse(document.cookie);
-						return cookie[key];
-					},
-				},
 			})
 		: createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 				global: {
 					fetch,
 				},
 				cookies: {
-					get() {
-						return JSON.stringify(data.session);
+					getAll() {
+						return data.cookies;
 					},
 				},
 			});

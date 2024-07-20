@@ -41,6 +41,7 @@ export const load: LayoutServerLoad = async (event) => {
 			where: eq(playlists.userId, user.id),
 			with: {
 				musics: {
+					columns: {},
 					with: {
 						music: {
 							with: {
@@ -106,6 +107,7 @@ export const load: LayoutServerLoad = async (event) => {
 		favoritesMusics: favMusics,
 		favoritesAlbums: favAlbums,
 		session,
+		cookies: event.cookies.getAll(),
 		profile,
 	};
 };
