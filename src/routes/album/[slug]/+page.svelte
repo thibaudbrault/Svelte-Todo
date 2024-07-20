@@ -10,18 +10,18 @@
 	import Header from './Header.svelte';
 
 	let query: string = '';
-	let filteredMusics = [];
+	let filteredMusics: SelectMusic[] = [];
 
 	$: if (filteredMusics.length > 0) {
 		musics.set(filteredMusics);
+		$length = filteredMusics.length;
 	} else {
 		musics.set($page.data.musics);
+		$length = $page.data.length;
 	}
 
-	$: $length = $page.data.length;
-
 	const search = () => {
-		filteredMusics = $page.data.musics.filter((music) => {
+		filteredMusics = $page.data.musics.filter((music: SelectMusic) => {
 			let musicName = music.name.toLowerCase();
 			return musicName.includes(query.toLowerCase());
 		});
