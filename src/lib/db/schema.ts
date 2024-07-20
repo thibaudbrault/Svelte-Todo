@@ -88,7 +88,7 @@ export const authorsRelations = relations(authors, ({ many }) => ({
 export const playlists = pgTable('playlists', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
 	name: text('name').notNull(),
-	value: text('value').notNull().unique(),
+	value: text('value').notNull(),
 	visibility: visibilityEnum('visibility').default('public'),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
