@@ -15,6 +15,7 @@ import {
 	createGame,
 	createCompany,
 	updateHistory,
+	removeFavoriteMusic,
 } from '$lib/actions';
 
 export const load: PageServerLoad = async (event) => {
@@ -30,6 +31,7 @@ export const actions: Actions = {
 	createAlbum,
 	createGame,
 	createCompany,
+	removeFavoriteMusic,
 	updateHistory,
 	createPlaylist: async ({ request }) => {
 		const formData = await request.formData();
