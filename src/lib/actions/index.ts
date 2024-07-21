@@ -1,3 +1,4 @@
+export * from './addFavoriteMusic';
 export * from './createAlbum';
 export * from './createCompany';
 export * from './createGame';

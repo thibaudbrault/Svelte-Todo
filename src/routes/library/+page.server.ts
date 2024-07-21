@@ -16,6 +16,7 @@ import {
 	createCompany,
 	updateHistory,
 	removeFavoriteMusic,
+	addFavoriteMusic,
 } from '$lib/actions';
 
 export const load: PageServerLoad = async (event) => {
@@ -31,6 +32,7 @@ export const actions: Actions = {
 	createAlbum,
 	createGame,
 	createCompany,
+	addFavoriteMusic,
 	removeFavoriteMusic,
 	updateHistory,
 	createPlaylist: async ({ request }) => {
