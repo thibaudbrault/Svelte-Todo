@@ -30,10 +30,12 @@
 	let value = 'playlists';
 	let isFavorites = true;
 
-	$: $cover = $page.data.favoritesMusics[$trackId]?.album.cover;
+	$: {
+		$cover = $page.data.favoritesMusics[$trackId]?.album.cover;
+		$musics = $page.data.favoritesMusics;
+	}
 
 	onMount(() => {
-		$musics = $page.data.favoritesMusics;
 		$length = $page.data.favoritesMusics.length;
 		$page.data.favoritesMusics.forEach((music: SelectMusic) => {
 			favoritesMusics.update((current) => current.add(music.id));
