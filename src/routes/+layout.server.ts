@@ -86,6 +86,11 @@ export const load: LayoutServerLoad = async (event) => {
 				album: true,
 			},
 		});
+		if (allPlaylists) {
+			allPlaylists.forEach((item) => {
+				item.musics = item.musics.map((musics) => musics.music);
+			});
+		}
 		if (musicsRequest) {
 			musicsRequest.forEach((item) => {
 				favMusics.push(item.music);
