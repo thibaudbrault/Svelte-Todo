@@ -18,12 +18,14 @@
 		</div>
 		<div class="flex gap-2">
 			<button
+				aria-label="Go left"
 				on:click={() => scrollFn(scrollAreaLatest, 'prev')}
 				class="transition-all duration-300 ease-in-out disabled:text-gray-11 disabled:opacity-60"
 			>
 				<ArrowLeft />
 			</button>
 			<button
+				aria-label="Go right"
 				on:click={() => scrollFn(scrollAreaLatest, 'next')}
 				class="transition-all duration-300 ease-in-out disabled:text-gray-11 disabled:opacity-60"
 			>

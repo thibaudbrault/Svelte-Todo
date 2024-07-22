@@ -8,6 +8,7 @@
 		<div class="divide-y divide-gray-6">
 			{#each $page.data.popularAlbums as album, index}
 				<a
+					aria-label={`Go to ${album.name}`}
 					href={`/album/${album.slug}`}
 					class="group flex items-center justify-between gap-4 p-2"
 				>
@@ -33,6 +34,7 @@
 		<div class="divide-y divide-gray-6">
 			{#each $page.data.latestAlbums as album, index}
 				<a
+					aria-label={`Go to ${album.name}`}
 					href={`/album/${album.slug}`}
 					class="group flex items-center justify-between gap-4 p-2"
 				>

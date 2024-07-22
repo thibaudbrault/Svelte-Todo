@@ -90,13 +90,24 @@
 	</div>
 	<div class="flex flex-1 flex-col items-center gap-2">
 		<div class="flex items-center justify-center gap-2">
-			<Button intent="ghost" size="icon" on:click={handleShuffle}>
+			<Button
+				aria-label="Shuffle"
+				intent="ghost"
+				size="icon"
+				on:click={handleShuffle}
+			>
 				<Shuffle class={`size-5 ${$isShuffled ? 'text-yellow-11' : ''}`} />
 			</Button>
-			<Button intent="ghost" size="icon" on:click={() => prevTrack()}>
+			<Button
+				aria-label="Previous track"
+				intent="ghost"
+				size="icon"
+				on:click={() => prevTrack()}
+			>
 				<SkipBack class="size-5" />
 			</Button>
 			<Button
+				aria-label={$isPlaying ? 'Pause' : 'Play'}
 				intent="primary"
 				rounded="full"
 				size="icon"
@@ -112,10 +123,20 @@
 					<Play />
 				{/if}
 			</Button>
-			<Button intent="ghost" size="icon" on:click={() => nextTrack()}>
+			<Button
+				aria-label="Next track"
+				intent="ghost"
+				size="icon"
+				on:click={() => nextTrack()}
+			>
 				<SkipForward class="size-5" />
 			</Button>
-			<Button intent="ghost" size="icon" on:click={handleLoop}>
+			<Button
+				aria-label="Loop"
+				intent="ghost"
+				size="icon"
+				on:click={handleLoop}
+			>
 				<Repeat class={`size-5 ${$isLooped ? 'text-yellow-11' : ''}`} />
 			</Button>
 		</div>
@@ -131,7 +152,10 @@
 							<input value={$page.data.profile.id} name="userId" hidden />
 							<input value={$musics[$trackId].id} name="musicId" hidden />
 							<input value={playlist.name} name="name" hidden />
-							<button class="hover:text-yellow-12">{playlist.name}</button>
+							<button
+								aria-label={`Add to playlist ${playlist.name}`}
+								class="hover:text-yellow-12">{playlist.name}</button
+							>
 						</form>
 					{/each}
 				</svelte:fragment>
@@ -146,7 +170,13 @@
 			>
 				<input value={$musics[$trackId].id} name="musicId" hidden />
 				<input value={$page.data.profile.id} name="userId" hidden />
-				<Button intent="ghost" size="icon" class="text-red-500" type="submit">
+				<Button
+					aria-label="Remove from favorites"
+					intent="ghost"
+					size="icon"
+					class="text-red-500"
+					type="submit"
+				>
 					<Heart class="size-5 fill-red-500" />
 				</Button>
 			</form>
@@ -159,13 +189,20 @@
 			>
 				<input value={$musics[$trackId].id} name="musicId" hidden />
 				<input value={$page.data.profile.id} name="userId" hidden />
-				<Button intent="ghost" size="icon" class="text-inherit" type="submit">
+				<Button
+					aria-label="Add to favorites"
+					intent="ghost"
+					size="icon"
+					class="text-inherit"
+					type="submit"
+				>
 					<Heart class="size-5" />
 				</Button>
 			</form>
 		{/if}
 		<Tooltip>
 			<Button
+				aria-label="Focus mode"
 				slot="trigger"
 				intent="ghost"
 				size="icon"

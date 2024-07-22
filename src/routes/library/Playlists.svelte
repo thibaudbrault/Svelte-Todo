@@ -9,6 +9,7 @@
 		<div class="space-y-2">
 			{#each $page.data.playlists as playlist (playlist.id)}
 				<a
+					aria-label={`Go to playlist ${playlist.name}`}
 					class="group flex items-center justify-between gap-1 rounded-md p-2 hover:bg-gray-4"
 					href={`/playlist/${playlist.name}`}
 				>
@@ -30,7 +31,7 @@
 						</div>
 					</div>
 					<form>
-						<button class="hover:text-red-9">
+						<button aria-label="Close" class="hover:text-red-9">
 							<X class="size-5" />
 						</button>
 					</form>

@@ -76,7 +76,12 @@
 						>
 							<input value={$page.data.album.id} name="albumId" hidden />
 							<input value={$page.data.profile.id} name="userId" hidden />
-							<Button intent="ghost" size="icon" class="text-red-500">
+							<Button
+								aria-label="Remove from favorite albums"
+								intent="ghost"
+								size="icon"
+								class="text-red-500"
+							>
 								<Heart class="fill-red-500" />
 							</Button>
 						</form>
@@ -89,7 +94,11 @@
 						>
 							<input value={$page.data.album.id} name="albumId" hidden />
 							<input value={$page.data.profile.id} name="userId" hidden />
-							<Button intent="ghost" size="icon">
+							<Button
+								aria-label="Add to favorite albums"
+								intent="ghost"
+								size="icon"
+							>
 								<Heart />
 							</Button>
 						</form>

@@ -11,6 +11,7 @@
 <div class="space-y-2 divide-y divide-gray-6">
 	{#each $page.data.authors as author}
 		<a
+			aria-label={`Go to ${author.name}`}
 			href={`/author/${author.slug}`}
 			class="group flex items-center justify-between p-2"
 		>

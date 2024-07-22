@@ -127,6 +127,7 @@
 								<input value={music.id} name="musicId" hidden />
 								<input value={$page.data.profile.id} name="userId" hidden />
 								<Button
+									aria-label="Remove from favorites"
 									intent="ghost"
 									size="icon"
 									class="text-red-500"
@@ -145,6 +146,7 @@
 								<input value={music.id} name="musicId" hidden />
 								<input value={$page.data.profile.id} name="userId" hidden />
 								<Button
+									aria-label="Add to favorites"
 									intent="ghost"
 									size="icon"
 									class="text-inherit"
