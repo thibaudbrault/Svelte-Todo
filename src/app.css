@@ -37,6 +37,12 @@ input[type='range']::-moz-range-thumb {
 	@apply bg-yellow-11;
 }
 
+@layer base {
+	html {
+		@apply font-sans;
+	}
+}
+
 @layer components {
 	.triggerClass {
 		@apply text-left font-semibold capitalize hover:text-yellow-12;

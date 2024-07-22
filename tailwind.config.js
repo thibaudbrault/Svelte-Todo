@@ -4,6 +4,9 @@ export default {
 	darkMode: 'selector',
 	theme: {
 		extend: {
+			fontFamily: {
+				sans: ["'Inter'", 'sans-serif']
+			},	
 			boxShadow: {
 				sm: '0 0 0 1px',
 			},
