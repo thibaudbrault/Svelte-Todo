@@ -1,8 +1,17 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { SEO } from '$components';
 	import { LatestSlider, PopularSlider } from '$modules';
+
+	const seoProps = {
+		title: 'Home',
+		slug: '',
+		metadescription:
+			'Listen to your favorite video game soundtracks on GameMusic. Explore a wide collection of music from popular games. ',
+	};
 </script>
 
+<SEO {...seoProps} />
 <div class="space-y-8 overflow-x-hidden">
 	<div class="space-y-2">
 		<h2 class="text-2xl font-bold">Games</h2>
