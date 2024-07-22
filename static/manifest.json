@@ -1,0 +1,11 @@
+{
+    "name": "GameMusic",
+    "short_name": "GameMusic",
+    "theme_color": "#111111",
+    "background_color": "#111111",
+    "display": "browser",
+    "orientation": "portrait",
+    "scope": "/",
+    "start_url": "/",
+    "description": "Listen to your favorite vide games soundtracks"
+  }
