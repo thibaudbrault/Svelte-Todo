@@ -5,7 +5,7 @@ import { eq } from 'drizzle-orm';
 import { message, setError, superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-export const createCompany = async ({ request }) => {
+export const createCompany = async ({ request }: { request: Request }) => {
 	const formData = await request.formData();
 	const form = await superValidate(formData, zod(createCompanySchema), {
 		id: 'createCompany',

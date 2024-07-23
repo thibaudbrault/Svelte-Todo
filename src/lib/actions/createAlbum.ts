@@ -13,7 +13,7 @@ import {
 } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-export const createAlbum = async ({ request }) => {
+export const createAlbum = async ({ request }: { request: Request }) => {
 	const formData = await request.formData();
 	const form = await superValidate(formData, zod(createAlbumSchema), {
 		id: 'createAlbum',

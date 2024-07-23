@@ -1,7 +1,7 @@
 import { db, history } from '$lib/db';
 import { sql } from 'drizzle-orm';
 
-export const updateHistory = async ({ request }) => {
+export const updateHistory = async ({ request }: { request: Request }) => {
 	const formData = await request.formData();
 	const { musicId, userId } = Object.fromEntries(formData) as {
 		musicId: string;
