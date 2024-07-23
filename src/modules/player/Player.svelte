@@ -152,24 +152,37 @@
 							<input value={$page.data.profile.id} name="userId" hidden />
 							<input value={$musics[$trackId].id} name="musicId" hidden />
 							<input value={playlist.name} name="name" hidden />
-							<button
-								aria-label={`Add to playlist ${playlist.name}`}
-								class="hover:text-yellow-12">{playlist.name}</button
-							>
+							{#if $musics[$trackId].playlists.find((item) => item.playlistId === playlist.id)}
+								<input value="remove" name="action" hidden />
+								<button
+									aria-label={`Remove from playlist ${playlist.name}`}
+									class="text-yellow-12"
+									>{playlist.name}
+								</button>
+							{:else}
+								<input value="add" name="action" hidden />
+
+								<button
+									aria-label={`Add to playlist ${playlist.name}`}
+									class="hover:text-yellow-12"
+									>{playlist.name}
+								</button>
+							{/if}
 						</form>
 					{/each}
 				</svelte:fragment>
 			</Dropdown>
 		</div>
-		{#if $favoritesMusics.has($musics[$trackId].id)}
-			<form
-				method="POST"
-				use:enhance
-				action="?/removeFavoriteMusic"
-				on:submit={() => handleFavorite($musics[$trackId].id)}
-			>
-				<input value={$musics[$trackId].id} name="musicId" hidden />
-				<input value={$page.data.profile.id} name="userId" hidden />
+		<form
+			method="POST"
+			use:enhance
+			action="?/updateFavoriteMusic"
+			on:submit={() => handleFavorite($musics[$trackId].id)}
+		>
+			<input value={$musics[$trackId].id} name="musicId" hidden />
+			<input value={$page.data.profile.id} name="userId" hidden />
+			{#if $favoritesMusics.has($musics[$trackId].id)}
+				<input value="remove" name="action" hidden />
 				<Button
 					aria-label="Remove from favorites"
 					intent="ghost"
@@ -179,16 +192,8 @@
 				>
 					<Heart class="size-5 fill-red-500" />
 				</Button>
-			</form>
-		{:else}
-			<form
-				method="POST"
-				use:enhance
-				action="?/addFavoriteMusic"
-				on:submit={() => handleFavorite($musics[$trackId].id)}
-			>
-				<input value={$musics[$trackId].id} name="musicId" hidden />
-				<input value={$page.data.profile.id} name="userId" hidden />
+			{:else}
+				<input value="add" name="action" hidden />
 				<Button
 					aria-label="Add to favorites"
 					intent="ghost"
@@ -198,8 +203,8 @@
 				>
 					<Heart class="size-5" />
 				</Button>
-			</form>
-		{/if}
+			{/if}
+		</form>
 		<Tooltip>
 			<Button
 				aria-label="Focus mode"

@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+const ACTION = ['add', 'remove'] as const;
+
 export const createAlbumSchema = z.object({
 	name: z.string().min(1, { message: 'Enter a name' }),
 	release: z.number().min(1950, { message: 'Release date must be above 1950' }),
@@ -44,35 +46,27 @@ export const updateUserSchema = z.object({
 });
 
 export const playlistSchema = z.object({
-	name: z.string().min(1, { message: 'Enter a name' }),
+	name: z.string().min(1, { message: 'Select a playlist' }),
+	musicId: z.string().min(1, { message: 'Music ID is required' }),
+	userId: z.string().min(1, { message: 'User ID is required' }),
+	action: z.enum(ACTION),
 });
 
 export const favoriteMusicSchema = z.object({
 	userId: z.string().min(1, { message: 'User ID is required' }),
 	musicId: z.string().min(1, { message: 'Music ID is required' }),
+	action: z.enum(ACTION),
 });
 
 export const favoriteAlbumSchema = z.object({
 	userId: z.string().min(1, { message: 'User ID is required' }),
 	albumId: z.string().min(1, { message: 'Album ID is required' }),
-});
-
-export const addToPlaylistSchema = z.object({
-	name: z.string().min(1, { message: 'Select a playlist' }),
-	musicId: z.string().min(1, { message: 'Music ID is required' }),
-	userId: z.string().min(1, { message: 'User ID is required' }),
+	action: z.enum(ACTION),
 });
 
 export const createPlaylistSchema = playlistSchema.extend({
+	name: z.string().min(1, { message: 'Enter a name' }),
 	userId: z.string().min(1, { message: 'User ID is required' }),
-});
-
-export const updatePlaylistSchema = createPlaylistSchema.extend({
-	id: z.string().min(1, { message: 'Playlist ID is required' }),
-});
-
-export const deletePlaylistSchema = updatePlaylistSchema.omit({
-	name: true,
 });
 
 export const createMusicSchema = z.object({

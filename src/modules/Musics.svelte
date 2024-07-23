@@ -117,15 +117,16 @@
 				<div class="flex items-center gap-4">
 					<p class="text-sm font-medium">{format(music.duration)}</p>
 					{#if $page.data.session}
-						{#if $favoritesMusics.has(music.id)}
-							<form
-								method="POST"
-								use:enhance
-								action="?/removeFavoriteMusic"
-								on:submit={() => handleFavorite(music.id)}
-							>
-								<input value={music.id} name="musicId" hidden />
-								<input value={$page.data.profile.id} name="userId" hidden />
+						<form
+							method="POST"
+							use:enhance
+							action="?/removeFavoriteMusic"
+							on:submit={() => handleFavorite(music.id)}
+						>
+							<input value={music.id} name="musicId" hidden />
+							<input value={$page.data.profile.id} name="userId" hidden />
+							{#if $favoritesMusics.has(music.id)}
+								<input value="remove" name="action" hidden />
 								<Button
 									aria-label="Remove from favorites"
 									intent="ghost"
@@ -135,16 +136,8 @@
 								>
 									<Heart class="fill-red-500" />
 								</Button>
-							</form>
-						{:else}
-							<form
-								method="POST"
-								use:enhance
-								action="?/addFavoriteMusic"
-								on:submit={() => handleFavorite(music.id)}
-							>
-								<input value={music.id} name="musicId" hidden />
-								<input value={$page.data.profile.id} name="userId" hidden />
+							{:else}
+								<input value="add" name="action" hidden />
 								<Button
 									aria-label="Add to favorites"
 									intent="ghost"
@@ -154,8 +147,8 @@
 								>
 									<Heart />
 								</Button>
-							</form>
-						{/if}
+							{/if}
+						</form>
 					{/if}
 					<Dropdown>
 						<MoreHorizontal slot="trigger" />

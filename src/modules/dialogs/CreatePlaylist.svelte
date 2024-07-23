@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { Dialog, Form, TextInput } from '$components';
-	import { playlistSchema } from '$lib/validation';
+	import { createPlaylistSchema } from '$lib/validation';
 	import { Dialog as BitsDialog } from 'bits-ui';
 </script>
 
@@ -20,7 +20,7 @@
 			action="?/createPlaylist"
 			id="createPlaylist"
 			data={$page.data.playlistForm}
-			schema={playlistSchema}
+			schema={createPlaylistSchema}
 			buttonText="Create"
 			class="w-full space-y-4"
 			let:form

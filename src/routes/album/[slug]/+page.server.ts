@@ -1,8 +1,10 @@
 import { CLOUDFRONT_URL } from '$env/static/private';
 import {
 	createAlbum,
-	createGame,
 	createCompany,
+	createGame,
+	updateFavoriteAlbum,
+	updateFavoriteMusic,
 	updateHistory,
 	updatePlaylist,
 } from '$lib/actions';
@@ -11,23 +13,19 @@ import {
 	authors,
 	db,
 	favoritesAlbums,
-	favoritesMusics,
 	games,
 	musics,
 	musicsToAuthors,
-	playlistMusics,
 } from '$lib/db';
 import { uploadFile } from '$lib/server';
 import { authorSlug, musicSlug } from '$lib/utils';
 import {
-	addToPlaylistSchema,
 	createMusicSchema,
-	favoriteAlbumSchema,
 	favoriteMusicSchema,
 	playlistSchema,
 } from '$lib/validation';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
-import { and, count, eq, sql } from 'drizzle-orm';
+import { count, eq } from 'drizzle-orm';
 import * as mm from 'music-metadata';
 import {
 	message,
@@ -65,6 +63,11 @@ export const load: PageServerLoad = async ({ params }) => {
 					author: true,
 				},
 			},
+			playlists: {
+				columns: {
+					playlistId: true,
+				},
+			},
 		},
 	});
 	const albumLikes = await db
@@ -87,99 +90,10 @@ export const actions: Actions = {
 	createAlbum,
 	createGame,
 	createCompany,
+	updateFavoriteAlbum,
+	updateFavoriteMusic,
 	updateHistory,
 	updatePlaylist,
-	addFavoriteMusic: async ({ request }) => {
-		const formData = await request.formData();
-		const form = await superValidate(formData, zod(favoriteMusicSchema));
-		if (!form.valid) {
-			return fail(400, { form });
-		}
-		const { userId, musicId } = form.data;
-		await db.insert(favoritesMusics).values({
-			userId: userId,
-			musicId,
-		});
-		return message(form, 'Favorite added successfully');
-	},
-	removeFavoriteMusic: async ({ request }) => {
-		const formData = await request.formData();
-		const form = await superValidate(formData, zod(favoriteMusicSchema));
-		if (!form.valid) {
-			return fail(400, { form });
-		}
-		const { userId, musicId } = form.data;
-		await db
-			.delete(favoritesMusics)
-			.where(
-				and(
-					eq(favoritesMusics.userId, userId),
-					eq(favoritesMusics.musicId, musicId),
-				),
-			);
-		return message(form, 'Favorite removed successfully');
-	},
-	addFavoriteAlbum: async ({ request }) => {
-		const formData = await request.formData();
-		const form = await superValidate(formData, zod(favoriteAlbumSchema));
-		if (!form.valid) {
-			return fail(400, { form });
-		}
-		const { userId, albumId } = form.data;
-		await db.insert(favoritesAlbums).values({
-			userId: userId,
-			albumId,
-		});
-		await db
-			.update(albums)
-			.set({ popularity: sql<number>`popularity + 1` })
-			.where(eq(albums.id, albumId));
-		return message(form, 'Favorite added successfully');
-	},
-	removeFavoriteAlbum: async ({ request }) => {
-		const formData = await request.formData();
-		const form = await superValidate(formData, zod(favoriteAlbumSchema));
-		if (!form.valid) {
-			return fail(400, { form });
-		}
-		const { userId, albumId } = form.data;
-		await db
-			.delete(favoritesAlbums)
-			.where(
-				and(
-					eq(favoritesAlbums.userId, userId),
-					eq(favoritesAlbums.albumId, albumId),
-				),
-			);
-		await db
-			.update(albums)
-			.set({ popularity: sql<number>`popularity - 1` })
-			.where(eq(albums.id, albumId));
-		return message(form, 'Favorite removed successfully');
-	},
-	addToPlaylist: async ({ request }) => {
-		const formData = await request.formData();
-		const form = await superValidate(formData, zod(addToPlaylistSchema));
-		if (!form.valid) {
-			return fail(400, { form });
-		}
-		const { userId, musicId, name } = form.data;
-		const playlist = await db.query.playlists.findFirst({
-			where: (playlists, { eq, and }) =>
-				and(eq(playlists.value, name), eq(playlists.userId, userId)),
-			columns: {
-				id: true,
-			},
-		});
-		if (!playlist) {
-			return error(404, { message: 'Could not find playlist' });
-		}
-		await db.insert(playlistMusics).values({
-			musicId,
-			playlistId: playlist?.id,
-		});
-		return message(form, 'Playlist updated successfully');
-	},
 	createMusic: async ({ request, params }) => {
 		const slug = params.slug as string;
 		const album = await db.query.albums.findFirst({

@@ -67,15 +67,16 @@
 			</ul>
 			<div class="flex gap-2">
 				{#if $page.data.session}
-					{#if $favoritesAlbums.has($page.data.album.id)}
-						<form
-							method="POST"
-							use:enhance
-							action="?/removeFavoriteAlbum"
-							on:submit={() => handleFavorite($page.data.album.id)}
-						>
-							<input value={$page.data.album.id} name="albumId" hidden />
-							<input value={$page.data.profile.id} name="userId" hidden />
+					<form
+						method="POST"
+						use:enhance
+						action="?/updateFavoriteAlbum"
+						on:submit={() => handleFavorite($page.data.album.id)}
+					>
+						<input value={$page.data.album.id} name="albumId" hidden />
+						<input value={$page.data.profile.id} name="userId" hidden />
+						{#if $favoritesAlbums.has($page.data.album.id)}
+							<input value="remove" name="action" hidden />
 							<Button
 								aria-label="Remove from favorite albums"
 								intent="ghost"
@@ -84,16 +85,8 @@
 							>
 								<Heart class="fill-red-500" />
 							</Button>
-						</form>
-					{:else}
-						<form
-							method="POST"
-							use:enhance
-							action="?/addFavoriteAlbum"
-							on:submit={() => handleFavorite($page.data.album.id)}
-						>
-							<input value={$page.data.album.id} name="albumId" hidden />
-							<input value={$page.data.profile.id} name="userId" hidden />
+						{:else}
+							<input value="add" name="action" hidden />
 							<Button
 								aria-label="Add to favorite albums"
 								intent="ghost"
@@ -101,8 +94,8 @@
 							>
 								<Heart />
 							</Button>
-						</form>
-					{/if}
+						{/if}
+					</form>
 				{/if}
 				{#if $page.data.user && $page.data.profile.role === 'admin'}
 					<Dropdown>
