@@ -2,14 +2,14 @@
 	import { page } from '$app/stores';
 	import { Card } from '$components';
 	import Search from '$components/Search.svelte';
-	import type { SelectAlbum } from '$lib/db';
+	import type { AlbumsWithGames } from '$lib/types';
 	import { debounce } from '$lib/utils';
 
-	let filteredAlbums: SelectAlbum[] = [];
+	let filteredAlbums: AlbumsWithGames[] = [];
 	let query: string = '';
 
 	const search = () => {
-		filteredAlbums = $page.data.albums.filter((album: SelectAlbum) => {
+		filteredAlbums = $page.data.albums.filter((album: AlbumsWithGames) => {
 			let albumName = album.name.toLowerCase();
 			return albumName.includes(query.toLowerCase());
 		});

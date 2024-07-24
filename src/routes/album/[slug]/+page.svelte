@@ -3,6 +3,7 @@
 	import { Search } from '$components';
 	import type { SelectMusic } from '$lib/db';
 	import { favoritesMusics, length, musics, trackId } from '$lib/store';
+	import type { MusicStore } from '$lib/types';
 	import { debounce } from '$lib/utils';
 	import { Musics } from '$modules';
 	import { Separator } from 'bits-ui';
@@ -10,7 +11,7 @@
 	import Header from './Header.svelte';
 
 	let query: string = '';
-	let filteredMusics: SelectMusic[] = [];
+	let filteredMusics: MusicStore[] = [];
 
 	$: if (filteredMusics.length > 0) {
 		musics.set(filteredMusics);

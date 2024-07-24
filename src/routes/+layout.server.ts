@@ -18,6 +18,7 @@ import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { LayoutServerLoad } from './$types';
+import type { PlaylistWithMusics } from '$lib/types';
 
 export const load: LayoutServerLoad = async (event) => {
 	const { session, user } = await event.locals.safeGetSession();
@@ -29,7 +30,7 @@ export const load: LayoutServerLoad = async (event) => {
 		.select()
 		.from(companies)
 		.orderBy(companies.name);
-	let allPlaylists;
+	let allPlaylists: PlaylistWithMusics[];
 	let profile;
 	const favMusics: SelectMusic[] = [];
 	const favAlbums: SelectAlbum[] = [];
