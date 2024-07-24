@@ -75,5 +75,8 @@
 		"svelte-sonner": "^0.3.27",
 		"tailwind-merge": "^2.4.0",
 		"vaul-svelte": "^0.3.2"
+	},
+	"engines": {
+		"pnpm": "9"
 	}
 }
