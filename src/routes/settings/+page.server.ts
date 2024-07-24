@@ -76,6 +76,9 @@ export const actions: Actions = {
 					cover: true,
 				},
 			});
+			if (!album) {
+				return setError(form, 'cover', 'Album not found');
+			}
 			await deleteFile(album?.cover);
 			await uploadFile(
 				Buffer.from(await cover.arrayBuffer()),
@@ -128,7 +131,7 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 		const { name, companyId } = form.data;
-		const value = name?.toLowerCase();
+		const value = name.toLowerCase();
 		const companyExists = await db.query.companies.findFirst({
 			where: eq(companies.value, value),
 		});
