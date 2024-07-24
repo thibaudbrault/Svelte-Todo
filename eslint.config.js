@@ -29,7 +29,7 @@ export default [
 	// TypeScript
 	{
 		files: ['**/*.ts'],
-		ignores: ['**/*.config.ts'],
+		ignores: ['**/*.config.ts', '**/service-worker.ts'],
 		languageOptions: {
 			parser: tseslint.parser,
 			sourceType: 'module',
