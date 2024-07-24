@@ -302,6 +302,12 @@ export const historyRelations = relations(history, ({ one }) => ({
 	}),
 }));
 
+export type Music = typeof musics.$inferSelect;
+export type Album = typeof albums.$inferSelect;
+export type Author = typeof authors.$inferSelect;
+export type Game = typeof games.$inferSelect;
+export type Playlist = typeof playlists.$inferSelect;
+
 export type InsertAlbum = typeof albums.$inferInsert;
 export type SelectAlbum = typeof albums.$inferSelect;
 
