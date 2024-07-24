@@ -27,6 +27,9 @@
 	$: ({ session, supabase } = data);
 
 	onMount(() => {
+		navigator.serviceWorker.register('/service-worker.ts', {
+			type: dev ? 'module' : 'classic',
+		});
 		const { data } = supabase.auth.onAuthStateChange((_, newSession) => {
 			if (!newSession) {
 				setTimeout(() => {
