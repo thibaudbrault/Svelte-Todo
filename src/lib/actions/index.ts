@@ -4,4 +4,4 @@ export * from './createGame';
 export * from './updateFavoriteAlbum';
 export * from './updateFavoriteMusic';
 export * from './updateHistory';
-export * from './updatePlaylist';
+export * from './updatePlaylistMusics';

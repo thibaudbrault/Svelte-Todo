@@ -6,7 +6,7 @@ import {
 	updateFavoriteAlbum,
 	updateFavoriteMusic,
 	updateHistory,
-	updatePlaylist,
+	updatePlaylistMusics,
 } from '$lib/actions';
 import {
 	albums,
@@ -93,7 +93,7 @@ export const actions: Actions = {
 	updateFavoriteAlbum,
 	updateFavoriteMusic,
 	updateHistory,
-	updatePlaylist,
+	updatePlaylistMusics,
 	createMusic: async ({ request, params }) => {
 		const slug = params.slug as string;
 		const album = await db.query.albums.findFirst({

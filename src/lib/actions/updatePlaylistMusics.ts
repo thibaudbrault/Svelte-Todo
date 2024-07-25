@@ -5,7 +5,11 @@ import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 
-export const updatePlaylist = async ({ request }: { request: Request }) => {
+export const updatePlaylistMusics = async ({
+	request,
+}: {
+	request: Request;
+}) => {
 	const formData = await request.formData();
 	const form = await superValidate(formData, zod(playlistSchema));
 	if (!form.valid) {
