@@ -148,7 +148,7 @@
 				<ListPlus class="size-5" slot="trigger" />
 				<svelte:fragment slot="content">
 					{#each $page.data.playlists as playlist}
-						<form method="POST" use:enhance action="?/updatePlaylist">
+						<form method="POST" use:enhance action="?/updatePlaylistMusics">
 							<input value={$page.data.profile.id} name="userId" hidden />
 							<input value={$musics[$trackId].id} name="musicId" hidden />
 							<input value={playlist.name} name="name" hidden />

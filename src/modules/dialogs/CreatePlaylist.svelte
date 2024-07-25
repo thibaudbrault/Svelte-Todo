@@ -19,7 +19,7 @@
 		<Form
 			action="?/createPlaylist"
 			id="createPlaylist"
-			data={$page.data.playlistForm}
+			data={$page.data.createPlaylistForm}
 			schema={createPlaylistSchema}
 			buttonText="Create"
 			class="w-full space-y-4"

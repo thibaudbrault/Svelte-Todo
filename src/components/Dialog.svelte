@@ -21,7 +21,7 @@
 			<div class="flex flex-col items-start gap-1">
 				<slot name="content" />
 			</div>
-			<Dialog.Close class="absolute right-2 top-1 hover:text-yellow-12">
+			<Dialog.Close class="absolute right-2 top-1 hover:text-red-11">
 				<div>
 					<X />
 					<span class="sr-only">Close</span>
