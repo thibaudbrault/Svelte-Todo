@@ -53,8 +53,6 @@
 			return newFavorites;
 		});
 	};
-
-	console.log($musics[$trackId]);
 </script>
 
 {#if $musics.length > 0}
