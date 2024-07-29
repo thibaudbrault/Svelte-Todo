@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { Dialog } from '$components';
+	import { page } from '$app/stores';
+	import { Dialog, Form, TextInput } from '$components';
+	import { updateMusicSchema } from '$lib/validation';
 	import { Dialog as BitsDialog } from 'bits-ui';
 
 	export let musicId: string;
@@ -10,24 +12,17 @@
 		Update
 	</BitsDialog.Trigger>
 	<div slot="content" class="w-full">
-		<!-- <Form
-			action="?/addToPlaylist"
-			id="addToPlaylist"
-			data={$page.data.addToPlaylistForm}
-			schema={playlistSchema}
-			buttonText="Add"
+		<Form
+			action="?/updateMusic"
+			id="updateMusic"
+			data={$page.data.updateMusicForm}
+			schema={updateMusicSchema}
+			buttonText="Update"
 			class="w-full space-y-4"
 			let:form
-		> -->
-		<input value={musicId} name="musicId" hidden />
-		<!-- <Combobox
-				{form}
-				icon={ListMusic}
-				items={$page.data.playlists}
-				field="name"
-				label="Playlist"
-				placeholder="Select a playlist"
-			/>
-		</Form> -->
+		>
+			<input value={musicId} name="musicId" hidden />
+			<TextInput field="name" label="Name" {form} />
+		</Form>
 	</div>
 </Dialog>

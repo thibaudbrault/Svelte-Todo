@@ -23,6 +23,7 @@ import {
 	createMusicSchema,
 	favoriteMusicSchema,
 	playlistSchema,
+	updateMusicSchema,
 } from '$lib/validation';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import { count, eq } from 'drizzle-orm';
@@ -40,6 +41,7 @@ export const load: PageServerLoad = async ({ params }) => {
 	const favoriteForm = await superValidate(zod(favoriteMusicSchema));
 	const addToPlaylistForm = await superValidate(zod(playlistSchema));
 	const createMusicForm = await superValidate(zod(createMusicSchema));
+	const updateMusicForm = await superValidate(zod(updateMusicSchema));
 	const slug = params.slug;
 	const album = await db.query.albums.findFirst({
 		where: eq(albums.slug, slug),
@@ -83,6 +85,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		favoriteForm,
 		createMusicForm,
 		addToPlaylistForm,
+		updateMusicForm,
 	};
 };
 
@@ -185,6 +188,18 @@ export const actions: Actions = {
 		} else {
 			return message(form, 'Tracks added successfully');
 		}
+	},
+	updateMusic: async ({ request }) => {
+		const formData = await request.formData();
+		const form = await superValidate(formData, zod(updateMusicSchema), {
+			id: 'updateMusic',
+		});
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+		const { musicId, name } = form.data;
+		await db.update(musics).set({ name }).where(eq(musics.id, musicId));
+		return message(form, 'Music data updated');
 	},
 	deleteMusics: async ({ params }) => {
 		const slug = params.slug as string;
