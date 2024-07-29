@@ -11,8 +11,8 @@
 		trackId,
 	} from '$lib/store';
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
-	import { AddToPlaylist, UpdateMusic } from '$modules';
-	import { Heart, MoreHorizontal } from 'lucide-svelte';
+	import { UpdateMusic } from '$modules';
+	import { Heart, ListPlus, MoreHorizontal } from 'lucide-svelte';
 
 	export let isFavorites: boolean = false;
 	export let isPlaylist: boolean = false;
@@ -114,7 +114,7 @@
 						</ul>
 					</button>
 				{/if}
-				<div class="flex items-center gap-4">
+				<div class="flex items-center gap-2">
 					<p class="text-sm font-medium">{format(music.duration)}</p>
 					{#if $page.data.session}
 						<form
@@ -149,6 +149,50 @@
 								</Button>
 							{/if}
 						</form>
+						<div
+							class="flex w-fit cursor-pointer items-center justify-center p-2"
+						>
+							<Dropdown>
+								<ListPlus class="size-5" slot="trigger" />
+								<svelte:fragment slot="content">
+									{#each $page.data.playlists as playlist}
+										<form
+											method="POST"
+											use:enhance
+											action="?/updatePlaylistMusics"
+										>
+											<input
+												value={$page.data.profile.id}
+												name="userId"
+												hidden
+											/>
+											<input
+												value={$musics[$trackId].id}
+												name="musicId"
+												hidden
+											/>
+											<input value={playlist.name} name="name" hidden />
+											{#if $musics[$trackId].playlists.find((item) => item.playlistId === playlist.id)}
+												<input value="remove" name="action" hidden />
+												<button
+													aria-label={`Remove from playlist ${playlist.name}`}
+													class="text-yellow-12"
+													>{playlist.name}
+												</button>
+											{:else}
+												<input value="add" name="action" hidden />
+
+												<button
+													aria-label={`Add to playlist ${playlist.name}`}
+													class="hover:text-yellow-12"
+													>{playlist.name}
+												</button>
+											{/if}
+										</form>
+									{/each}
+								</svelte:fragment>
+							</Dropdown>
+						</div>
 					{/if}
 					<Dropdown>
 						<MoreHorizontal slot="trigger" />
@@ -158,9 +202,6 @@
 									{authors.author.name}
 								</a>
 							{/each}
-							{#if $page.data.user}
-								<AddToPlaylist musicId={music.id} />
-							{/if}
 							{#if $page.data.profile?.role === 'admin'}
 								<UpdateMusic musicId={music.id} />
 							{/if}
