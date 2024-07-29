@@ -1,5 +1,4 @@
 export { default as AddMusic } from './AddMusic.svelte';
-export { default as AddToPlaylist } from './AddToPlaylist.svelte';
 export { default as CreateAlbum } from './CreateAlbum.svelte';
 export { default as CreateCompany } from './CreateCompany.svelte';
 export { default as CreateGame } from './CreateGame.svelte';
