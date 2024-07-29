@@ -70,15 +70,24 @@
 							};
 						}}
 						action="?/updateHistory"
-						class="h-full w-full"
+						class="flex h-full w-full items-center gap-2"
 					>
 						<input value={music.id} name="musicId" hidden />
 						<input value={$page.data.profile.id} name="userId" hidden />
+						{#if isPlaylist}
+							<img
+								src={music.album.cover}
+								alt=""
+								width="48"
+								height="48"
+								class="rounded-md"
+							/>
+						{/if}
 						<button
 							id={`track-${index}`}
 							on:click={() => handleClick(index)}
 							on:keydown={handleKeyDown}
-							class="flex h-full w-full flex-1 flex-col items-start gap-1"
+							class="flex w-full flex-1 flex-col items-start gap-1"
 						>
 							<p class="text-left text-xl font-bold">{music.name}</p>
 							<ul class="flex items-center gap-2">
@@ -91,21 +100,32 @@
 						</button>
 					</form>
 				{:else}
-					<button
-						id={`track-${index}`}
-						on:click={() => handleClick(index)}
-						on:keydown={handleKeyDown}
-						class="flex flex-1 flex-col items-start gap-1"
-					>
-						<p class="text-left text-xl font-bold">{music.name}</p>
-						<ul class="flex items-center gap-2">
-							{#each music.authors as authors}
-								<li class=" text-xs font-medium capitalize">
-									{authors.author.name}
-								</li>
-							{/each}
-						</ul>
-					</button>
+					<div class="flex items-center gap-2">
+						{#if isPlaylist}
+							<img
+								src={music.album.cover}
+								alt=""
+								width="48"
+								height="48"
+								class="rounded-md"
+							/>
+						{/if}
+						<button
+							id={`track-${index}`}
+							on:click={() => handleClick(index)}
+							on:keydown={handleKeyDown}
+							class="flex flex-1 flex-col items-start gap-1"
+						>
+							<p class="text-left text-xl font-bold">{music.name}</p>
+							<ul class="flex items-center gap-2">
+								{#each music.authors as authors}
+									<li class=" text-xs font-medium capitalize">
+										{authors.author.name}
+									</li>
+								{/each}
+							</ul>
+						</button>
+					</div>
 				{/if}
 				<div class="flex items-center gap-2">
 					<p class="text-sm font-medium">{format(music.duration)}</p>
