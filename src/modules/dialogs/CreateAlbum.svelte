@@ -8,11 +8,10 @@
 		NumberInput,
 		TextInput,
 	} from '$components';
+	import { COVER_EXTENSIONS } from '$lib/utils';
 	import { createAlbumSchema } from '$lib/validation';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { Gamepad2, Plus } from 'lucide-svelte';
-
-	const acceptedExtensions = '.jpg, .jpeg, .png, .webp';
 
 	const currentYear = new Date().getFullYear();
 </script>
@@ -56,7 +55,7 @@
 					{form}
 					field="cover"
 					label="Cover"
-					accept={acceptedExtensions}
+					accept={COVER_EXTENSIONS}
 				/>
 			</fieldset>
 		</Form>
