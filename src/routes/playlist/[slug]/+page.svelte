@@ -15,6 +15,6 @@
 </script>
 
 <section class="space-y-4">
-	<h2 class="text-3xl font-semibold">{$page.data.name}</h2>
+	<h2 class="text-3xl font-semibold">{$page.data.playlist.name}</h2>
 	<Musics {isPlaylist} />
 </section>

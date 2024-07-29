@@ -12,7 +12,7 @@
 	} from '$lib/store';
 	import { format, loadTrack, scrollIntoView } from '$lib/utils';
 	import { UpdateMusic } from '$modules';
-	import { Heart, ListPlus, MoreHorizontal } from 'lucide-svelte';
+	import { Heart, ListPlus, MoreVertical } from 'lucide-svelte';
 
 	export let isFavorites: boolean = false;
 	export let isPlaylist: boolean = false;
@@ -28,18 +28,11 @@
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
+		event.preventDefault();
 		if (event.key === 'ArrowLeft') {
-			if ($trackId > 0) {
-				$trackId = $trackId - 1;
-			} else {
-				$trackId = $length - 1;
-			}
+			$trackId = ($trackId - 1 + $length) % $length; // Handle negative index
 		} else if (event.key === 'ArrowRight') {
-			if ($trackId < $length - 1) {
-				$trackId = $trackId + 1;
-			} else {
-				$trackId = 0;
-			}
+			$trackId = ($trackId + 1) % $length;
 		}
 		if (!isFavorites && !isPlaylist) {
 			$cover = $page.data.album.cover;
@@ -60,6 +53,8 @@
 			return newFavorites;
 		});
 	};
+
+	console.log($musics[$trackId]);
 </script>
 
 {#if $musics.length > 0}
@@ -172,7 +167,7 @@
 												hidden
 											/>
 											<input value={playlist.name} name="name" hidden />
-											{#if $musics[$trackId].playlists.find((item) => item.playlistId === playlist.id)}
+											{#if $musics[index].playlists.find((item) => item.playlistId === playlist.id)}
 												<input value="remove" name="action" hidden />
 												<button
 													aria-label={`Remove from playlist ${playlist.name}`}
@@ -195,7 +190,7 @@
 						</div>
 					{/if}
 					<Dropdown>
-						<MoreHorizontal slot="trigger" />
+						<MoreVertical slot="trigger" />
 						<svelte:fragment slot="content">
 							{#each music.authors as authors}
 								<a href={`/author/${authors.author.slug}`} class="triggerClass">
@@ -232,7 +227,7 @@
 				</button>
 				<div class="flex items-center gap-8">
 					<Dropdown>
-						<MoreHorizontal slot="trigger" />
+						<MoreVertical slot="trigger" />
 						<svelte:fragment slot="content">
 							{#each music.authors as authors}
 								<p class="font-semibold capitalize">

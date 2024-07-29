@@ -4,6 +4,7 @@ import {
 	createGame,
 	updateFavoriteMusic,
 	updateHistory,
+	updatePlaylistMusics,
 } from '$lib/actions';
 import { db, playlists } from '$lib/db';
 import { redirect, type Actions } from '@sveltejs/kit';
@@ -17,11 +18,11 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async (event) => {
 	const { session, user } = await event.locals.safeGetSession();
 	if (!session || !user) throw redirect(303, '/login');
-	const name = event.params.slug;
+	const value = event.params.slug;
 	let playlist: ModifiedPlaylistWithMusics;
 	const playlistRequest: PlaylistWithMusics | undefined =
 		await db.query.playlists.findFirst({
-			where: and(eq(playlists.userId, user.id), eq(playlists.name, name)),
+			where: and(eq(playlists.userId, user.id), eq(playlists.value, value)),
 			with: {
 				musics: {
 					columns: {},
@@ -36,6 +37,11 @@ export const load: PageServerLoad = async (event) => {
 								album: {
 									columns: {
 										cover: true,
+									},
+								},
+								playlists: {
+									columns: {
+										playlistId: true,
 									},
 								},
 							},
@@ -53,7 +59,7 @@ export const load: PageServerLoad = async (event) => {
 		};
 	}
 	return {
-		name,
+		value,
 		playlist,
 	};
 };
@@ -64,4 +70,5 @@ export const actions: Actions = {
 	createCompany,
 	updateFavoriteMusic,
 	updateHistory,
+	updatePlaylistMusics,
 };

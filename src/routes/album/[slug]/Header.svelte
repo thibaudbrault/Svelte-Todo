@@ -6,7 +6,7 @@
 	import { favoritesAlbums } from '$lib/store';
 	import { calculateTotalDuration, formatTotalDuration } from '$lib/utils';
 	import { AddMusic, DeleteMusics } from '$modules';
-	import { Heart, MoreHorizontal } from 'lucide-svelte';
+	import { Heart, MoreVertical } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 
 	const handleFavorite = (id: string) => {
@@ -99,7 +99,7 @@
 				{/if}
 				{#if $page.data.user && $page.data.profile.role === 'admin'}
 					<Dropdown>
-						<MoreHorizontal slot="trigger" />
+						<MoreVertical slot="trigger" />
 						<svelte:fragment slot="content">
 							<AddMusic />
 							<DeleteMusics />

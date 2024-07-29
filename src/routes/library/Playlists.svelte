@@ -22,7 +22,7 @@
 							<a
 								aria-label={`Go to playlist ${playlist.name}`}
 								class="text-2xl font-semibold group-hover:text-yellow-12"
-								href={`/playlist/${playlist.name}`}
+								href={`/playlist/${playlist.value}`}
 							>
 								{playlist.name}
 							</a>
