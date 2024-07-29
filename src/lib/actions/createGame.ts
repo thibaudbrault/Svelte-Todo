@@ -1,4 +1,6 @@
+import { CLOUDFRONT_URL } from '$env/static/private';
 import { companies, db, games } from '$lib/db';
+import { uploadFile } from '$lib/server';
 import { createGameSchema } from '$lib/validation';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
@@ -13,7 +15,7 @@ export const createGame = async ({ request }: { request: Request }) => {
 	if (!form.valid) {
 		return fail(400, { form });
 	}
-	const { name, company } = form.data;
+	const { name, company, cover } = form.data;
 	const value = name.toLowerCase();
 	const gameExists = await db.query.games.findFirst({
 		where: eq(games.value, value),
@@ -28,10 +30,18 @@ export const createGame = async ({ request }: { request: Request }) => {
 		return setError(form, 'company', 'Company not found');
 	}
 	const companyId = findCompany.id;
+	const filename = `games/${crypto.randomUUID()}${cover.name}`;
+	await uploadFile(
+		Buffer.from(await cover.arrayBuffer()),
+		filename,
+		cover.type,
+	);
+	const coverUrl = CLOUDFRONT_URL + filename;
 	await db.insert(games).values({
 		name,
 		value,
 		companyId,
+		cover: coverUrl,
 	});
 	return message(form, 'Game created successfully');
 };

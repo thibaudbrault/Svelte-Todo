@@ -23,6 +23,7 @@ export const updateAlbumSchema = z.object({
 export const createGameSchema = z.object({
 	name: z.string().min(1, { message: 'Enter a name' }),
 	company: z.string().min(1, { message: 'Select a company' }),
+	cover: z.any(),
 });
 
 export const updateGameSchema = z.object({
