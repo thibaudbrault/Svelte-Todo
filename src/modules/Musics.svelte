@@ -115,7 +115,7 @@
 						<form
 							method="POST"
 							use:enhance
-							action="?/removeFavoriteMusic"
+							action="?/updateFavoriteMusic"
 							on:submit={() => handleFavorite(music.id)}
 						>
 							<input value={music.id} name="musicId" hidden />
