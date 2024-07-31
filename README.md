@@ -1,6 +1,6 @@
 # GameMusic
 
-Video games music streaming app  
+Video games music streaming app
 
 ## Roadmap
 
@@ -24,7 +24,7 @@ Video games music streaming app
 
 ## Stats
 
-[![Codacy grade](https://img.shields.io/codacy/grade/48a8346b83b14770b83c875940b13080?style=for-the-badge)](https://app.codacy.com/gh/thibaudbrault/GameMusic/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade) 
-[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/thibaudbrault/GameMusic?style=for-the-badge)](https://github.com/thibaudbrault/GameMusic/issues) 
-[![GitHub deployments](https://img.shields.io/github/deployments/thibaudbrault/GameMusic/production?style=for-the-badge)](https://github.com/thibaudbrault/GameMusic/deployments/Production) 
+[![Codacy grade](https://img.shields.io/codacy/grade/48a8346b83b14770b83c875940b13080?style=for-the-badge)](https://app.codacy.com/gh/thibaudbrault/GameMusic/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/thibaudbrault/GameMusic?style=for-the-badge)](https://github.com/thibaudbrault/GameMusic/issues)
+[![GitHub deployments](https://img.shields.io/github/deployments/thibaudbrault/GameMusic/production?style=for-the-badge)](https://github.com/thibaudbrault/GameMusic/deployments/Production)
 ![GitHub repo size](https://img.shields.io/github/repo-size/thibaudbrault/GameMusic?style=for-the-badge)
