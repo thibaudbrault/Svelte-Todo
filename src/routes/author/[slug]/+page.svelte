@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { SEO } from '$components';
 	import type { SelectMusic } from '$lib/db';
 	import { cover, favoritesMusics, length, musics, trackId } from '$lib/store';
 	import { Musics } from '$modules';
@@ -7,6 +8,12 @@
 	import { onMount } from 'svelte';
 
 	$: $cover = $page.data.musics[$trackId].album.cover;
+
+	const seoProps = {
+		title: `Author | ${$page.data.author.name}`,
+		slug: `author/${$page.data.author.name}`,
+		metadescription: `Find all the information for ${$page.data.author.name}.`,
+	};
 
 	onMount(() => {
 		$musics = $page.data.musics;
@@ -17,6 +24,7 @@
 	});
 </script>
 
+<SEO {...seoProps} />
 <div class="flex flex-col gap-4 p-4">
 	<div class="flex flex-col gap-2">
 		<h1 class="text-4xl font-bold md:text-5xl lg:text-6xl">

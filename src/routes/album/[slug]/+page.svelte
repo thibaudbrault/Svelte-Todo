@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Search } from '$components';
+	import { Search, SEO } from '$components';
 	import type { SelectMusic } from '$lib/db';
 	import { favoritesMusics, length, musics, trackId } from '$lib/store';
 	import type { MusicStore } from '$lib/types';
@@ -28,6 +28,12 @@
 		});
 	};
 
+	const seoProps = {
+		title: `Album | ${$page.data.album.name}`,
+		slug: `album/${$page.data.album.name}`,
+		metadescription: `Listen to all the musics from ${$page.data.album.name}.`,
+	};
+
 	onMount(() => {
 		$trackId = 0;
 		$page.data.favoritesMusics.forEach((music: SelectMusic) => {
@@ -36,6 +42,7 @@
 	});
 </script>
 
+<SEO {...seoProps} />
 <div class="space-y-4">
 	<Header />
 	<Separator.Root class="mx-auto h-px w-11/12 bg-gray-5" />

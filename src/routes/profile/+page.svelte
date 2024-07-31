@@ -2,6 +2,13 @@
 	import { Tabs } from 'bits-ui';
 	import UpdateUser from './UpdateUser.svelte';
 	import History from './History.svelte';
+	import { SEO } from '$components';
+
+	const seoProps = {
+		title: 'Profile',
+		slug: 'profile',
+		metadescription: 'Check your history and change your profile data.',
+	};
 
 	const tabs = [
 		{
@@ -17,6 +24,7 @@
 	let value = 'user';
 </script>
 
+<SEO {...seoProps} />
 <Tabs.Root bind:value class="mt-4 space-y-8 md:mt-0">
 	<div class="flex flex-col gap-4">
 		<h2 class="text-3xl font-bold capitalize md:text-4xl">{value}</h2>

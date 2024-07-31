@@ -7,6 +7,7 @@
 	import Playlists from './Playlists.svelte';
 	import type { SelectMusic } from '$lib/db';
 	import { Musics } from '$modules';
+	import { SEO } from '$components';
 
 	const tabs = [
 		{
@@ -35,6 +36,12 @@
 		$musics = $page.data.favoritesMusics;
 	}
 
+	const seoProps = {
+		title: 'Library',
+		slug: 'library',
+		metadescription: 'Get access to your playlists and all your favorites.',
+	};
+
 	onMount(() => {
 		$length = $page.data.favoritesMusics.length;
 		$page.data.favoritesMusics.forEach((music: SelectMusic) => {
@@ -43,6 +50,7 @@
 	});
 </script>
 
+<SEO {...seoProps} />
 <Tabs.Root bind:value class="mt-4 space-y-8 md:mt-0">
 	<div class="flex flex-col gap-4">
 		<h2 class="text-3xl font-bold capitalize md:text-4xl">{value}</h2>

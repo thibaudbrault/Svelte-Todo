@@ -4,6 +4,8 @@
 	import Header from './Header.svelte';
 	import Authors from './Authors.svelte';
 	import Home from './Home.svelte';
+	import { page } from '$app/stores';
+	import { SEO } from '$components';
 
 	const tabs = [
 		{
@@ -21,8 +23,15 @@
 	];
 
 	let value = 'home';
+
+	const seoProps = {
+		title: `Game | ${$page.data.game.name}`,
+		slug: `game/${$page.data.game.name}`,
+		metadescription: `Find all the albums, authors, and much more for ${$page.data.game.name}.`,
+	};
 </script>
 
+<SEO {...seoProps} />
 <div class="space-y-4">
 	<Header />
 	<Tabs.Root bind:value class="space-y-4">

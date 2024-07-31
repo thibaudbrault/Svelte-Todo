@@ -1,12 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Card } from '$components';
+	import { Card, SEO } from '$components';
 	import Search from '$components/Search.svelte';
 	import type { AlbumsWithGames } from '$lib/types';
 	import { debounce } from '$lib/utils';
 
 	let filteredAlbums: AlbumsWithGames[] = [];
 	let query: string = '';
+
+	const seoProps = {
+		title: 'Search',
+		slug: 'search',
+		metadescription: 'Search your favorite album among all the albums offered',
+	};
 
 	const search = () => {
 		filteredAlbums = $page.data.albums.filter((album: AlbumsWithGames) => {
@@ -16,6 +22,7 @@
 	};
 </script>
 
+<SEO {...seoProps} />
 <section class="flex flex-col gap-8">
 	<Search bind:query on:input={debounce(search)} placeholder="Search album" />
 	{#if query && filteredAlbums.length === 0}

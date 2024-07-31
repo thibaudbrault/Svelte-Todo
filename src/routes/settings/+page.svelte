@@ -1,10 +1,18 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Card } from '$components';
+	import { Card, SEO } from '$components';
 	import { UpdateAlbum, UpdateCompany, UpdateGame } from '$modules';
 	import { Separator } from 'bits-ui';
+
+	const seoProps = {
+		title: 'Settings',
+		slug: 'settings',
+		metadescription:
+			'Listen to your favorite video game soundtracks on GameMusic. Explore a wide collection of music from popular games.',
+	};
 </script>
 
+<SEO {...seoProps} />
 <div class="flex flex-col gap-4 p-4">
 	<h1 class="text-4xl font-bold md:text-5xl lg:text-6xl">Settings</h1>
 	<Separator.Root class="mx-auto h-px w-11/12 bg-gray-5" />

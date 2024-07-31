@@ -7,7 +7,7 @@
 		title: 'Home',
 		slug: '',
 		metadescription:
-			'Listen to your favorite video game soundtracks on GameMusic. Explore a wide collection of music from popular games. ',
+			'Listen to your favorite video game soundtracks on GameMusic. Explore a wide collection of music from popular games.',
 	};
 </script>
 
