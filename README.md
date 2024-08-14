@@ -1,6 +1,7 @@
 # GameMusic
 
 Video games music streaming app
+Deployed app: <https://gamemusic.app>
 
 ## Roadmap
 
