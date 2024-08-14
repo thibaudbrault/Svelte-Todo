@@ -30,6 +30,7 @@ export const updateGameSchema = z.object({
 	name: z.string().min(1, { message: 'Enter a name' }).optional(),
 	company: z.string().min(1, { message: 'Select a company' }).optional(),
 	gameId: z.string().min(1, { message: 'Game ID is required' }),
+	cover: z.any().optional(),
 });
 
 export const createCompanySchema = z.object({
