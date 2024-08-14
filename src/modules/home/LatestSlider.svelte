@@ -1,10 +1,25 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Card } from '$components';
-	import { scrollFn } from '$lib/utils';
+	import type { ScrollDir } from '$lib/types';
 	import { ArrowLeft, ArrowRight } from 'lucide-svelte';
 
 	let scrollAreaLatest: HTMLElement | undefined;
+	let disabledLeft = true;
+	let disabledRight = false;
+
+	const scrollFn = (dir: ScrollDir) => {
+		if (!scrollAreaLatest) return;
+		if (dir === 'next') {
+			scrollAreaLatest.scrollLeft += 216;
+		} else if (dir === 'prev') {
+			scrollAreaLatest.scrollLeft -= 216;
+		}
+		const scrollableWidth =
+			scrollAreaLatest.scrollWidth - scrollAreaLatest.clientWidth;
+		disabledLeft = scrollAreaLatest.scrollLeft === 0;
+		disabledRight = scrollAreaLatest.scrollLeft >= scrollableWidth;
+	};
 </script>
 
 <div class="space-y-2">
@@ -19,14 +34,16 @@
 		<div class="flex gap-2">
 			<button
 				aria-label="Go left"
-				on:click={() => scrollFn(scrollAreaLatest, 'prev')}
+				on:click={() => scrollFn('prev')}
+				disabled={disabledLeft}
 				class="transition-all duration-300 ease-in-out disabled:text-gray-11 disabled:opacity-60"
 			>
 				<ArrowLeft />
 			</button>
 			<button
 				aria-label="Go right"
-				on:click={() => scrollFn(scrollAreaLatest, 'next')}
+				on:click={() => scrollFn('next')}
+				disabled={disabledRight}
 				class="transition-all duration-300 ease-in-out disabled:text-gray-11 disabled:opacity-60"
 			>
 				<ArrowRight />
