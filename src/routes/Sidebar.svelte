@@ -45,7 +45,7 @@
 		{#each links as link}
 			<a
 				href={link.href}
-				class={`flex items-center gap-4 rounded-md p-2 ${$page.url.pathname === link.href ? 'bg-gray-12 text-gray-1 [&_svg]:text-gray-1' : 'hover:text-gray-12'}`}
+				class={`flex items-center gap-4 rounded-md p-2 ${$page.url.pathname === link.href ? 'bg-gray-12 text-gray-1 [&_svg]:text-gray-1' : 'hover:bg-gray-4 hover:text-gray-12'}`}
 				class:active={$page.url.pathname.includes(link.href)}
 			>
 				<svelte:component this={link.icon} class="text-yellow-12" />
@@ -59,14 +59,14 @@
 			{#if $page.data.session}
 				<a
 					href="/profile"
-					class={`flex items-center gap-4 rounded-md p-2 ${$page.url.pathname === '/profile' ? 'bg-gray-12 text-gray-1 [&_svg]:text-gray-1' : 'hover:text-gray-12'}`}
+					class={`flex items-center gap-4 rounded-md p-2 ${$page.url.pathname === '/profile' ? 'bg-gray-12 text-gray-1 [&_svg]:text-gray-1' : 'hover:bg-gray-4 hover:text-gray-12'}`}
 					class:active={$page.url.pathname.includes('/profile')}
 				>
 					<UserRound class="text-yellow-12" />
 					<span class="font-semibold">Profile</span>
 				</a>
 				<button
-					class="flex items-center gap-4 rounded-md p-2 hover:text-gray-12"
+					class="flex items-center gap-4 rounded-md p-2 hover:bg-gray-4 hover:text-gray-12"
 					on:click={logout}
 				>
 					<LogOutIcon class="text-yellow-12" />
@@ -75,7 +75,7 @@
 			{:else}
 				<a
 					href="/login"
-					class="flex items-center gap-4 rounded-md p-2 hover:text-gray-12"
+					class="flex items-center gap-4 rounded-md p-2 hover:bg-gray-4 hover:text-gray-12"
 				>
 					<LogInIcon class="text-yellow-12" />
 					<span class="font-semibold">Log In</span>
@@ -86,11 +86,15 @@
 	{#if $page.data.session && $page.data.profile.role === 'admin'}
 		<div class="flex flex-col gap-2">
 			<p class="text-sm font-bold">Admin</p>
-			<div class="flex flex-col gap-4">
+			<div class="flex flex-col gap-2">
 				<CreateAlbum />
 				<CreateGame />
 				<CreateCompany />
-				<a href="/settings" class="flex items-center gap-4 hover:text-gray-12">
+				<a
+					href="/settings"
+					class={`flex items-center gap-4 rounded-md p-2 ${$page.url.pathname === '/settings' ? 'bg-gray-12 text-gray-1 [&_svg]:text-gray-1' : 'hover:bg-gray-4 hover:text-gray-12'}`}
+					class:active={$page.url.pathname.includes('/settings')}
+				>
 					<Settings class="text-yellow-12" />
 					<span class="font-semibold">Settings</span>
 				</a>

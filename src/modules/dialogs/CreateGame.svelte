@@ -10,7 +10,7 @@
 <Dialog title="New game">
 	<BitsDialog.Trigger
 		slot="trigger"
-		class="flex items-center gap-4 hover:text-gray-12"
+		class="flex items-center gap-4 p-2 hover:bg-gray-4 hover:text-gray-12"
 	>
 		<Plus class="text-yellow-12" />
 		<span class="font-semibold">Game</span>
