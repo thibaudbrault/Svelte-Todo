@@ -18,7 +18,7 @@
 	<Separator.Root class="mx-auto h-px w-11/12 bg-gray-5" />
 	<div class="flex flex-col gap-4">
 		<h2 class="text-3xl font-semibold">Albums</h2>
-		<div class="flex flex-col items-start gap-2">
+		<div class="flex flex-wrap justify-between gap-2">
 			{#each $page.data.albums as album}
 				<Card
 					title={album.name}
@@ -35,7 +35,7 @@
 	</div>
 	<div class="flex flex-col gap-4">
 		<h2 class="text-3xl font-semibold">Games</h2>
-		<div class="flex flex-col items-start gap-2">
+		<div class="flex flex-wrap gap-6">
 			{#each $page.data.games as game}
 				<UpdateGame {game} />
 			{/each}
