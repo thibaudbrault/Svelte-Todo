@@ -9,7 +9,7 @@
 	{$page.data.profile.name}'s profile
 </h2>
 <div class="mt-24 flex flex-col items-center justify-center gap-8">
-	<div class="rounded-md border border-gray-6 bg-gray-4 p-8">
+	<div class="rounded-md border border-gray-6 bg-gray-4 px-8 py-12">
 		<Form
 			action="?/updateUser"
 			id="updateUser"
