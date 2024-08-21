@@ -76,7 +76,9 @@
 		<Albums />
 	</Tabs.Content>
 	<Tabs.Content value="artists">
-		<p class="py-4 text-center text-xl font-semibold capitalize md:text-2xl">
+		<p
+			class="flex items-center justify-center py-4 text-center text-xl font-semibold capitalize md:text-4xl"
+		>
 			Coming soon
 		</p>
 	</Tabs.Content>

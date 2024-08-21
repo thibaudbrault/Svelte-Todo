@@ -260,7 +260,7 @@
 	</div>
 {:else}
 	<p
-		class="col-span-5 py-4 text-center text-xl font-semibold capitalize md:text-2xl"
+		class="col-span-5 flex items-center justify-center py-4 text-center text-xl font-semibold capitalize md:text-4xl"
 	>
 		No musics
 	</p>
