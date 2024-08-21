@@ -9,7 +9,7 @@
 		TextInput,
 	} from '$components';
 	import { COVER_EXTENSIONS } from '$lib/utils';
-	import { createAlbumSchema } from '$lib/validation';
+	import { createAlbumSchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { Gamepad2, Plus } from 'lucide-svelte';
 

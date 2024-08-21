@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { Dialog, Form, TextInput } from '$components';
 	import type { Playlist } from '$lib/db';
-	import { deletePlaylistSchema } from '$lib/validation';
+	import { deletePlaylistSchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { X } from 'lucide-svelte';
 

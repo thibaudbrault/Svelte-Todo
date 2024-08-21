@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Dialog, Form, TextInput } from '$components';
-	import { updateMusicSchema } from '$lib/validation';
+	import { updateMusicSchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 
 	export let musicId: string;

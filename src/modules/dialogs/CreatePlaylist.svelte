@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { Dialog, Form, TextInput } from '$components';
-	import { createPlaylistSchema } from '$lib/validation';
+	import { createPlaylistSchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 </script>
 

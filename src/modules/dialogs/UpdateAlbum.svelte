@@ -10,7 +10,7 @@
 	} from '$components';
 	import type { SelectAlbum } from '$lib/db';
 	import { COVER_EXTENSIONS } from '$lib/utils';
-	import { updateAlbumSchema } from '$lib/validation';
+	import { updateAlbumSchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { Gamepad2 } from 'lucide-svelte';
 

@@ -3,7 +3,7 @@
 	import { Combobox, Dialog, FileInput, Form, TextInput } from '$components';
 	import type { SelectGame } from '$lib/db';
 	import { COVER_EXTENSIONS } from '$lib/utils';
-	import { updateGameSchema } from '$lib/validation';
+	import { updateGameSchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { Building2 } from 'lucide-svelte';
 

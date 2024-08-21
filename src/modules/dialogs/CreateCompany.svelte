@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Dialog, Form, TextInput } from '$components';
-	import { createCompanySchema } from '$lib/validation';
+	import { createCompanySchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { Plus } from 'lucide-svelte';
 </script>

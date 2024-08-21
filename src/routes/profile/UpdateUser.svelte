@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import { Button, Form, TextInput } from '$components';
-	import { updateUserSchema } from '$lib/validation';
+	import { updateUserSchema } from '$lib/validations';
 </script>
 
 <h2 class="text-3xl font-semibold text-yellow-12">
