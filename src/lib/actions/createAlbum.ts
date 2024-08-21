@@ -2,7 +2,7 @@ import { CLOUDFRONT_URL } from '$env/static/private';
 import { albums, companies, db } from '$lib/db';
 import { uploadFile } from '$lib/server';
 import { albumSlug, renameFileWithExtension } from '$lib/utils';
-import { createAlbumSchema } from '$lib/validation';
+import { createAlbumSchema } from '$lib/validations';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import {

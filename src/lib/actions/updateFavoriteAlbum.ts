@@ -1,5 +1,5 @@
 import { albums, db, favoritesAlbums } from '$lib/db';
-import { favoriteAlbumSchema } from '$lib/validation';
+import { favoriteAlbumSchema } from '$lib/validations';
 import { fail } from '@sveltejs/kit';
 import { and, eq, sql } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms';

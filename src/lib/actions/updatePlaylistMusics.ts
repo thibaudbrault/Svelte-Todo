@@ -1,5 +1,5 @@
 import { db, playlistMusics, playlists } from '$lib/db';
-import { playlistSchema } from '$lib/validation';
+import { playlistSchema } from '$lib/validations';
 import { fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';

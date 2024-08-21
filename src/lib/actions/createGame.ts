@@ -1,7 +1,7 @@
 import { CLOUDFRONT_URL } from '$env/static/private';
 import { companies, db, games } from '$lib/db';
 import { uploadFile } from '$lib/server';
-import { createGameSchema } from '$lib/validation';
+import { createGameSchema } from '$lib/validations';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { message, setError, superValidate } from 'sveltekit-superforms';

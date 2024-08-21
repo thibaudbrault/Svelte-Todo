@@ -24,7 +24,7 @@ import {
 	favoriteMusicSchema,
 	playlistSchema,
 	updateMusicSchema,
-} from '$lib/validation';
+} from '$lib/validations';
 import { error, fail, redirect, type Actions } from '@sveltejs/kit';
 import { count, eq } from 'drizzle-orm';
 import * as mm from 'music-metadata';

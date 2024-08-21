@@ -13,7 +13,7 @@ import {
 	createAlbumSchema,
 	createCompanySchema,
 	createGameSchema,
-} from '$lib/validation';
+} from '$lib/validations';
 import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';

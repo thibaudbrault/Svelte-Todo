@@ -10,7 +10,7 @@ import {
 	createPlaylistSchema,
 	deletePlaylistSchema,
 	updatePlaylistSchema,
-} from '$lib/validation';
+} from '$lib/validations';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { message, setError, superValidate } from 'sveltekit-superforms';

@@ -1,6 +1,6 @@
 import { createAlbum, createCompany, createGame } from '$lib/actions';
 import { db, history, users } from '$lib/db';
-import { deleteAllHistory, updateUserSchema } from '$lib/validation';
+import { deleteAllHistory, updateUserSchema } from '$lib/validations';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { desc, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';

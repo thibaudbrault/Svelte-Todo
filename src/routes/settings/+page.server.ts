@@ -8,7 +8,7 @@ import {
 	updateAlbumSchema,
 	updateCompanySchema,
 	updateGameSchema,
-} from '$lib/validation';
+} from '$lib/validations';
 import { albumSlug, renameFileWithExtension } from '$lib/utils';
 import { deleteFile, uploadFile } from '$lib/server';
 import { CLOUDFRONT_URL } from '$env/static/private';

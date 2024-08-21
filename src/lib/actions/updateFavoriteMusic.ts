@@ -1,5 +1,5 @@
 import { db, favoritesMusics } from '$lib/db';
-import { favoriteMusicSchema } from '$lib/validation';
+import { favoriteMusicSchema } from '$lib/validations';
 import { fail } from '@sveltejs/kit';
 import { and, eq } from 'drizzle-orm';
 import { message, superValidate } from 'sveltekit-superforms';

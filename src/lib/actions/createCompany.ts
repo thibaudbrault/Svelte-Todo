@@ -1,5 +1,5 @@
 import { companies, db } from '$lib/db';
-import { createCompanySchema } from '$lib/validation';
+import { createCompanySchema } from '$lib/validations';
 import { fail } from '@sveltejs/kit';
 import { eq } from 'drizzle-orm';
 import { message, setError, superValidate } from 'sveltekit-superforms';
