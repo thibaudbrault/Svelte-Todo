@@ -90,3 +90,7 @@ export const updateMusicSchema = z.object({
 	name: z.string().min(1, { message: 'Enter a name' }).optional(),
 	musicId: z.string(),
 });
+
+export const deleteAllHistory = z.object({
+	userId: z.string().min(1, { message: 'User ID is required' }),
+});

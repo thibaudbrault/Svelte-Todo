@@ -1,6 +1,6 @@
 import { createAlbum, createCompany, createGame } from '$lib/actions';
 import { db, history, users } from '$lib/db';
-import { updateUserSchema } from '$lib/validation';
+import { deleteAllHistory, updateUserSchema } from '$lib/validation';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
 import { desc, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
@@ -15,7 +15,11 @@ export const load: PageServerLoad = async (event) => {
 		where: eq(history.userId, user.id),
 		orderBy: desc(history.listenedAt),
 		with: {
-			music: true,
+			music: {
+				with: {
+					album: true,
+				},
+			},
 		},
 	});
 	return {
@@ -39,5 +43,15 @@ export const actions: Actions = {
 		const { id, name } = form.data;
 		await db.update(users).set({ name }).where(eq(users.id, id));
 		return { message: 'Name updated successfully' };
+	},
+	deleteAllHistory: async ({ request }) => {
+		const formData = await request.formData();
+		const form = await superValidate(formData, zod(deleteAllHistory));
+		if (!form.valid) {
+			return fail(400, { form });
+		}
+		const { userId } = form.data;
+		await db.delete(history).where(eq(history.userId, userId));
+		return { message: 'History deleted' };
 	},
 };
