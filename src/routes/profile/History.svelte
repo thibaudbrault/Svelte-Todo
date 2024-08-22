@@ -5,9 +5,10 @@
 	import { Trash2 } from 'lucide-svelte';
 
 	const now = new Date();
-	const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-	const yesterday = new Date(today);
-	yesterday.setDate(today.getDate() - 1);
+	const yesterday = new Date(now);
+	yesterday.setDate(now.getDate() - 1);
+	const beforeYesterday = new Date(now);
+	beforeYesterday.setDate(now.getDate() - 2);
 	const month = new Date(now.getFullYear(), now.getMonth(), 1);
 
 	const time = {
@@ -18,14 +19,14 @@
 	};
 
 	$page.data.history.forEach((history) => {
-		if (history.listened_at >= today) {
+		if (history.listenedAt <= now && history.listenedAt > yesterday) {
 			time.today.push(history);
 		} else if (
-			history.listened_at >= yesterday &&
-			history.listened_at < today
+			history.listenedAt <= yesterday &&
+			history.listenedAt > beforeYesterday
 		) {
 			time.yesterday.push(history);
-		} else if (history.listened_at >= month) {
+		} else if (history.listenedAt >= month) {
 			time.month.push(history);
 		} else {
 			time.older.push(history);
