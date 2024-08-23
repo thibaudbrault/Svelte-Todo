@@ -1,8 +1,8 @@
 import { createAlbum, createCompany, createGame } from '$lib/actions';
 import { db, history, users } from '$lib/db';
-import { deleteAllHistory, updateUserSchema } from '$lib/validations';
+import { deleteHistory, updateUserSchema } from '$lib/validations';
 import { fail, redirect, type Actions } from '@sveltejs/kit';
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { PageServerLoad } from './$types';
@@ -44,14 +44,24 @@ export const actions: Actions = {
 		await db.update(users).set({ name }).where(eq(users.id, id));
 		return { message: 'Name updated successfully' };
 	},
-	deleteAllHistory: async ({ request }) => {
+	deleteHistory: async ({ request }) => {
 		const formData = await request.formData();
-		const form = await superValidate(formData, zod(deleteAllHistory));
+		const form = await superValidate(formData, zod(deleteHistory));
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-		const { userId } = form.data;
-		await db.delete(history).where(eq(history.userId, userId));
+		const { userId, values, allSelected } = form.data;
+		if (allSelected === 'true') {
+			await db.delete(history).where(eq(history.userId, userId));
+		} else {
+			const parsedValues = JSON.parse(values[0]);
+			parsedValues.forEach(async (id) => {
+				console.log(id);
+				await db
+					.delete(history)
+					.where(and(eq(history.userId, userId), eq(history.musicId, id)));
+			});
+		}
 		return { message: 'History deleted' };
 	},
 };

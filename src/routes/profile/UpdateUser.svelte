@@ -29,7 +29,7 @@
 				/>
 			</fieldset>
 		</Form>
-		<hr class="my-8 h-px w-full border-transparent bg-yellow-6" />
+		<hr class="my-4 h-px w-full border-transparent bg-gray-6" />
 		<form method="POST" use:enhance action="?/deleteUser">
 			<Button
 				intent="destructive"
