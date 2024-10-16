@@ -13,11 +13,12 @@ import {
 	createAlbumSchema,
 	createCompanySchema,
 	createGameSchema,
-} from '$lib/validation';
+} from '$lib/validations';
 import { eq } from 'drizzle-orm';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import type { LayoutServerLoad } from './$types';
+import type { PlaylistWithMusics } from '$lib/types';
 
 export const load: LayoutServerLoad = async (event) => {
 	const { session, user } = await event.locals.safeGetSession();
@@ -29,7 +30,7 @@ export const load: LayoutServerLoad = async (event) => {
 		.select()
 		.from(companies)
 		.orderBy(companies.name);
-	let allPlaylists;
+	let allPlaylists: PlaylistWithMusics[];
 	let profile;
 	const favMusics: SelectMusic[] = [];
 	const favAlbums: SelectAlbum[] = [];
@@ -41,6 +42,7 @@ export const load: LayoutServerLoad = async (event) => {
 			where: eq(playlists.userId, user.id),
 			with: {
 				musics: {
+					columns: {},
 					with: {
 						music: {
 							with: {
@@ -85,6 +87,11 @@ export const load: LayoutServerLoad = async (event) => {
 				album: true,
 			},
 		});
+		if (allPlaylists) {
+			allPlaylists.forEach((item) => {
+				item.musics = item.musics.map((musics) => musics.music);
+			});
+		}
 		if (musicsRequest) {
 			musicsRequest.forEach((item) => {
 				favMusics.push(item.music);
@@ -106,6 +113,7 @@ export const load: LayoutServerLoad = async (event) => {
 		favoritesMusics: favMusics,
 		favoritesAlbums: favAlbums,
 		session,
+		cookies: event.cookies.getAll(),
 		profile,
 	};
 };

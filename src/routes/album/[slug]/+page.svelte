@@ -1,34 +1,40 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { Search, SEO } from '$components';
 	import type { SelectMusic } from '$lib/db';
-	import { cover, favoritesMusics, length, musics, trackId } from '$lib/store';
+	import { favoritesMusics, length, musics, trackId } from '$lib/store';
+	import type { MusicStore } from '$lib/types';
+	import { debounce } from '$lib/utils';
 	import { Musics } from '$modules';
 	import { Separator } from 'bits-ui';
 	import { onMount } from 'svelte';
 	import Header from './Header.svelte';
-	import { Search } from '$components';
-	import { debounce } from '$lib/utils';
 
 	let query: string = '';
-	let filteredMusics = [];
+	let filteredMusics: MusicStore[] = [];
 
 	$: if (filteredMusics.length > 0) {
 		musics.set(filteredMusics);
+		$length = filteredMusics.length;
 	} else {
 		musics.set($page.data.musics);
+		$length = $page.data.length;
 	}
 
-	$: $length = $page.data.length;
-
 	const search = () => {
-		filteredMusics = $page.data.musics.filter((music) => {
+		filteredMusics = $page.data.musics.filter((music: SelectMusic) => {
 			let musicName = music.name.toLowerCase();
 			return musicName.includes(query.toLowerCase());
 		});
 	};
 
+	const seoProps = {
+		title: `Album | ${$page.data.album.name}`,
+		slug: `album/${$page.data.album.name}`,
+		metadescription: `Listen to all the musics from ${$page.data.album.name}.`,
+	};
+
 	onMount(() => {
-		$cover = $page.data.album.cover;
 		$trackId = 0;
 		$page.data.favoritesMusics.forEach((music: SelectMusic) => {
 			favoritesMusics.update((current) => current.add(music.id));
@@ -36,7 +42,8 @@
 	});
 </script>
 
-<div class="flex flex-col gap-4">
+<SEO {...seoProps} />
+<div class="space-y-4">
 	<Header />
 	<Separator.Root class="mx-auto h-px w-11/12 bg-gray-5" />
 	<Search bind:query on:input={debounce(search)} placeholder="Search title" />

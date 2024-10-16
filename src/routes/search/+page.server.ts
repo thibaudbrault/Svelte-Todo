@@ -1,8 +1,10 @@
+import { createAlbum, createGame, createCompany } from '$lib/actions';
 import { db } from '$lib/db';
-import type { PageServerLoad } from './$types';
+import type { AlbumsWithGames } from '$lib/types';
+import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const allAlbums = await db.query.albums.findMany({
+	const allAlbums: AlbumsWithGames[] = await db.query.albums.findMany({
 		with: {
 			games: true,
 		},
@@ -10,4 +12,10 @@ export const load: PageServerLoad = async () => {
 	return {
 		albums: allAlbums,
 	};
+};
+
+export const actions: Actions = {
+	createAlbum,
+	createGame,
+	createCompany,
 };

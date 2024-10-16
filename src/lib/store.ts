@@ -1,11 +1,11 @@
 import { writable, type Writable } from 'svelte/store';
-import type { SelectMusic } from './db';
+import type { MusicStore } from './types';
 
 export const audio: Writable<HTMLAudioElement> = writable();
-export const musics: Writable<SelectMusic[]> = writable([]);
+export const musics: Writable<MusicStore[]> = writable([]);
 export const favoritesMusics: Writable<Set<string>> = writable(new Set());
 export const favoritesAlbums: Writable<Set<string>> = writable(new Set());
-export const authors = writable([]);
+export const authors: Writable<MusicStore['authors']> = writable([]);
 
 export const trackId = writable(0);
 export const currentTime = writable(0);

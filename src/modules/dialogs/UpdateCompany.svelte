@@ -2,7 +2,7 @@
 	import { page } from '$app/stores';
 	import { Dialog, Form, TextInput } from '$components';
 	import type { SelectCompany } from '$lib/db';
-	import { updateCompanySchema } from '$lib/validation';
+	import { updateCompanySchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 
 	export let company: SelectCompany;

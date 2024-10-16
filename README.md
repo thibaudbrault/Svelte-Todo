@@ -1,7 +1,7 @@
 # GameMusic
 
-Video games music streaming app  
-I don't have a name for this app
+Video games music streaming app
+Deployed app: <https://gamemusic.app>
 
 ## Roadmap
 
@@ -21,10 +21,11 @@ I don't have a name for this app
 
 ## Stack
 
-- SvelteKit
-- Drizzle ORM
-- Typescript
-- TailwindCSS
-- AuthJS
-- AWS S3 + Cloudfront
-- Supabase
+![My Skills](https://skillicons.dev/icons?i=svelte,ts,tailwind,drizzle,aws,supabase)
+
+## Stats
+
+[![Codacy grade](https://img.shields.io/codacy/grade/48a8346b83b14770b83c875940b13080?style=for-the-badge)](https://app.codacy.com/gh/thibaudbrault/GameMusic/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/thibaudbrault/GameMusic?style=for-the-badge)](https://github.com/thibaudbrault/GameMusic/issues)
+[![GitHub deployments](https://img.shields.io/github/deployments/thibaudbrault/GameMusic/production?style=for-the-badge)](https://github.com/thibaudbrault/GameMusic/deployments/Production)
+![GitHub repo size](https://img.shields.io/github/repo-size/thibaudbrault/GameMusic?style=for-the-badge)

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { Combobox, Dialog, Form, TextInput } from '$components';
-	import { createGameSchema } from '$lib/validation';
+	import { Combobox, Dialog, FileInput, Form, TextInput } from '$components';
+	import { COVER_EXTENSIONS } from '$lib/utils';
+	import { createGameSchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { Plus, Building2 } from 'lucide-svelte';
 </script>
@@ -9,7 +10,7 @@
 <Dialog title="New game">
 	<BitsDialog.Trigger
 		slot="trigger"
-		class="flex items-center gap-4 hover:text-gray-12"
+		class="flex items-center gap-4 p-2 hover:bg-gray-4 hover:text-gray-12"
 	>
 		<Plus class="text-yellow-12" />
 		<span class="font-semibold">Game</span>
@@ -33,6 +34,12 @@
 					field="company"
 					label="Company"
 					placeholder="Select a company"
+				/>
+				<FileInput
+					{form}
+					field="cover"
+					label="Cover"
+					accept={COVER_EXTENSIONS}
 				/>
 			</fieldset>
 		</Form>

@@ -4,6 +4,7 @@
 	import {
 		authors,
 		cover,
+		favoritesMusics,
 		isLoading,
 		isLooped,
 		isPlaying,
@@ -28,6 +29,7 @@
 	} from 'lucide-svelte';
 	import { onMount } from 'svelte';
 	import Progress from './Progress.svelte';
+	import { enhance } from '$app/forms';
 
 	export let raf: number;
 
@@ -46,6 +48,18 @@
 			event.preventDefault();
 			playPauseTrack(raf);
 		}
+	};
+
+	const handleFavorite = (id: string) => {
+		favoritesMusics.update((currentFavorites) => {
+			const newFavorites = new Set(currentFavorites);
+			if (newFavorites.has(id)) {
+				newFavorites.delete(id);
+			} else {
+				newFavorites.add(id);
+			}
+			return newFavorites;
+		});
 	};
 
 	onMount(() => {
@@ -76,13 +90,24 @@
 	</div>
 	<div class="flex flex-1 flex-col items-center gap-2">
 		<div class="flex items-center justify-center gap-2">
-			<Button intent="ghost" size="icon" on:click={handleShuffle}>
+			<Button
+				aria-label="Shuffle"
+				intent="ghost"
+				size="icon"
+				on:click={handleShuffle}
+			>
 				<Shuffle class={`size-5 ${$isShuffled ? 'text-yellow-11' : ''}`} />
 			</Button>
-			<Button intent="ghost" size="icon" on:click={() => prevTrack()}>
+			<Button
+				aria-label="Previous track"
+				intent="ghost"
+				size="icon"
+				on:click={() => prevTrack()}
+			>
 				<SkipBack class="size-5" />
 			</Button>
 			<Button
+				aria-label={$isPlaying ? 'Pause' : 'Play'}
 				intent="primary"
 				rounded="full"
 				size="icon"
@@ -98,36 +123,93 @@
 					<Play />
 				{/if}
 			</Button>
-			<Button intent="ghost" size="icon" on:click={() => nextTrack()}>
+			<Button
+				aria-label="Next track"
+				intent="ghost"
+				size="icon"
+				on:click={() => nextTrack()}
+			>
 				<SkipForward class="size-5" />
 			</Button>
-			<Button intent="ghost" size="icon" on:click={handleLoop}>
+			<Button
+				aria-label="Loop"
+				intent="ghost"
+				size="icon"
+				on:click={handleLoop}
+			>
 				<Repeat class={`size-5 ${$isLooped ? 'text-yellow-11' : ''}`} />
 			</Button>
 		</div>
 		<Progress />
 	</div>
 	<div class="flex items-center gap-2">
-		<div class="flex w-fit cursor-pointer items-center justify-center p-2">
-			<Dropdown>
-				<ListPlus class="size-5" slot="trigger" />
-				<svelte:fragment slot="content">
-					{#each $page.data.playlists as playlist}
-						<form>
-							<input value={$page.data.profile.id} name="userId" hidden />
-							<input value={$musics[$trackId].id} name="musicId" hidden />
-							<input value={playlist.name} name="name" hidden />
-							<button>{playlist.name}</button>
-						</form>
-					{/each}
-				</svelte:fragment>
-			</Dropdown>
-		</div>
-		<Button intent="ghost" size="icon">
-			<Heart class="size-5" />
-		</Button>
+		{#if $page.data.profile}
+			<div class="flex w-fit cursor-pointer items-center justify-center p-2">
+				<Dropdown>
+					<ListPlus class="size-5" slot="trigger" />
+					<svelte:fragment slot="content">
+						{#each $page.data.playlists as playlist}
+							<form method="POST" use:enhance action="?/updatePlaylistMusics">
+								<input value={$page.data.profile.id} name="userId" hidden />
+								<input value={$musics[$trackId].id} name="musicId" hidden />
+								<input value={playlist.name} name="name" hidden />
+								{#if $musics[$trackId].playlists.find((item) => item.playlistId === playlist.id)}
+									<input value="remove" name="action" hidden />
+									<button
+										aria-label={`Remove from playlist ${playlist.name}`}
+										class="text-yellow-12"
+										>{playlist.name}
+									</button>
+								{:else}
+									<input value="add" name="action" hidden />
+
+									<button
+										aria-label={`Add to playlist ${playlist.name}`}
+										class="hover:text-yellow-12"
+										>{playlist.name}
+									</button>
+								{/if}
+							</form>
+						{/each}
+					</svelte:fragment>
+				</Dropdown>
+			</div>
+			<form
+				method="POST"
+				use:enhance
+				action="?/updateFavoriteMusic"
+				on:submit={() => handleFavorite($musics[$trackId].id)}
+			>
+				<input value={$musics[$trackId].id} name="musicId" hidden />
+				<input value={$page.data.profile.id} name="userId" hidden />
+				{#if $favoritesMusics.has($musics[$trackId].id)}
+					<input value="remove" name="action" hidden />
+					<Button
+						aria-label="Remove from favorites"
+						intent="ghost"
+						size="icon"
+						class="text-red-500"
+						type="submit"
+					>
+						<Heart class="size-5 fill-red-500" />
+					</Button>
+				{:else}
+					<input value="add" name="action" hidden />
+					<Button
+						aria-label="Add to favorites"
+						intent="ghost"
+						size="icon"
+						class="text-inherit"
+						type="submit"
+					>
+						<Heart class="size-5" />
+					</Button>
+				{/if}
+			</form>
+		{/if}
 		<Tooltip>
 			<Button
+				aria-label="Focus mode"
 				slot="trigger"
 				intent="ghost"
 				size="icon"
@@ -135,7 +217,7 @@
 					$isZen = !$isZen;
 				}}
 			>
-				<LoaderPinwheel class="size-5" />
+				<LoaderPinwheel class={`${$isZen ? 'text-yellow-12' : ''} size-5`} />
 			</Button>
 			<p slot="content" class="font-medium">Focus mode</p>
 		</Tooltip>

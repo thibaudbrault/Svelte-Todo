@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { Dialog, Form, TextInput } from '$components';
-	import { createCompanySchema } from '$lib/validation';
+	import { createCompanySchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { Plus } from 'lucide-svelte';
 </script>
@@ -9,7 +9,7 @@
 <Dialog title="New company">
 	<BitsDialog.Trigger
 		slot="trigger"
-		class="flex items-center gap-4 hover:text-gray-12"
+		class="flex items-center gap-4 p-2 hover:bg-gray-4 hover:text-gray-12"
 	>
 		<Plus class="text-yellow-12" />
 		<span class="font-semibold">Company</span>

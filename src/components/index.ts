@@ -7,6 +7,7 @@ export { default as FileInput } from './FileInput.svelte';
 export { default as Form } from './Form.svelte';
 export { default as Label } from './Label.svelte';
 export { default as NumberInput } from './NumberInput.svelte';
+export { default as SEO } from './Seo.svelte';
 export { default as Search } from './Search.svelte';
 export { default as TextInput } from './TextInput.svelte';
 export { default as Tooltip } from './Tooltip.svelte';

@@ -8,11 +8,10 @@
 		NumberInput,
 		TextInput,
 	} from '$components';
-	import { createAlbumSchema } from '$lib/validation';
+	import { COVER_EXTENSIONS } from '$lib/utils';
+	import { createAlbumSchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { Gamepad2, Plus } from 'lucide-svelte';
-
-	const acceptedExtensions = '.jpg, .jpeg, .png, .webp';
 
 	const currentYear = new Date().getFullYear();
 </script>
@@ -20,7 +19,7 @@
 <Dialog title="New album">
 	<BitsDialog.Trigger
 		slot="trigger"
-		class="flex items-center gap-4 hover:text-gray-12"
+		class="flex items-center gap-4 p-2 hover:bg-gray-4 hover:text-gray-12"
 	>
 		<Plus class="text-yellow-12" />
 		<span class="font-semibold">Album</span>
@@ -56,7 +55,7 @@
 					{form}
 					field="cover"
 					label="Cover"
-					accept={acceptedExtensions}
+					accept={COVER_EXTENSIONS}
 				/>
 			</fieldset>
 		</Form>

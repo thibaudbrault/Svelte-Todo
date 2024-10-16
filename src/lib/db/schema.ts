@@ -11,6 +11,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 export const roleEnum = pgEnum('role', ['admin', 'user']);
+export const visibilityEnum = pgEnum('visibility', ['public', 'private']);
 
 export const albums = pgTable('albums', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
@@ -87,7 +88,8 @@ export const authorsRelations = relations(authors, ({ many }) => ({
 export const playlists = pgTable('playlists', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
 	name: text('name').notNull(),
-	value: text('value').notNull().unique(),
+	value: text('value').notNull(),
+	visibility: visibilityEnum('visibility').default('public'),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
 		() => new Date(),
@@ -104,6 +106,7 @@ export const games = pgTable('games', {
 	id: uuid('id').notNull().primaryKey().defaultRandom(),
 	name: text('name').notNull().unique(),
 	value: text('value').notNull().unique(),
+	cover: text('cover').notNull().unique(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),
 	updatedAt: timestamp('updated_at', { mode: 'date', precision: 3 }).$onUpdate(
 		() => new Date(),
@@ -161,6 +164,32 @@ export const musicToAuthorsRelations = relations(
 		}),
 	}),
 );
+
+export const gameToAuthors = pgTable(
+	'games_authors',
+	{
+		gameId: uuid('game_id')
+			.notNull()
+			.references(() => games.id, { onDelete: 'cascade' }),
+		authorId: uuid('author_id')
+			.notNull()
+			.references(() => authors.id, { onDelete: 'cascade' }),
+	},
+	(t) => ({
+		pk: primaryKey({ columns: [t.gameId, t.authorId] }),
+	}),
+);
+
+export const gameToAuthorsRelations = relations(gameToAuthors, ({ one }) => ({
+	game: one(games, {
+		fields: [gameToAuthors.gameId],
+		references: [games.id],
+	}),
+	author: one(authors, {
+		fields: [gameToAuthors.authorId],
+		references: [authors.id],
+	}),
+}));
 
 export const favoritesMusics = pgTable(
 	'favorites_musics',
@@ -245,6 +274,39 @@ export const playlistMusicsRelations = relations(playlistMusics, ({ one }) => ({
 		references: [musics.id],
 	}),
 }));
+
+export const history = pgTable(
+	'history',
+	{
+		userId: uuid('user_id')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		musicId: uuid('music_id')
+			.notNull()
+			.references(() => musics.id, { onDelete: 'cascade' }),
+		listenedAt: timestamp('listened_at').defaultNow().notNull(),
+	},
+	(t) => ({
+		pk: primaryKey({ columns: [t.userId, t.musicId] }),
+	}),
+);
+
+export const historyRelations = relations(history, ({ one }) => ({
+	music: one(musics, {
+		fields: [history.musicId],
+		references: [musics.id],
+	}),
+	user: one(users, {
+		fields: [history.userId],
+		references: [users.id],
+	}),
+}));
+
+export type Music = typeof musics.$inferSelect;
+export type Album = typeof albums.$inferSelect;
+export type Author = typeof authors.$inferSelect;
+export type Game = typeof games.$inferSelect;
+export type Playlist = typeof playlists.$inferSelect;
 
 export type InsertAlbum = typeof albums.$inferInsert;
 export type SelectAlbum = typeof albums.$inferSelect;

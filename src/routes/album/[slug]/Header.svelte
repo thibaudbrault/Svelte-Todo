@@ -3,10 +3,10 @@
 	import { page } from '$app/stores';
 	import { Button, Dropdown } from '$components';
 	import type { SelectAlbum } from '$lib/db';
-	import { favoritesAlbums, isPlaying } from '$lib/store';
+	import { favoritesAlbums } from '$lib/store';
 	import { calculateTotalDuration, formatTotalDuration } from '$lib/utils';
 	import { AddMusic, DeleteMusics } from '$modules';
-	import { Heart, MoreHorizontal } from 'lucide-svelte';
+	import { Heart, MoreVertical } from 'lucide-svelte';
 	import { onMount } from 'svelte';
 
 	const handleFavorite = (id: string) => {
@@ -28,16 +28,14 @@
 	});
 </script>
 
-<div class="flex flex-col items-center gap-4 p-4 sm:flex-row">
-	<div
-		class="relative max-w-52 rounded-full border border-gray-5 sm:size-28 md:size-40 lg:size-52"
-	>
+<div class="flex flex-col items-center gap-16 p-4 sm:flex-row">
+	<div class="relative sm:size-28 md:size-40 lg:size-64">
 		<img
 			src={$page.data.album.cover}
 			alt={$page.data.album.name}
-			class={`h-full w-full rounded-full ${$isPlaying ? 'animate-spin-slow' : ''}`}
+			class="h-full w-full rounded-md"
 		/>
-		<div class="absolute inset-0 rounded-full bg-gray-1 opacity-15" />
+		<div class="absolute inset-0 bg-gray-2 opacity-20" />
 	</div>
 	<div class="flex flex-1 flex-col justify-end gap-4">
 		<div class="flex flex-col gap-1">
@@ -69,37 +67,39 @@
 			</ul>
 			<div class="flex gap-2">
 				{#if $page.data.session}
-					{#if $favoritesAlbums.has($page.data.album.id)}
-						<form
-							method="POST"
-							use:enhance
-							action="?/removeFavoriteAlbum"
-							on:submit={() => handleFavorite($page.data.album.id)}
-						>
-							<input value={$page.data.album.id} name="albumId" hidden />
-							<input value={$page.data.profile.id} name="userId" hidden />
-							<Button intent="ghost" size="icon" class="text-red-500">
+					<form
+						method="POST"
+						use:enhance
+						action="?/updateFavoriteAlbum"
+						on:submit={() => handleFavorite($page.data.album.id)}
+					>
+						<input value={$page.data.album.id} name="albumId" hidden />
+						<input value={$page.data.profile.id} name="userId" hidden />
+						{#if $favoritesAlbums.has($page.data.album.id)}
+							<input value="remove" name="action" hidden />
+							<Button
+								aria-label="Remove from favorite albums"
+								intent="ghost"
+								size="icon"
+								class="text-red-500"
+							>
 								<Heart class="fill-red-500" />
 							</Button>
-						</form>
-					{:else}
-						<form
-							method="POST"
-							use:enhance
-							action="?/addFavoriteAlbum"
-							on:submit={() => handleFavorite($page.data.album.id)}
-						>
-							<input value={$page.data.album.id} name="albumId" hidden />
-							<input value={$page.data.profile.id} name="userId" hidden />
-							<Button intent="ghost" size="icon">
+						{:else}
+							<input value="add" name="action" hidden />
+							<Button
+								aria-label="Add to favorite albums"
+								intent="ghost"
+								size="icon"
+							>
 								<Heart />
 							</Button>
-						</form>
-					{/if}
+						{/if}
+					</form>
 				{/if}
 				{#if $page.data.user && $page.data.profile.role === 'admin'}
 					<Dropdown>
-						<MoreHorizontal slot="trigger" />
+						<MoreVertical slot="trigger" />
 						<svelte:fragment slot="content">
 							<AddMusic />
 							<DeleteMusics />

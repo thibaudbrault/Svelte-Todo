@@ -8,10 +8,11 @@ import {
 	updateAlbumSchema,
 	updateCompanySchema,
 	updateGameSchema,
-} from '$lib/validation';
+} from '$lib/validations';
 import { albumSlug, renameFileWithExtension } from '$lib/utils';
 import { deleteFile, uploadFile } from '$lib/server';
 import { CLOUDFRONT_URL } from '$env/static/private';
+import { createAlbum, createGame, createCompany } from '$lib/actions';
 
 export const load: PageServerLoad = async (event) => {
 	const { session, user } = await event.locals.safeGetSession();
@@ -37,6 +38,9 @@ export const load: PageServerLoad = async (event) => {
 };
 
 export const actions: Actions = {
+	createAlbum,
+	createGame,
+	createCompany,
 	updateAlbum: async ({ request }) => {
 		const formData = await request.formData();
 		const form = await superValidate(formData, zod(updateAlbumSchema), {
@@ -72,6 +76,9 @@ export const actions: Actions = {
 					cover: true,
 				},
 			});
+			if (!album) {
+				return setError(form, 'cover', 'Album not found');
+			}
 			await deleteFile(album?.cover);
 			await uploadFile(
 				Buffer.from(await cover.arrayBuffer()),
@@ -84,7 +91,7 @@ export const actions: Actions = {
 			.update(albums)
 			.set({ name, cover: coverUrl, release, gameId })
 			.where(eq(albums.id, albumId));
-		return { message: 'Album name updated successfully' };
+		return { message: 'Album updated successfully' };
 	},
 	updateGame: async ({ request }) => {
 		const formData = await request.formData();
@@ -94,7 +101,7 @@ export const actions: Actions = {
 		if (!form.valid) {
 			return fail(400, { form });
 		}
-		const { name, gameId, company } = form.data;
+		const { name, gameId, company, cover } = form.data;
 		const value = name?.toLowerCase();
 		const gameExists = await db.query.games.findFirst({
 			where: eq(games.value, value!),
@@ -102,6 +109,25 @@ export const actions: Actions = {
 		if (gameExists) {
 			return setError(form, 'name', 'Game already exists');
 		}
+		const filename = `games/${crypto.randomUUID()}${cover.name}`;
+		if (cover) {
+			const game = await db.query.games.findFirst({
+				where: eq(games.id, gameId),
+				columns: {
+					cover: true,
+				},
+			});
+			if (!game) {
+				return setError(form, 'cover', 'Game not found');
+			}
+			await deleteFile(game?.cover);
+			await uploadFile(
+				Buffer.from(await cover.arrayBuffer()),
+				filename,
+				cover.type,
+			);
+		}
+		const coverUrl = CLOUDFRONT_URL + filename;
 		const findCompany = await db.query.companies.findFirst({
 			where: eq(companies.value, company!),
 		});
@@ -111,9 +137,9 @@ export const actions: Actions = {
 		const companyId = findCompany.id;
 		await db
 			.update(games)
-			.set({ name, value, companyId })
+			.set({ name, value, companyId, cover: coverUrl })
 			.where(eq(games.id, gameId));
-		return { message: 'Game name updated successfully' };
+		return { message: 'Game updated successfully' };
 	},
 	updateCompany: async ({ request }) => {
 		const formData = await request.formData();
@@ -124,7 +150,7 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 		const { name, companyId } = form.data;
-		const value = name?.toLowerCase();
+		const value = name.toLowerCase();
 		const companyExists = await db.query.companies.findFirst({
 			where: eq(companies.value, value),
 		});

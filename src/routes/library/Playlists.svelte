@@ -1,45 +1,43 @@
 <script>
-	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
-	import { Button } from '$components';
-	import { CreatePlaylist, Musics } from '$modules';
-	import { Collapsible } from 'bits-ui';
-	import { ChevronsUpDown } from 'lucide-svelte';
-	import { slide } from 'svelte/transition';
+	import { CreatePlaylist, DeletePlaylist, UpdatePlaylist } from '$modules';
 </script>
 
-<section class="flex flex-col gap-8">
+<section class="space-y-8">
 	{#if $page.data.playlists.length > 0}
-		<Collapsible.Root class="flex flex-col gap-2">
+		<div class="space-y-2">
 			{#each $page.data.playlists as playlist (playlist.id)}
 				<div
-					class="rounded-md border border-gray-5 px-4 py-2 hover:border-gray-6"
+					class="group flex items-center justify-between gap-1 rounded-md p-2 hover:bg-gray-4"
 				>
-					<div class="flex items-center justify-between">
-						<p class="text-xl font-semibold">{playlist.name}</p>
-						<Collapsible.Trigger class="rounded-md p-2 hover:bg-gray-4">
-							<ChevronsUpDown />
-						</Collapsible.Trigger>
-					</div>
-					<Collapsible.Content transition={slide}>
-						<div class="flex flex-col gap-4">
-							{#if playlist.musics.length > 0}
-								<Musics />
-							{:else}
-								<p class="text-center text-2xl font-semibold capitalize">
-									No musics
-								</p>
-							{/if}
-							<form method="POST" use:enhance action="?/deletePlaylist">
-								<input value={playlist.id} name="id" hidden />
-								<input value={playlist.userId} name="userId" hidden />
-								<Button intent="destructive" width="full">Delete</Button>
-							</form>
+					<div class="flex items-center gap-4">
+						<img
+							src={playlist.musics[0]?.album.cover ?? ''}
+							class="rounded-md"
+							width="52"
+							height="52"
+							alt={playlist.musics[0]?.album.name ?? ''}
+						/>
+						<div class="space-x-2">
+							<a
+								aria-label={`Go to playlist ${playlist.name}`}
+								class="text-2xl font-semibold group-hover:text-yellow-12"
+								href={`/playlist/${playlist.value}`}
+							>
+								{playlist.name}
+							</a>
+							<small class="text-xs text-gray-11">
+								{playlist.musics.length} tracks
+							</small>
 						</div>
-					</Collapsible.Content>
+					</div>
+					<div class="z-10 flex items-center gap-2">
+						<UpdatePlaylist {playlist} />
+						<DeletePlaylist {playlist} />
+					</div>
 				</div>
 			{/each}
-		</Collapsible.Root>
+		</div>
 	{:else}
 		<p
 			class="col-span-5 py-4 text-center text-xl font-semibold capitalize md:text-2xl"

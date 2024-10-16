@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { Dialog, FileInput, Form } from '$components';
-	import { createMusicSchema } from '$lib/validation';
+	import { createMusicSchema } from '$lib/validations';
 	import { Dialog as BitsDialog } from 'bits-ui';
 	import { Plus } from 'lucide-svelte';
 

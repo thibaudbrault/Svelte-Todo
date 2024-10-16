@@ -53,10 +53,10 @@
 </script>
 
 <Drawer.Root bind:open={$isPlayerOpen}>
-	<Drawer.Portal class="block md:hidden">
+	<Drawer.Portal class="z-20 block md:hidden">
 		<Drawer.Overlay class="fixed inset-0 bg-black/40" />
 		<Drawer.Content
-			class="fixed bottom-0 left-0 right-0 flex flex-col rounded-t-md border-t border-t-yellow-6 bg-gray-1"
+			class="fixed bottom-0 left-0 right-0 z-20 flex flex-col rounded-t-md border-t border-t-yellow-6 bg-gray-1"
 		>
 			<div class="flex flex-col items-center justify-center gap-8 px-2 py-8">
 				<div
@@ -73,10 +73,16 @@
 					</p>
 				</div>
 				<div class="flex items-center gap-4">
-					<Button intent="ghost" size="icon" on:click={() => prevTrack()}>
+					<Button
+						aria-label="Previous track"
+						intent="ghost"
+						size="icon"
+						on:click={() => prevTrack()}
+					>
 						<SkipBack />
 					</Button>
 					<Button
+						aria-label={$isPlaying ? 'Pause' : 'Play'}
 						intent="primary"
 						rounded="full"
 						size="icon"
@@ -91,19 +97,34 @@
 							<Play class="h-8 w-8" />
 						{/if}
 					</Button>
-					<Button intent="ghost" size="icon" on:click={() => nextTrack()}>
+					<Button
+						aria-label="Next track"
+						intent="ghost"
+						size="icon"
+						on:click={() => nextTrack()}
+					>
 						<SkipForward />
 					</Button>
 				</div>
 				<Progress />
 				<div class="flex items-center gap-4">
-					<Button intent="ghost" size="icon">
+					<Button aria-label="Add to favorite" intent="ghost" size="icon">
 						<Heart class="h-4 w-4" />
 					</Button>
-					<Button intent="ghost" size="icon" on:click={handleShuffle}>
+					<Button
+						aria-label="Shuffle"
+						intent="ghost"
+						size="icon"
+						on:click={handleShuffle}
+					>
 						<Shuffle class={`h-4 w-4 ${$isShuffled ? 'text-yellow-11' : ''}`} />
 					</Button>
-					<Button intent="ghost" size="icon" on:click={handleLoop}>
+					<Button
+						aria-label="Loop"
+						intent="ghost"
+						size="icon"
+						on:click={handleLoop}
+					>
 						<Repeat class={`h-4 w-4 ${$isLooped ? 'text-yellow-11' : ''}`} />
 					</Button>
 					<div

@@ -1,7 +1,15 @@
 <script>
-	import { Button } from '$components';
+	import { Button, SEO } from '$components';
+
+	const seoProps = {
+		title: 'Login',
+		slug: 'login',
+		metadescription:
+			'Log into your account to get access to all the features of GameMusic.',
+	};
 </script>
 
+<SEO {...seoProps} />
 <form
 	method="POST"
 	action="?/login"

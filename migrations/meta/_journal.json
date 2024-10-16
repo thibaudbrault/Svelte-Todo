@@ -267,6 +267,34 @@
       "when": 1716627186885,
       "tag": "0037_cheerful_firebrand",
       "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "6",
+      "when": 1717410104758,
+      "tag": "0038_salty_hellion",
+      "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "6",
+      "when": 1717751703512,
+      "tag": "0039_silky_marten_broadcloak",
+      "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "6",
+      "when": 1717928451010,
+      "tag": "0040_fresh_wiccan",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1721497061708,
+      "tag": "0041_next_clint_barton",
+      "breakpoints": true
     }
   ]
 }
