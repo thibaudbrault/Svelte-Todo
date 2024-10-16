@@ -143,68 +143,70 @@
 		<Progress />
 	</div>
 	<div class="flex items-center gap-2">
-		<div class="flex w-fit cursor-pointer items-center justify-center p-2">
-			<Dropdown>
-				<ListPlus class="size-5" slot="trigger" />
-				<svelte:fragment slot="content">
-					{#each $page.data.playlists as playlist}
-						<form method="POST" use:enhance action="?/updatePlaylistMusics">
-							<input value={$page.data.profile.id} name="userId" hidden />
-							<input value={$musics[$trackId].id} name="musicId" hidden />
-							<input value={playlist.name} name="name" hidden />
-							{#if $musics[$trackId].playlists.find((item) => item.playlistId === playlist.id)}
-								<input value="remove" name="action" hidden />
-								<button
-									aria-label={`Remove from playlist ${playlist.name}`}
-									class="text-yellow-12"
-									>{playlist.name}
-								</button>
-							{:else}
-								<input value="add" name="action" hidden />
+		{#if $page.data.profile}
+			<div class="flex w-fit cursor-pointer items-center justify-center p-2">
+				<Dropdown>
+					<ListPlus class="size-5" slot="trigger" />
+					<svelte:fragment slot="content">
+						{#each $page.data.playlists as playlist}
+							<form method="POST" use:enhance action="?/updatePlaylistMusics">
+								<input value={$page.data.profile.id} name="userId" hidden />
+								<input value={$musics[$trackId].id} name="musicId" hidden />
+								<input value={playlist.name} name="name" hidden />
+								{#if $musics[$trackId].playlists.find((item) => item.playlistId === playlist.id)}
+									<input value="remove" name="action" hidden />
+									<button
+										aria-label={`Remove from playlist ${playlist.name}`}
+										class="text-yellow-12"
+										>{playlist.name}
+									</button>
+								{:else}
+									<input value="add" name="action" hidden />
 
-								<button
-									aria-label={`Add to playlist ${playlist.name}`}
-									class="hover:text-yellow-12"
-									>{playlist.name}
-								</button>
-							{/if}
-						</form>
-					{/each}
-				</svelte:fragment>
-			</Dropdown>
-		</div>
-		<form
-			method="POST"
-			use:enhance
-			action="?/updateFavoriteMusic"
-			on:submit={() => handleFavorite($musics[$trackId].id)}
-		>
-			<input value={$musics[$trackId].id} name="musicId" hidden />
-			<input value={$page.data.profile.id} name="userId" hidden />
-			{#if $favoritesMusics.has($musics[$trackId].id)}
-				<input value="remove" name="action" hidden />
-				<Button
-					aria-label="Remove from favorites"
-					intent="ghost"
-					size="icon"
-					class="text-red-500"
-					type="submit"
-				>
-					<Heart class="size-5 fill-red-500" />
-				</Button>
-			{:else}
-				<input value="add" name="action" hidden />
-				<Button
-					aria-label="Add to favorites"
-					intent="ghost"
-					size="icon"
-					class="text-inherit"
-					type="submit"
-				>
-					<Heart class="size-5" />
-				</Button>
-			{/if}
-		</form>
+									<button
+										aria-label={`Add to playlist ${playlist.name}`}
+										class="hover:text-yellow-12"
+										>{playlist.name}
+									</button>
+								{/if}
+							</form>
+						{/each}
+					</svelte:fragment>
+				</Dropdown>
+			</div>
+			<form
+				method="POST"
+				use:enhance
+				action="?/updateFavoriteMusic"
+				on:submit={() => handleFavorite($musics[$trackId].id)}
+			>
+				<input value={$musics[$trackId].id} name="musicId" hidden />
+				<input value={$page.data.profile.id} name="userId" hidden />
+				{#if $favoritesMusics.has($musics[$trackId].id)}
+					<input value="remove" name="action" hidden />
+					<Button
+						aria-label="Remove from favorites"
+						intent="ghost"
+						size="icon"
+						class="text-red-500"
+						type="submit"
+					>
+						<Heart class="size-5 fill-red-500" />
+					</Button>
+				{:else}
+					<input value="add" name="action" hidden />
+					<Button
+						aria-label="Add to favorites"
+						intent="ghost"
+						size="icon"
+						class="text-inherit"
+						type="submit"
+					>
+						<Heart class="size-5" />
+					</Button>
+				{/if}
+			</form>
+		{/if}
 		<Tooltip>
 			<Button
 				aria-label="Focus mode"
