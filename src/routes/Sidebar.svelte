@@ -103,7 +103,7 @@
 	{/if}
 </aside>
 
-<nav class="mx-auto flex w-11/12 justify-between md:hidden">
+<nav class="mx-auto flex w-11/12 items-center justify-between md:hidden">
 	{#each links as link}
 		<a
 			aria-label={link.name}

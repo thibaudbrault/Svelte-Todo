@@ -53,10 +53,10 @@
 </script>
 
 <Drawer.Root bind:open={$isPlayerOpen}>
-	<Drawer.Portal class="block md:hidden">
+	<Drawer.Portal class="z-20 block md:hidden">
 		<Drawer.Overlay class="fixed inset-0 bg-black/40" />
 		<Drawer.Content
-			class="fixed bottom-0 left-0 right-0 flex flex-col rounded-t-md border-t border-t-yellow-6 bg-gray-1"
+			class="fixed bottom-0 left-0 right-0 z-20 flex flex-col rounded-t-md border-t border-t-yellow-6 bg-gray-1"
 		>
 			<div class="flex flex-col items-center justify-center gap-8 px-2 py-8">
 				<div

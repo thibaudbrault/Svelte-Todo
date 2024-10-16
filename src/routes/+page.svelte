@@ -18,15 +18,15 @@
 		<div class="grid auto-cols-max grid-flow-col gap-6 overflow-x-hidden">
 			{#each $page.data.games as game}
 				<div
-					class="relative flex size-48 items-center justify-center rounded-md bg-gray-3 bg-cover bg-center bg-no-repeat p-4 text-center"
+					class="relative flex size-32 items-center justify-center rounded-md bg-gray-3 bg-cover bg-center bg-no-repeat p-4 text-center md:size-48"
 					style="background-image: url({game.cover})"
 				>
 					<a
 						href={`/game/${game.value}`}
-						class="z-10 text-3xl font-semibold hover:text-yellow-12"
+						class="z-10 text-xl font-semibold hover:text-yellow-12 md:text-3xl"
 						>{game.name}</a
 					>
-					<div class="absolute inset-0 rounded-md bg-gray-1 opacity-20" />
+					<div class="absolute inset-0 rounded-md bg-gray-1 opacity-50" />
 				</div>
 			{/each}
 		</div>
