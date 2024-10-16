@@ -58,7 +58,10 @@
 {#if $musics.length > 0}
 	<div class="hidden space-y-2 md:block">
 		{#each $musics as music, index}
-			<div
+			<button
+				id={`track-${index}`}
+				on:click={() => handleClick(index)}
+				on:keydown={handleKeyDown}
 				class={`flex w-full cursor-pointer items-center justify-between rounded-md p-2 ${$trackId === index ? 'bg-gray-12 text-gray-1' : 'hover:bg-grayA-5'}`}
 			>
 				{#if $page.data.user}
@@ -83,12 +86,7 @@
 								class="rounded-md"
 							/>
 						{/if}
-						<button
-							id={`track-${index}`}
-							on:click={() => handleClick(index)}
-							on:keydown={handleKeyDown}
-							class="flex w-full flex-1 flex-col items-start gap-1"
-						>
+						<div class="flex w-full flex-1 flex-col items-start gap-1">
 							<p class="text-left text-xl font-bold">{music.name}</p>
 							<ul class="flex items-center gap-2">
 								{#each music.authors as authors}
@@ -97,7 +95,7 @@
 									</li>
 								{/each}
 							</ul>
-						</button>
+						</div>
 					</form>
 				{:else}
 					<div class="flex items-center gap-2">
@@ -110,12 +108,7 @@
 								class="rounded-md"
 							/>
 						{/if}
-						<button
-							id={`track-${index}`}
-							on:click={() => handleClick(index)}
-							on:keydown={handleKeyDown}
-							class="flex flex-1 flex-col items-start gap-1"
-						>
+						<div class="flex flex-1 flex-col items-start gap-1">
 							<p class="text-left text-xl font-bold">{music.name}</p>
 							<ul class="flex items-center gap-2">
 								{#each music.authors as authors}
@@ -124,7 +117,7 @@
 									</li>
 								{/each}
 							</ul>
-						</button>
+						</div>
 					</div>
 				{/if}
 				<div class="flex items-center gap-2">
@@ -221,7 +214,7 @@
 						</svelte:fragment>
 					</Dropdown>
 				</div>
-			</div>
+			</button>
 		{/each}
 	</div>
 	<div class="block md:hidden">
